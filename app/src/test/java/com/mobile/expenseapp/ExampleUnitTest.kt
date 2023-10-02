@@ -1,4 +1,4 @@
-package com.example.expense_app
+package com.mobile.expenseapp
 
 import org.junit.Test
 
