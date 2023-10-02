@@ -80,7 +80,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="$USER_HOME$/Downloads/A minimailist expense app icon.jpg" />
-                                                <entry key="scalingPercent" value="60" />
+                                                <entry key="scalingPercent" value="65" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -114,7 +114,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="cab9bf" />
-                                      <entry key="foregroundLayerName" value="expense_app_foreground" />
+                                      <entry key="outputName" value="expense_app_launcher" />
                                     </map>
                                   </option>
                                 </PersistentState>

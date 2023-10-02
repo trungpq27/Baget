@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "expense_app"
-include(":app")
- 
+rootProject.name = "ExpenseApp"
+include ':app'
