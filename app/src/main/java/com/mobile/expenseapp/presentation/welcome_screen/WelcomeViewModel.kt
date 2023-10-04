@@ -1,4 +1,4 @@
-package com.javalon.xpensewhiz.presentation.welcome_screen
+package com.mobile.expenseapp.presentation.welcome_screen
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
