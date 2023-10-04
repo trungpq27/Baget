@@ -1,4 +1,4 @@
-package com.javalon.xpensewhiz.data.repository
+package com.mobile.expenseapp.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -9,8 +9,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.javalon.xpensewhiz.common.Constants
-import com.javalon.xpensewhiz.domain.repository.DatastoreRepository
+import com.mobile.expenseapp.common.Constants
+import com.mobile.expenseapp.domain.repository.DatastoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
     private val expenseLimit = doublePreferencesKey(Constants.EXPENSE_LIMIT_KEY)
     private val limitDuration = intPreferencesKey(Constants.LIMIT_DURATION)
 
-    override suspend fun writeOnboardingKeyToDataStore(completed: Boolean) {
+    suspend fun writeOnboardingKeyToDataStore(completed: Boolean) {
         datastore.edit { store ->
             store[onBoardingKey] = completed
         }
@@ -41,13 +41,13 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
-    override suspend fun writeCurrencyToDataStore(currency: String) {
+    suspend fun writeCurrencyToDataStore(currency: String) {
         datastore.edit { store ->
             store[selectedCurrency] = currency
         }
     }
 
-    override suspend fun readCurrencyFromDataStore(): Flow<String> {
+    suspend fun readCurrencyFromDataStore(): Flow<String> {
         val preferences = datastore.data
         return flow {
             preferences.collect { pref ->
@@ -56,13 +56,13 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
-    override suspend fun writeExpenseLimitToDataStore(amount: Double) {
+    suspend fun writeExpenseLimitToDataStore(amount: Double) {
         datastore.edit { store ->
             store[expenseLimit] = amount
         }
     }
 
-    override suspend fun readExpenseLimitFromDataStore(): Flow<Double> {
+    suspend fun readExpenseLimitFromDataStore(): Flow<Double> {
         val preferences = datastore.data
         return flow {
             preferences.collect { pref ->
@@ -71,13 +71,13 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
-    override suspend fun writeLimitKeyToDataStore(enabled: Boolean) {
+    suspend fun writeLimitKeyToDataStore(enabled: Boolean) {
         datastore.edit { store ->
             store[limitKey] = enabled
         }
     }
 
-    override suspend fun readLimitKeyFromDataStore(): Flow<Boolean> {
+    suspend fun readLimitKeyFromDataStore(): Flow<Boolean> {
         val preferences = datastore.data
         return flow {
             preferences.collect { pref ->
@@ -86,13 +86,13 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
-    override suspend fun writeLimitDurationToDataStore(duration: Int) {
+    suspend fun writeLimitDurationToDataStore(duration: Int) {
         datastore.edit { store ->
             store[limitDuration] = duration
         }
     }
 
-    override suspend fun readLimitDurationFromDataStore(): Flow<Int> {
+    suspend fun readLimitDurationFromDataStore(): Flow<Int> {
         val preferences = datastore.data
         return flow {
             preferences.collect { pref ->
@@ -101,7 +101,7 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
-    override suspend fun eraseDataStore() {
+    suspend fun eraseDataStore() {
         datastore.edit {
             it.remove(limitKey)
             it.remove(limitDuration)
