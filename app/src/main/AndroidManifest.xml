@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".di.BagetApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,9 +14,8 @@
         android:theme="@style/Theme.ExpenseApp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.main.MainActivity"
+            android:name="com.mobile.expenseapp.presentation.main.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ExpenseApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
