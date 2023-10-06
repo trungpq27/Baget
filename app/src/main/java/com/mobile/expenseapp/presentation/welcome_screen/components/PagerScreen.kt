@@ -1,4 +1,4 @@
-package com.javalon.xpensewhiz.presentation.welcome_screen.components
+package com.mobile.expenseapp.presentation.welcome_screen.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import com.mobile.expenseapp.presentation.welcome_screen.components.OnBoardingPage
 
 @Composable
 fun PagerScreen(page: OnBoardingPage) {
