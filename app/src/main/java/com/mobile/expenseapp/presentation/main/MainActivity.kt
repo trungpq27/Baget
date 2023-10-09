@@ -12,22 +12,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.ExperimentalUnitApi
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.presentation.navigation.MainScreen
 import com.mobile.expenseapp.presentation.ui.theme.ExpenseAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
-@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @InternalCoroutinesApi
+@AndroidEntryPoint
+@ExperimentalPagerApi
 @ExperimentalUnitApi
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var mainViewModel: MainViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
