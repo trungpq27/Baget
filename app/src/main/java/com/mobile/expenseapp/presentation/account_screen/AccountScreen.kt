@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.mobile.expenseapp.presentation.account_screen.components.AccountItem
 import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.util.spacing
 
@@ -46,6 +47,11 @@ fun AccountScreen(
                     textAlign = TextAlign.Start
                 )
 
+            }
+            items(accounts) { account ->
+                AccountItem(account, currency) { accountType ->
+                    navController.navigate("${Screen.AccountDetailScreen.route}/$accountType")
+                }
             }
         }
     }
