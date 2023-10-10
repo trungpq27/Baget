@@ -57,8 +57,10 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            // header
             Header(bottomSheetScaffoldState)
 
+            // Button tabs
             TabButton()
         }
     }
