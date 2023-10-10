@@ -49,7 +49,7 @@ fun VersionSetting() {
 
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             val context = LocalContext.current
-            val packageManager = context.packageManager.getPackageInfo("com.javalon.xpensewhiz", 0)
+            val packageManager = context.packageManager.getPackageInfo("com.mobile.expenseapp", 0)
             Text(
                 text = packageManager.versionName,
                 style = MaterialTheme.typography.subtitle2
