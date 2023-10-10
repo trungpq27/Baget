@@ -7,8 +7,7 @@ import com.mobile.expenseapp.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) :
-    TransactionRepository {
+class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) : TransactionRepository {
     override suspend fun insertTransaction(dailyExpense: TransactionDto) {
         dao.insertTransaction(transaction = dailyExpense)
     }

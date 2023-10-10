@@ -20,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.presentation.navigation.components.BottomNavBar
 import com.mobile.expenseapp.presentation.navigation.components.provideBottomNavItems
 
 @ExperimentalAnimationApi
+@ExperimentalPagerApi
 @ExperimentalUnitApi
 @ExperimentalMaterialApi
 @ExperimentalComposeUiApi

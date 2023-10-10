@@ -15,16 +15,16 @@ import com.mobile.expenseapp.presentation.home_screen.HomeScreen
 import com.mobile.expenseapp.presentation.welcome_screen.CurrencyScreen
 import com.mobile.expenseapp.presentation.welcome_screen.WelcomeScreen
 
-@OptIn(ExperimentalPagerApi::class)
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @ExperimentalUnitApi
+@ExperimentalPagerApi
 @Composable
 fun MainNavigation(
     navController: NavHostController,
     startDestination: String
-    ) {
+) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.WelcomeScreen.route) {
             WelcomeScreen(navController = navController)
