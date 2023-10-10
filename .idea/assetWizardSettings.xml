@@ -79,8 +79,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Downloads/A minimailist expense app icon.jpg" />
-                                                <entry key="scalingPercent" value="65" />
+                                                <entry key="imagePath" value="$USER_HOME$/Downloads/a icon of a bread shaped wallet with money inside.jpg" />
+                                                <entry key="scalingPercent" value="71" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -113,8 +113,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="cab9bf" />
-                                      <entry key="outputName" value="expense_app_launcher" />
+                                      <entry key="backgroundColor" value="c9ab8f" />
                                     </map>
                                   </option>
                                 </PersistentState>
