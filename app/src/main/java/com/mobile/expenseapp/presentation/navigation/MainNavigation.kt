@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.presentation.home_screen.HomeScreen
 import com.mobile.expenseapp.presentation.home_screen.TransactionScreen
+import com.mobile.expenseapp.presentation.insight_screen.InsightScreen
 import com.mobile.expenseapp.presentation.setting_screen.SettingScreen
 import com.mobile.expenseapp.presentation.welcome_screen.CurrencyScreen
 import com.mobile.expenseapp.presentation.welcome_screen.WelcomeScreen
@@ -75,6 +76,9 @@ fun MainNavigation(
                 transactionPos = entry.arguments?.getInt("trxPos"),
                 transactionStatus = entry.arguments?.getInt("trxStatus")
             )
+        }
+        composable(route = Screen.InsightScreen.route) {
+            InsightScreen()
         }
         composable(route = Screen.SettingScreen.route) {
             SettingScreen(navController = navController)

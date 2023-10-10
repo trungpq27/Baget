@@ -57,7 +57,7 @@ class InsightViewModel @Inject constructor(
         }
     }
 
-     fun getFilteredTransaction(duration: Int = 5) {
+    fun getFilteredTransaction(duration: Int = 5) {
         viewModelScope.launch(IO) {
             if (_tabButton.value == TransactionType.INCOME) {
                 filterTransaction(duration, TransactionType.INCOME.title)

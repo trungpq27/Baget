@@ -40,6 +40,9 @@ import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.home_screen.components.ListPlaceholder
+import com.mobile.expenseapp.presentation.insight_screen.components.DonutChart
+import com.mobile.expenseapp.presentation.insight_screen.components.InsightItem
+import com.mobile.expenseapp.presentation.insight_screen.components.InsightTabBar
 import com.mobile.expenseapp.util.spacing
 
 @ExperimentalFoundationApi
@@ -141,6 +144,49 @@ fun InsightScreen(insightViewModel: InsightViewModel = hiltViewModel()) {
                         }
                     }
                 }
+            }
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            InsightTabBar()
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Total",
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+
+            Text(
+                text = currencyCode + total.toString().amountFormat(),
+                style = MaterialTheme.typography.h3.copy(fontSize = 20.sp),
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+
+            LazyColumn {
+                item {
+                    if (filteredTransactions.isNotEmpty())
+                        DonutChart(filteredCategories, percentProgress)
+                }
+
+                itemsIndexed(filteredCategories) { index, category ->
+                    val amount = groupedData[category.title]?.sumOf { it.amount }
+                    InsightItem(cat = category, currencyCode, amount = amount!!, percentProgress[index])
+                }
+            }
+
+            filteredTransactions.ifEmpty {
+                ListPlaceholder(
+                    "No transaction. Tap the '+' button on the home menu to get started."
+                )
             }
         }
     }
