@@ -34,6 +34,9 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
+    // expense entries
+    val dailyTransactions by homeViewModel.dailyTransaction.collectAsState()
+    val monthlyTransactions by homeViewModel.monthlyTransaction.collectAsState()
     val currentTabButton by homeViewModel.tabButton.collectAsState()
 
     val lazyListState = rememberLazyListState()
