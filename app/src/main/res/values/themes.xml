@@ -1,5 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <bool name="lightNavEnabled">true</bool>
+    <!-- Base application theme. -->
+    <style name="Theme.Baget" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
 
-    <style name="Theme.ExpenseApp" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/lightNavEnabled</item>
+        <item name="android:navigationBarColor" tools:targetApi="o">?colorSurface</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">@bool/lightNavEnabled</item>
+    </style>
+
+    <style name="Theme.Baget.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Baget.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Baget.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
