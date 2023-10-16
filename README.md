@@ -1,5 +1,5 @@
 # Baget
-Baget - Android Expense Apolication
+Baget - Android Expense Application
 ## Team Members
 - 21020395 Nguyễn Minh Tuấn - Trưởng nhóm
 - 21020394 Kiều Minh Tuấn
