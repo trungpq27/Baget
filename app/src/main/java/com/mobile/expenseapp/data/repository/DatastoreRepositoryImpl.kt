@@ -22,7 +22,9 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
     private val datastore = context.datastore
     private val onBoardingKey = booleanPreferencesKey(Constants.WELCOME_KEY)
     private val limitKey = booleanPreferencesKey(Constants.LIMIT_KEY)
+    private val darkMode = booleanPreferencesKey(Constants.DARK_MODE)
     private val selectedCurrency = stringPreferencesKey(Constants.CURRENCY_KEY)
+    private val selectedLanguage = stringPreferencesKey(Constants.CURRENCY_LANGUAGE)
     private val expenseLimit = doublePreferencesKey(Constants.EXPENSE_LIMIT_KEY)
     private val limitDuration = intPreferencesKey(Constants.LIMIT_DURATION)
 
@@ -56,6 +58,21 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
+    override suspend fun writeLanguageToDataStore(language: String) {
+        datastore.edit { store ->
+            store[selectedLanguage] = language
+        }
+    }
+
+    override suspend fun readLanguageFromDataStore(): Flow<String> {
+        val preferences = datastore.data
+        return flow {
+            preferences.collect { pref ->
+                emit(pref[selectedLanguage] ?: String())
+            }
+        }
+    }
+
     override suspend fun writeExpenseLimitToDataStore(amount: Double) {
         datastore.edit { store ->
             store[expenseLimit] = amount
@@ -77,11 +94,26 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
         }
     }
 
+    override suspend fun writeDarkModeToDataStore(enabled: Boolean) {
+        datastore.edit { store ->
+            store[darkMode] = enabled
+        }
+    }
+
     override suspend fun readLimitKeyFromDataStore(): Flow<Boolean> {
         val preferences = datastore.data
         return flow {
             preferences.collect { pref ->
                 emit(pref[limitKey] ?: false)
+            }
+        }
+    }
+
+    override suspend fun readDarkModeFromDataStore(): Flow<Boolean> {
+        val preferences = datastore.data
+        return flow {
+            preferences.collect { pref ->
+                emit(pref[darkMode] ?: false)
             }
         }
     }

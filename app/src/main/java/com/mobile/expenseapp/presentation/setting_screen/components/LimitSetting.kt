@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
@@ -33,9 +34,10 @@ import kotlinx.coroutines.launch
 fun LimitSetting(
     modalBottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
+    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
     settingViewModel: SettingViewModel = hiltViewModel(),
-    onItemClick: (Int) -> Unit
+    onItemClick: (Int) -> Unit,
 ) {
     val currencyCode by settingViewModel.currency.collectAsState()
     val expenseLimit by settingViewModel.expenseLimit.collectAsState()

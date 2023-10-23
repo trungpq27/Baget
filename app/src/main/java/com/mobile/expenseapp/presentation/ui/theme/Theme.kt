@@ -1,12 +1,18 @@
 package com.mobile.expenseapp.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
+import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
 import com.mobile.expenseapp.util.CompactSpacing
 import com.mobile.expenseapp.util.ExpandedSpacing
 import com.mobile.expenseapp.util.LocalSpacing
@@ -37,10 +43,14 @@ private val LightColorPalette = lightColors(
     onSecondary = Color.White,
     onBackground = Color.Black
 )
-
+@ExperimentalMaterialApi
 @Composable
 fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
+    val settingViewModel = hiltViewModel<SettingViewModel>()
+
+    // Access the isDarkMode property
+    val isDarkModeEnabled by settingViewModel.isDarkMode.collectAsState()
+    val colors = if (isDarkModeEnabled) {
         DarkColorPalette
     } else {
         LightColorPalette
