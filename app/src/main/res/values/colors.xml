@@ -8,4 +8,22 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_blue_400">#FF4fc3f7</color>
+
+    <!--  common color  -->
+    <color name="positive_transaction">#FFFF6666</color>
+    <color name="negative_transaction">#FF7BFF66</color>
+
+    <!--  light theme  -->
+    <color name="light_background">#FFFCFCFC</color>
+    <color name="light_foreground">#FF000000</color>
+
+    <!--  dark theme  -->
+    <color name="dark_background">#FF302D43</color>
+    <color name="dark_foreground">#FFFFFFFF</color>
+    <color name="dark_primary_100">#FF7441E1</color>
+    <color name="dark_primary_60">#887441E1</color>
+    <color name="dark_primary_30">#447441E1</color>
+
+
+    <color name="test">#26D9D9D9</color>
 </resources>
