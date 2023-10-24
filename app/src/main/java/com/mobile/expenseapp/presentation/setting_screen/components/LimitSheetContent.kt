@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -61,13 +62,14 @@ import java.util.concurrent.TimeUnit
 fun LimitContent(
     modalBottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
+    navController: NavController,
     settingViewModel: SettingViewModel = hiltViewModel()
 ) {
     val MILLISECS = 86_400_000L
     val limitDuration = listOf(1 * MILLISECS, 7 * MILLISECS, 30 * MILLISECS)
     val limitDurationText by remember {
         mutableStateOf(
-            listOf("Daily", "Weekly", "Monthly")
+            listOf(navController.context.getString(R.string.settings_daily), navController.context.getString(R.string.settings_weekly), navController.context.getString(R.string.settings_monthly))
         )
     }
     var selectedIndex by remember { mutableStateOf(0) }
@@ -95,7 +97,7 @@ fun LimitContent(
             .padding(MaterialTheme.spacing.medium)
     ) {
         Text(
-            text = "SET LIMIT",
+            text = navController.context.getString(R.string.settings_set_limt),
             style = MaterialTheme.typography.subtitle2
         )
 
@@ -115,7 +117,7 @@ fun LimitContent(
             singleLine = true,
             placeholder = {
                 Text(
-                    text = if (expenseLimitAmount == 0.0) "Amount" else expenseLimitAmount.toString(),
+                    text = if (expenseLimitAmount == 0.0) navController.context.getString(R.string.settings_expense_amount) else expenseLimitAmount.toString(),
                     style = MaterialTheme.typography.subtitle2
                 )
             },
@@ -201,7 +203,7 @@ fun LimitContent(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             Text(
-                text = "CANCEL",
+                text = navController.context.getString(R.string.cancel),
                 style = MaterialTheme.typography.button
             )
         }
@@ -236,7 +238,7 @@ fun LimitContent(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             Text(
-                text = "SET",
+                text = navController.context.getString(R.string.set),
                 style = MaterialTheme.typography.button
             )
         }

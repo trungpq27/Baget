@@ -17,6 +17,12 @@
     <string name="home_expenses">Expenses</string>
     <string name="home_recent_transactions">Recent Transactions</string>
     <string name="home_no_transactions">No transactions yet</string>
+    <string name="home_add_income">ADD INCOME</string>
+    <string name="home_add_expense">ADD EXPENSE</string>
+    <string name="home_balance">Balance</string>
+    
+    <!-- Insight Screen -->
+    <string name="insight_content">No transaction has been made so far. Tap the \'+' button to  get started</string>
 
     <!-- Transaction Screen -->
     <string name="transaction_title">Transactions</string>
@@ -26,6 +32,12 @@
     <string name="transaction_type">Type</string>
     <string name="transaction_income">Income</string>
     <string name="transaction_expense">Expense</string>
+    <string name="transaction_add_transaction">Add transaction</string>
+    <string name="transaction_income_title">Income title</string>
+    <string name="transaction_expense_title">Expense title</string>
+    <string name="transaction_fund">Fund</string>
+    <string name="transaction_pay_with">Pay with</string>
+    <string name="transaction_set_category">Set category</string>
 
     <!-- Budget Screen -->
     <string name="budget_title">Budget</string>
@@ -48,6 +60,18 @@
     <string name="settings_reset_data">Reset Data</string>
     <string name="settings_reset_warning">You are about to erase all transactions on this app. This cannot be reversed</string>
     <string name="settings_limit_reminder">Limit Reminder</string>
+    <string name="settings_expense_limit">Expense Limit</string>
+    <string name="settings_expense_amount">Amount</string>
+    <string name="settings_set_limt">SET LIMIT</string>
+    <string name="settings_daily">Daily</string>
+    <string name="settings_weekly">Weekly</string>
+    <string name="settings_monthly">Monthly</string>
+    <string name="settings_rate">Rate us</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_version">Version</string>
+
+    <!-- Account Screen   -->
+    <string name="account">Accounts</string>
 
     <!-- About Screen -->
     <string name="about_title">About</string>
@@ -56,6 +80,7 @@
 
     <!-- Other Common Strings -->
     <string name="ok">OK</string>
+    <string name="set">Set</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
 </resources>

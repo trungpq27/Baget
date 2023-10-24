@@ -70,7 +70,7 @@ fun SettingScreen(
             Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
                 when (sheetRankState.value) {
                     1 -> {
-                        LimitContent(modalBottomSheetState, scope)
+                        LimitContent(modalBottomSheetState, scope, navController)
                     }
                     2 -> {
                         EraseContent(modalBottomSheetState, scope, navController)
@@ -141,11 +141,11 @@ fun SettingScreen(
                             textAlign = TextAlign.Start
                         )
 
-                        RateSetting()
+                        RateSetting(navController)
 
-                        PrivacySetting()
+                        PrivacySetting(navController)
 
-                        VersionSetting()
+                        VersionSetting(navController)
                     }
                 }
             }

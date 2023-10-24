@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
 import com.mobile.expenseapp.util.spacing
@@ -35,7 +35,6 @@ fun LimitSetting(
     modalBottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
     navController: NavController,
-    homeViewModel: HomeViewModel = hiltViewModel(),
     settingViewModel: SettingViewModel = hiltViewModel(),
     onItemClick: (Int) -> Unit,
 ) {
@@ -66,7 +65,7 @@ fun LimitSetting(
         )
     ) {
         Text(
-            text = "Expense Limit",
+            text = navController.context.getString(R.string.settings_expense_limit),
             style = MaterialTheme.typography.button,
             modifier = Modifier.weight(2f),
             textAlign = TextAlign.Start

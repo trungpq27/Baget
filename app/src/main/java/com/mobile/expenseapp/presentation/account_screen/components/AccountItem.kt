@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.domain.model.Account
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.util.spacing
@@ -32,7 +34,7 @@ import com.mobile.expenseapp.presentation.home_screen.Account as AccountType
 
 @ExperimentalMaterialApi
 @Composable
-fun AccountItem(account: Account, currency: String, onItemClick: (String) -> Unit) {
+fun AccountItem(account: Account, currency: String, navController: NavController, onItemClick: (String) -> Unit) {
     Card(
         onClick = {
             onItemClick(account.account)
@@ -57,7 +59,7 @@ fun AccountItem(account: Account, currency: String, onItemClick: (String) -> Uni
                 )
         ) {
             Text(
-                text = "Balance",
+                text = navController.context.getString(R.string.home_total_balance),
                 style = MaterialTheme.typography.subtitle2.copy(fontWeight = FontWeight.Normal),
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier.padding(
@@ -172,13 +174,13 @@ fun AccountItem(account: Account, currency: String, onItemClick: (String) -> Uni
                             .padding(horizontal = MaterialTheme.spacing.medium)
                     ) {
                         Text(
-                            text = "INCOME",
+                            text = navController.context.getString(R.string.home_income),
                             style = MaterialTheme.typography.overline,
                             color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
                         )
 
                         Text(
-                            text = "EXPENSE",
+                            text = navController.context.getString(R.string.home_expenses),
                             style = MaterialTheme.typography.overline,
                             color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
                         )
