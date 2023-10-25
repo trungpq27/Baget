@@ -19,13 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.mobile.expenseapp.R
 
 @Composable
-fun PagerScreen(page: OnBoardingPage) {
+fun PagerScreen(navController: NavController, page: OnBoardingPage) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -41,7 +42,7 @@ fun PagerScreen(page: OnBoardingPage) {
                 .fillMaxHeight(0.6f)
         )
         Text(
-            text = page.title,
+            text = navController.context.getString(page.title),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.body1,
@@ -49,7 +50,7 @@ fun PagerScreen(page: OnBoardingPage) {
             modifier = Modifier.fillMaxWidth()
         )
         Text(
-            text = page.description,
+            text = navController.context.getString(page.description),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.body2,
@@ -61,7 +62,7 @@ fun PagerScreen(page: OnBoardingPage) {
 
 @ExperimentalPagerApi
 @Composable
-fun GetStartedButton(modifier: Modifier, pagerState: PagerState, onClick: () -> Unit) {
+fun GetStartedButton(navController: NavController, modifier: Modifier, pagerState: PagerState, onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth(.8f)
@@ -79,28 +80,10 @@ fun GetStartedButton(modifier: Modifier, pagerState: PagerState, onClick: () -> 
                 contentPadding = PaddingValues(vertical = 12.dp)
             ) {
                 Text(
-                    text = "Get started",
+                    text = navController.context.getString(R.string.welcome_get_started),
                     style = MaterialTheme.typography.button
                 )
             }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun FirstPagerPreview() {
-    PagerScreen(page = OnBoardingPage.FirstPage)
-}
-
-@Composable
-@Preview(showBackground = true)
-fun SecondPagerPreview() {
-    PagerScreen(page = OnBoardingPage.SecondPage)
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ThirdPagerPreview() {
-    PagerScreen(page = OnBoardingPage.ThirdPage)
 }

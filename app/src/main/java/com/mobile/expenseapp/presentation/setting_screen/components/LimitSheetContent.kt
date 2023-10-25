@@ -97,7 +97,7 @@ fun LimitContent(
             .padding(MaterialTheme.spacing.medium)
     ) {
         Text(
-            text = navController.context.getString(R.string.settings_set_limt),
+            text = navController.context.getString(R.string.settings_set_limit),
             style = MaterialTheme.typography.subtitle2
         )
 

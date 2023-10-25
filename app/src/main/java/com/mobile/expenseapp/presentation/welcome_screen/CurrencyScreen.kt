@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.domain.model.CurrencyModel
 import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.presentation.ui.theme.Manrope
@@ -88,7 +89,7 @@ fun CurrencyScreen(
 
                 Card(elevation = 1.dp) {
                     Text(
-                        text = "Set currency",
+                        text = navController.context.getString(R.string.welcome_set_currency),
                         style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.W700),
                         color = MaterialTheme.colors.onBackground,
                         modifier = Modifier
@@ -244,7 +245,7 @@ fun ContinueButton(
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
             Text(
-                text = "SET",
+                text = navController.context.getString(R.string.set),
                 style = MaterialTheme.typography.button
             )
         }

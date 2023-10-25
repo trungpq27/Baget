@@ -22,7 +22,15 @@
     <string name="home_balance">Balance</string>
     
     <!-- Insight Screen -->
-    <string name="insight_content">No transaction has been made so far. Tap the \'+' button to  get started</string>
+    <string name="insight_content">No transaction has been made so far. Tap the \'+\' button to  get started</string>
+    <string name="insight_total">Total</string>
+    <string name="last_3_days">Last 3 Days</string>
+    <string name="last_7_days">Last 7 Days</string>
+    <string name="last_14_days">Last 14 Days</string>
+    <string name="this_month">This Month</string>
+    <string name="last_month">Last Month</string>
+    <string name="all">All</string>
+
 
     <!-- Transaction Screen -->
     <string name="transaction_title">Transactions</string>
@@ -62,13 +70,23 @@
     <string name="settings_limit_reminder">Limit Reminder</string>
     <string name="settings_expense_limit">Expense Limit</string>
     <string name="settings_expense_amount">Amount</string>
-    <string name="settings_set_limt">SET LIMIT</string>
+    <string name="settings_set_limit">SET LIMIT</string>
     <string name="settings_daily">Daily</string>
     <string name="settings_weekly">Weekly</string>
     <string name="settings_monthly">Monthly</string>
     <string name="settings_rate">Rate us</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_version">Version</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_set_currency">Set currency</string>
+    <string name="welcome_get_started">Get started</string>
+    <string name="welcome_title_first_page">Add entries</string>
+    <string name="welcome_content_first_page">Keep track of your income and expenses</string>
+    <string name="welcome_title_second_page">Check insights</string>
+    <string name="welcome_content_second_page">Detailed weekly and monthly charts based on your entries</string>
+    <string name="welcome_title_third_page">Make right decisions</string>
+    <string name="welcome_content_third_page">Control your money flow and stay on top of your game</string>
 
     <!-- Account Screen   -->
     <string name="account">Accounts</string>

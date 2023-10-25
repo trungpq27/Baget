@@ -80,7 +80,7 @@ fun MainNavigation(
             )
         }
         composable(route = Screen.InsightScreen.route) {
-            InsightScreen()
+            InsightScreen(navController = navController)
         }
         composable(route = Screen.AccountScreen.route) {
             AccountScreen(navController = navController)
