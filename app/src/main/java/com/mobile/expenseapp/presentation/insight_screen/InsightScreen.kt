@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
@@ -48,7 +49,7 @@ import com.mobile.expenseapp.util.spacing
 @ExperimentalFoundationApi
 @ExperimentalUnitApi
 @Composable
-fun InsightScreen(insightViewModel: InsightViewModel = hiltViewModel()) {
+fun InsightScreen(navController: NavController, insightViewModel: InsightViewModel = hiltViewModel()) {
 
     val filteredTransactions by insightViewModel.filteredTransaction.collectAsState()
     val currencyCode by insightViewModel.selectedCurrencyCode.collectAsState()
@@ -83,8 +84,12 @@ fun InsightScreen(insightViewModel: InsightViewModel = hiltViewModel()) {
     val limitDuration by remember {
         mutableStateOf(
             listOf(
-                "Last 3 Days", "Last 7 Days", "Last 14 Days", "This Month",
-                "Last Month", "All"
+                navController.context.getString(R.string.last_3_days),
+                navController.context.getString(R.string.last_7_days),
+                navController.context.getString(R.string.last_14_days),
+                navController.context.getString(R.string.this_month),
+                navController.context.getString(R.string.last_month),
+                navController.context.getString(R.string.all)
             )
         )
     }
@@ -153,7 +158,7 @@ fun InsightScreen(insightViewModel: InsightViewModel = hiltViewModel()) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Total",
+                text = navController.context.getString(R.string.insight_total),
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
                 letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
@@ -185,7 +190,7 @@ fun InsightScreen(insightViewModel: InsightViewModel = hiltViewModel()) {
 
             filteredTransactions.ifEmpty {
                 ListPlaceholder(
-                    "No transaction. Tap the '+' button on the home menu to get started."
+                    navController.context.getString(R.string.insight_content)
                 )
             }
         }

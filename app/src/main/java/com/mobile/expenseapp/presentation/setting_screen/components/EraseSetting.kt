@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.ui.theme.Red500
 import com.mobile.expenseapp.util.spacing
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun EraseSetting(modalBottomSheetState: ModalBottomSheetState, scope: CoroutineScope, onItemClick: (Int) -> Unit) {
+fun EraseSetting(modalBottomSheetState: ModalBottomSheetState, scope: CoroutineScope, navController: NavController, onItemClick: (Int) -> Unit) {
 
     TextButton(
         onClick = {
@@ -54,7 +55,7 @@ fun EraseSetting(modalBottomSheetState: ModalBottomSheetState, scope: CoroutineS
         )
     ) {
         Text(
-            text = "Erase Data",
+            text = navController.context.getString(R.string.settings_reset_data),
             style = MaterialTheme.typography.button,
             modifier = Modifier.weight(2f),
             textAlign = TextAlign.Start

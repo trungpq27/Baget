@@ -19,9 +19,17 @@ interface DatastoreRepository {
 
     suspend fun readLimitKeyFromDataStore(): Flow<Boolean>
 
+    suspend fun writeDarkModeToDataStore(enabled: Boolean)
+
+    suspend fun readDarkModeFromDataStore(): Flow<Boolean>
+
     suspend fun writeLimitDurationToDataStore(duration: Int)
 
     suspend fun readLimitDurationFromDataStore(): Flow<Int>
+
+    suspend fun writeLanguageToDataStore(language: String)
+
+    suspend fun readLanguageFromDataStore(): Flow<String>
 
     suspend fun eraseDataStore()
 }

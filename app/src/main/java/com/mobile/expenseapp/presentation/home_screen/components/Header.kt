@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
@@ -57,6 +58,7 @@ import kotlin.math.abs
 @Composable
 fun Header(
     bottomSheetScaffoldState: BottomSheetScaffoldState,
+    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -136,7 +138,7 @@ fun Header(
                 }
 
                 Text(
-                    text = "Balance",
+                    text = navController.context.getString(R.string.home_balance),
                     style = MaterialTheme.typography.subtitle2.copy(fontWeight = FontWeight.Normal),
                     color = MaterialTheme.colors.onSurface,
                     letterSpacing = TextUnit(1.5f, TextUnitType.Sp),
@@ -265,7 +267,7 @@ fun Header(
                         val (incomeIcon, incomeLabel, code, incomeAmount) = createRefs()
                         Icon(
                             painter = painterResource(id = R.drawable.income),
-                            contentDescription = "Income",
+                            contentDescription = navController.context.getString(R.string.home_income),
                             tint = MaterialTheme.colors.surface,
                             modifier = Modifier
                                 .constrainAs(incomeIcon) {
@@ -275,7 +277,7 @@ fun Header(
                                 .then(Modifier.size(24.dp))
                         )
                         Text(
-                            text = "Income",
+                            text = navController.context.getString(R.string.home_income),
                             style = MaterialTheme.typography.subtitle2,
                             color = MaterialTheme.colors.surface,
                             modifier = Modifier.constrainAs(incomeLabel) {
@@ -355,7 +357,7 @@ fun Header(
                                 .then(Modifier.size(24.dp))
                         )
                         Text(
-                            text = "Expense",
+                            text = navController.context.getString(R.string.home_expenses),
                             style = MaterialTheme.typography.subtitle2,
                             color = MaterialTheme.colors.surface,
                             modifier = Modifier.constrainAs(expenseLabel) {

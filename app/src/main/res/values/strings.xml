@@ -1,3 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App Name -->
     <string name="app_name">Baget</string>
+
+    <!-- Navigation Drawer Items -->
+    <string name="nav_home">Home</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_budget">Budget</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_about">About</string>
+
+    <!-- Home Screen -->
+    <string name="home_total_balance">Total Balance</string>
+    <string name="home_income">Income</string>
+    <string name="home_expenses">Expenses</string>
+    <string name="home_recent_transactions">Recent Transactions</string>
+    <string name="home_no_transactions">No transactions yet</string>
+    <string name="home_add_income">ADD INCOME</string>
+    <string name="home_add_expense">ADD EXPENSE</string>
+    <string name="home_balance">Balance</string>
+    
+    <!-- Insight Screen -->
+    <string name="insight_content">No transaction has been made so far. Tap the \'+\' button to  get started</string>
+    <string name="insight_total">Total</string>
+    <string name="last_3_days">Last 3 Days</string>
+    <string name="last_7_days">Last 7 Days</string>
+    <string name="last_14_days">Last 14 Days</string>
+    <string name="this_month">This Month</string>
+    <string name="last_month">Last Month</string>
+    <string name="all">All</string>
+
+
+    <!-- Transaction Screen -->
+    <string name="transaction_title">Transactions</string>
+    <string name="transaction_date">Date</string>
+    <string name="transaction_amount">Amount</string>
+    <string name="transaction_description">Description</string>
+    <string name="transaction_type">Type</string>
+    <string name="transaction_income">Income</string>
+    <string name="transaction_expense">Expense</string>
+    <string name="transaction_add_transaction">Add transaction</string>
+    <string name="transaction_income_title">Income title</string>
+    <string name="transaction_expense_title">Expense title</string>
+    <string name="transaction_fund">Fund</string>
+    <string name="transaction_pay_with">Pay with</string>
+    <string name="transaction_set_category">Set category</string>
+
+    <!-- Budget Screen -->
+    <string name="budget_title">Budget</string>
+    <string name="budget_set_budget">Set Budget</string>
+    <string name="budget_category">Category</string>
+    <string name="budget_amount">Amount</string>
+    <string name="budget_remaining">Remaining</string>
+
+    <!-- Reports Screen -->
+    <string name="reports_title">Reports</string>
+    <string name="reports_income">Income</string>
+    <string name="reports_expenses">Expenses</string>
+    <string name="reports_no_data">No data available</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_currency">Currency</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_reset_data">Reset Data</string>
+    <string name="settings_reset_warning">You are about to erase all transactions on this app. This cannot be reversed</string>
+    <string name="settings_limit_reminder">Limit Reminder</string>
+    <string name="settings_expense_limit">Expense Limit</string>
+    <string name="settings_expense_amount">Amount</string>
+    <string name="settings_set_limit">SET LIMIT</string>
+    <string name="settings_daily">Daily</string>
+    <string name="settings_weekly">Weekly</string>
+    <string name="settings_monthly">Monthly</string>
+    <string name="settings_rate">Rate us</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_version">Version</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_set_currency">Set currency</string>
+    <string name="welcome_get_started">Get started</string>
+    <string name="welcome_title_first_page">Add entries</string>
+    <string name="welcome_content_first_page">Keep track of your income and expenses</string>
+    <string name="welcome_title_second_page">Check insights</string>
+    <string name="welcome_content_second_page">Detailed weekly and monthly charts based on your entries</string>
+    <string name="welcome_title_third_page">Make right decisions</string>
+    <string name="welcome_content_third_page">Control your money flow and stay on top of your game</string>
+
+    <!-- Account Screen   -->
+    <string name="account">Accounts</string>
+
+    <!-- About Screen -->
+    <string name="about_title">About</string>
+    <string name="about_version">Version</string>
+    <string name="about_developer">Developer</string>
+
+    <!-- Other Common Strings -->
+    <string name="ok">OK</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
 </resources>

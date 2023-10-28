@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.account_screen.components.AccountItem
 import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.util.spacing
@@ -34,7 +35,7 @@ fun AccountScreen(
         LazyColumn {
             item {
                 Text(
-                    text = "Accounts",
+                    text = navController.context.getString(R.string.account),
                     style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.W700),
                     color = MaterialTheme.colors.onSurface,
                     modifier = Modifier
@@ -49,7 +50,7 @@ fun AccountScreen(
 
             }
             items(accounts) { account ->
-                AccountItem(account, currency) { accountType ->
+                AccountItem(account, currency, navController) { accountType ->
                     navController.navigate("${Screen.AccountDetailScreen.route}/$accountType")
                 }
             }
