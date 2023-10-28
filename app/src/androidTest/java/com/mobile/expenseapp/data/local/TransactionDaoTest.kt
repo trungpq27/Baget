@@ -74,7 +74,7 @@ class TransactionDaoTest {
                 title = "Lunch snack"
             )
         )
-        accounts = listOf (
+        accounts = listOf(
             AccountDto(1, "Cash", 0.0, 0.0, 0.0),
             AccountDto(2, "Card", 0.0, 0.0, 0.0),
             AccountDto(3, "Bank", 0.0, 0.0, 0.0)
@@ -87,7 +87,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `insert transaction adds a new record to the transaction table`() = runBlocking {
+    fun `insert_transaction_adds_a_new_record_to_the_transaction_table`() = runBlocking {
         transactionDao.insertTransaction(newTrx[0])
         transactionDao.getAllTransaction().test {
             val trx = awaitItem()
@@ -96,7 +96,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `insert account adds a new record to the account table`() = runBlocking {
+    fun `insert_account_adds_a_new_record_to_the_account_table`() = runBlocking {
         transactionDao.insertAccounts(accounts)
         transactionDao.getAccounts().test {
             val allAccounts = awaitItem()
@@ -105,7 +105,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieving daily transaction record returns only transactions for current day`() =
+    fun `retrieving_daily_transaction_record_returns_only_transactions_for_current_day`() =
         runBlocking {
             transactionDao.insertTransaction(transaction = newTrx[0])
             transactionDao.insertTransaction(transaction = newTrx[1])
@@ -117,7 +117,7 @@ class TransactionDaoTest {
         }
 
     @Test
-    fun `retrieving account record by account type returns only the specific account`() =
+    fun `retrieving_account_record_by_account_type_returns_only_the_specific_account`() =
         runBlocking {
             transactionDao.insertAccounts(accounts)
             transactionDao.getAccount(Account.CASH.title).test {
@@ -127,7 +127,7 @@ class TransactionDaoTest {
         }
 
     @Test
-    fun `retrieiving transaction record by transaction type returns only the specific transaction`() =
+    fun `retrieiving_transaction_record_by_transaction_type_returns_only_the_specific_transaction`() =
         runBlocking {
             transactionDao.insertTransaction(newTrx[0])
             transactionDao.insertTransaction(newTrx[1])
@@ -139,7 +139,7 @@ class TransactionDaoTest {
         }
 
     @Test
-    fun `retrieving transactions by account type returns only transactions performed on the account`() =
+    fun `retrieving_transactions_by_account_type_returns_only_transactions_performed_on_the_account`() =
         runBlocking {
             transactionDao.insertTransaction(newTrx[0])
             transactionDao.getTransactionByAccount(Account.CASH.title).test {
@@ -149,7 +149,7 @@ class TransactionDaoTest {
         }
 
     @Test
-    fun `retrieving all records in account table`() = runBlocking {
+    fun `retrieving_all_records_in_account_table`() = runBlocking {
         transactionDao.insertAccounts(accounts)
         transactionDao.getAccounts().test {
             val accounts = awaitItem()
@@ -158,7 +158,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `erase all transactions clears the records in transaction table`() = runBlocking {
+    fun `erase_all_transactions_clears_the_records_in_transaction_table`() = runBlocking {
         transactionDao.insertTransaction(newTrx[0])
         transactionDao.insertTransaction(newTrx[1])
 
@@ -170,7 +170,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieve all expense transactions performed on current day`() = runBlocking {
+    fun `retrieve_all_expense_transactions_performed_on_current_day`() = runBlocking {
         transactionDao.insertTransaction(newTrx[0])
         transactionDao.insertTransaction(newTrx[1])
 
@@ -181,7 +181,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieve all expense transactions performed within 30 days`() = runBlocking {
+    fun `retrieve_all_expense_transactions_performed_within_30_days`() = runBlocking {
         newTrx.clear()
         for (i in 1..5) {
             val calendar = Calendar.getInstance()
@@ -211,7 +211,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieve all expense transactions performed within seven days`() = runBlocking {
+    fun `retrieve_all_expense_transactions_performed_within_seven_days`() = runBlocking {
         newTrx.clear()
         for (i in 1..30) {
             val calendar = Calendar.getInstance()
@@ -241,7 +241,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieve all transactions performed three days ago`() = runBlocking {
+    fun `retrieve_all_transactions_performed_three_days_ago`() = runBlocking {
         newTrx.clear()
         for (i in 1..4) {
             val calendar = Calendar.getInstance()
@@ -271,7 +271,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieve all transactions performed seven days ago`() = runBlocking {
+    fun `retrieve_all_transactions_performed_seven_days_ago`() = runBlocking {
         newTrx.clear()
         for (i in 1..8) {
             val calendar = Calendar.getInstance()
@@ -301,7 +301,7 @@ class TransactionDaoTest {
     }
 
     @Test
-    fun `retrieve all transactions performed fourteen days ago`() = runBlocking {
+    fun `retrieve_all_transactions_performed_fourteen_days_ago`() = runBlocking {
         newTrx.clear()
         for (i in 1..15) {
             val calendar = Calendar.getInstance()
