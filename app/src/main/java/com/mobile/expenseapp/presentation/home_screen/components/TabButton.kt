@@ -38,9 +38,10 @@ fun TabButton(
         modifier = Modifier.padding(
             start = MaterialTheme.spacing.medium,
             end = MaterialTheme.spacing.medium,
-            top = MaterialTheme.spacing.small
+            top = MaterialTheme.spacing.small,
+            bottom = MaterialTheme.spacing.small
         ),
-        color = Color.DarkGray.copy(alpha = 0.1f),
+//        color = Color.DarkGray.copy(alpha = 0.1f),
         shape = RoundedCornerShape(cornerRadius)
     ) {
         Row(

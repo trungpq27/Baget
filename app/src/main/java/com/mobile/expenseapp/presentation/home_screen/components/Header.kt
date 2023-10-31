@@ -82,9 +82,9 @@ fun Header(
 
         Surface(
             modifier = Modifier.padding(
-                start = MaterialTheme.spacing.medium,
+                start = MaterialTheme.spacing.small,
                 top = MaterialTheme.spacing.medium,
-                end = MaterialTheme.spacing.medium,
+                end = MaterialTheme.spacing.small,
                 bottom = MaterialTheme.spacing.small
             ), color = Color.DarkGray.copy(alpha = 0.1f), shape = RoundedCornerShape(24.dp)
         ) {
@@ -137,7 +137,7 @@ fun Header(
 
                 Text(
                     text = "Balance",
-                    style = MaterialTheme.typography.subtitle2.copy(fontWeight = FontWeight.Normal),
+                    style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Normal),
                     color = MaterialTheme.colors.onSurface,
                     letterSpacing = TextUnit(1.5f, TextUnitType.Sp),
                     modifier = Modifier.constrainAs(balanceLabel) {
@@ -266,18 +266,18 @@ fun Header(
                         Icon(
                             painter = painterResource(id = R.drawable.income),
                             contentDescription = "Income",
-                            tint = MaterialTheme.colors.surface,
+                            tint = MaterialTheme.colors.onSurface,
                             modifier = Modifier
                                 .constrainAs(incomeIcon) {
                                     start.linkTo(parent.start)
                                     top.linkTo(parent.top)
                                 }
-                                .then(Modifier.size(24.dp))
+                                .then(Modifier.size(30.dp))
                         )
                         Text(
                             text = "Income",
-                            style = MaterialTheme.typography.subtitle2,
-                            color = MaterialTheme.colors.surface,
+                            style = MaterialTheme.typography.subtitle1,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(incomeLabel) {
                                 top.linkTo(incomeIcon.bottom, margin = extraSmall)
                                 start.linkTo(parent.start)
@@ -288,7 +288,7 @@ fun Header(
                             style = MaterialTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(code) {
                                 start.linkTo(parent.start)
                                 bottom.linkTo(incomeAmount.top)
@@ -299,7 +299,7 @@ fun Header(
                             style = MaterialTheme.typography.body2,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(incomeAmount) {
                                 start.linkTo(parent.start)
                                 bottom.linkTo(parent.bottom)
@@ -346,18 +346,18 @@ fun Header(
                         Icon(
                             painter = painterResource(id = R.drawable.expense),
                             contentDescription = "Expense",
-                            tint = MaterialTheme.colors.surface,
+                            tint = MaterialTheme.colors.onSurface,
                             modifier = Modifier
                                 .constrainAs(expenseIcon) {
                                     start.linkTo(parent.start)
                                     top.linkTo(parent.top)
                                 }
-                                .then(Modifier.size(24.dp))
+                                .then(Modifier.size(30.dp))
                         )
                         Text(
                             text = "Expense",
-                            style = MaterialTheme.typography.subtitle2,
-                            color = MaterialTheme.colors.surface,
+                            style = MaterialTheme.typography.subtitle1,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(expenseLabel) {
                                 top.linkTo(expenseIcon.bottom, margin = extraSmall)
                                 start.linkTo(parent.start)
@@ -368,7 +368,7 @@ fun Header(
                             style = MaterialTheme.typography.body1,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(code) {
                                 start.linkTo(parent.start)
                                 bottom.linkTo(expenseAmount.top)
@@ -379,7 +379,7 @@ fun Header(
                             style = MaterialTheme.typography.body2,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(expenseAmount) {
                                 start.linkTo(parent.start)
                                 bottom.linkTo(parent.bottom)

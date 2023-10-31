@@ -68,6 +68,7 @@ import com.mobile.expenseapp.presentation.home_screen.components.AccountTag
 import com.mobile.expenseapp.presentation.home_screen.components.Category
 import com.mobile.expenseapp.presentation.home_screen.components.InfoBanner
 import com.mobile.expenseapp.presentation.home_screen.components.KeypadComponent
+import com.mobile.expenseapp.presentation.home_screen.components.TabButton
 import com.mobile.expenseapp.presentation.ui.theme.Amber500
 import com.mobile.expenseapp.presentation.ui.theme.Red200
 import com.mobile.expenseapp.util.spacing
@@ -185,13 +186,13 @@ fun TransactionScreen(
                         },
                         modifier = Modifier
                             .scale(0.8f)
-                            .background(MaterialTheme.colors.primary, CircleShape)
+                            .background(MaterialTheme.colors.surface, CircleShape)
 
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.enter),
                             contentDescription = "enter",
-                            tint = MaterialTheme.colors.surface,
+                            tint = MaterialTheme.colors.onSurface,
                             modifier = Modifier
                                 .scale(0.8f)
                         )
