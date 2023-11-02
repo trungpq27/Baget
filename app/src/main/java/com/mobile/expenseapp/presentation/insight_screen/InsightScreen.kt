@@ -189,9 +189,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             }
 
             filteredTransactions.ifEmpty {
-                ListPlaceholder(
-                    navController.context.getString(R.string.insight_content)
-                )
+                ListPlaceholder(navController)
             }
         }
     }

@@ -91,6 +91,31 @@
     <!-- Account Screen   -->
     <string name="account">Accounts</string>
 
+    <!-- Pay with -->
+    <string name="pay_with_cash">Cash</string>
+    <string name="pay_with_bank">Bank</string>
+    <string name="pay_with_card">Card</string>
+
+    <!-- Category -->
+    <string name="category_food_drink">Food &amp; Drink</string>
+    <string name="category_clothing">Clothing</string>
+    <string name="category_home">Home</string>
+    <string name="category_health">Health</string>
+    <string name="category_school">School</string>
+    <string name="category_grocery">Grocery</string>
+    <string name="category_electricity">Electricity</string>
+    <string name="category_business">Business</string>
+    <string name="category_vehicle">Vehicle</string>
+    <string name="category_taxi">Taxi</string>
+    <string name="category_leisure">Leisure</string>
+    <string name="category_gadget">Gadget</string>
+    <string name="category_travel">Travel</string>
+    <string name="category_subscription">Subscription</string>
+    <string name="category_pet">Pet</string>
+    <string name="category_snack">Snack</string>
+    <string name="category_gift">Gift</string>
+    <string name="category_misc">Miscellaneous</string>
+
     <!-- About Screen -->
     <string name="about_title">About</string>
     <string name="about_version">Version</string>

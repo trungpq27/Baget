@@ -15,10 +15,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowRow
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Category
@@ -28,6 +28,7 @@ import com.mobile.expenseapp.util.spacing
 @ExperimentalUnitApi
 @Composable
 fun Category(
+    navController: NavController,
     expenseItems: Array<Category> = Category.values()
 ) {
     FlowRow(
@@ -39,14 +40,18 @@ fun Category(
         ),
     ) {
         expenseItems.forEach {
-            CategoryTag(category = it)
+            CategoryTag(category = it, navController)
         }
     }
 }
 
 @ExperimentalUnitApi
 @Composable
-fun CategoryTag(category: Category, homeViewModel: HomeViewModel = hiltViewModel()) {
+fun CategoryTag(
+    category: Category,
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
     val selected by homeViewModel.category.collectAsState()
     var isSelected = selected.title == category.title
     TextButton(
@@ -76,15 +81,8 @@ fun CategoryTag(category: Category, homeViewModel: HomeViewModel = hiltViewModel
         )
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
         Text(
-            text = category.title,
+            text = navController.context.getString(category.content),
             style = MaterialTheme.typography.button
         )
     }
-}
-
-@ExperimentalUnitApi
-@Preview(showBackground = true)
-@Composable
-fun CategoryPreview() {
-    Category()
 }

@@ -286,7 +286,7 @@ fun TransactionScreen(
                             .align(Alignment.Start)
                     ) {
                         items(Account.values()) { account ->
-                            AccountTag(account = account)
+                            AccountTag(account = account, navController)
                         }
                     }
 
@@ -381,7 +381,7 @@ fun TransactionScreen(
                             )
                     )
 
-                    Category()
+                    Category(navController)
                 }
             }
         }

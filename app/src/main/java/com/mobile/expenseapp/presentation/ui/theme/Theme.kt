@@ -1,6 +1,5 @@
 package com.mobile.expenseapp.presentation.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -11,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
 import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
 import com.mobile.expenseapp.util.CompactSpacing
 import com.mobile.expenseapp.util.ExpandedSpacing
@@ -43,9 +41,10 @@ private val LightColorPalette = lightColors(
     onSecondary = Color.White,
     onBackground = Color.Black
 )
+
 @ExperimentalMaterialApi
 @Composable
-fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun BagetTheme(content: @Composable () -> Unit) {
     val settingViewModel = hiltViewModel<SettingViewModel>()
 
     // Access the isDarkMode property
@@ -63,9 +62,11 @@ fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable 
             is WindowInfo.WindowType.Compact -> {
                 LocalSpacing provides CompactSpacing()
             }
+
             is WindowInfo.WindowType.Medium -> {
                 LocalSpacing provides MediumSpacing()
             }
+
             else -> LocalSpacing provides ExpandedSpacing()
         }
     ) {

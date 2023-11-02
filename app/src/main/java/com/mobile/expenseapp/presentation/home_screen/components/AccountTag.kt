@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Account
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
@@ -29,7 +29,11 @@ import com.mobile.expenseapp.util.spacing
 
 @ExperimentalUnitApi
 @Composable
-fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel()) {
+fun AccountTag(
+    account: Account,
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
     val selectedAccount by homeViewModel.account.collectAsState()
     val isSelected = selectedAccount == account
 
@@ -60,17 +64,10 @@ fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel())
         )
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
         Text(
-            text = account.title,
+            text = navController.context.getString(account.content),
             style = MaterialTheme.typography.subtitle2,
             fontWeight = FontWeight.Bold,
             letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
         )
     }
-}
-
-@ExperimentalUnitApi
-@Preview(showBackground = true)
-@Composable
-fun AccountTagPreview() {
-    AccountTag(account = Account.CARD)
 }

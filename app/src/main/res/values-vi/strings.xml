@@ -90,6 +90,31 @@
     <!-- Account Screen   -->
     <string name="account">Tài khoản</string>
 
+    <!-- Pay with -->
+    <string name="pay_with_cash">Tiền mặt</string>
+    <string name="pay_with_bank">Ngân hàng</string>
+    <string name="pay_with_card">Thẻ</string>
+
+    <!-- Category -->
+    <string name="category_food_drink">Ăn uống</string>
+    <string name="category_clothing">Thời trang</string>
+    <string name="category_home">Nhà cửa</string>
+    <string name="category_health">Sức khỏe</string>
+    <string name="category_school">Trường học</string>
+    <string name="category_grocery">Tạp hóa</string>
+    <string name="category_electricity">Điện</string>
+    <string name="category_business">Kinh doanh</string>
+    <string name="category_vehicle">Xe cộ</string>
+    <string name="category_taxi">Xe taxi</string>
+    <string name="category_leisure">Giải trí</string>
+    <string name="category_gadget">Thiết bị công nghệ</string>
+    <string name="category_travel">Du lịch</string>
+    <string name="category_subscription">Dịch vụ đăng ký</string>
+    <string name="category_pet">Thú cưng</string>
+    <string name="category_snack">Thức ăn nhẹ</string>
+    <string name="category_gift">Quà tặng</string>
+    <string name="category_misc">Đa dạng</string>
+
     <!-- About Screen -->
     <string name="about_title">Giới thiệu</string>
     <string name="about_version">Phiên bản</string>

@@ -155,12 +155,14 @@ class HomeViewModel @Inject constructor(
                         currentExpenseAmount.value = calculateTransaction(trx.map { it.amount })
                     }
                 }
+
                 1 -> {
                     getWeeklyExpTransactionUseCase().collect { result ->
                         val trx = result.map { trans -> trans.toTransaction() }
                         currentExpenseAmount.value = calculateTransaction(trx.map { it.amount })
                     }
                 }
+
                 else -> {
                     getMonthlyExpTransactionUse().collect { result ->
                         val trx = result.map { trans -> trans.toTransaction() }
@@ -427,6 +429,7 @@ class HomeViewModel @Inject constructor(
                             "${selectedCurrencyCode.value} $expenseOverflow over specified limit"
                         limitAlert.emit(UIEvent.Alert(info))
                     }
+
                     currentExpenseAmount.value > threshold -> {
                         val expenseAvailable =
                             (expenseAmount - currentExpenseAmount.value).toString().amountFormat()
@@ -434,6 +437,7 @@ class HomeViewModel @Inject constructor(
                             "${selectedCurrencyCode.value} $expenseAvailable away from specified limit"
                         limitAlert.emit(UIEvent.Alert(info))
                     }
+
                     else -> limitAlert.emit(UIEvent.NoAlert())
                 }
             }
@@ -467,34 +471,56 @@ enum class TransactionType(val title: String) {
     INCOME("income"), EXPENSE("expense")
 }
 
-enum class Account(val title: String, val iconRes: Int, val color: Color) {
-    CASH("Cash", R.drawable.cash, leisureBg),
-    BANK("Bank", R.drawable.bank, subBg),
-    CARD("Card", R.drawable.credit_card, healthBg)
+enum class Account(val title: String, val content: Int, val iconRes: Int, val color: Color) {
+    CASH("Cash", R.string.pay_with_cash, R.drawable.cash, leisureBg),
+    BANK("Bank", R.string.pay_with_bank, R.drawable.bank, subBg),
+    CARD("Card", R.string.pay_with_card, R.drawable.credit_card, healthBg)
 }
 
 enum class Category(
-    val title: String,
+    val title: String, // For use when you don't need localization
+    val content: Int, // Resource ID for the string (for localization)
     val iconRes: Int,
     val bgRes: Color,
     val colorRes: Color = Color.White
 ) {
-    FOOD_DRINK("Food & Drink", R.drawable.drink, food_drink, Color.Black),
-    CLOTHING("Clothing", R.drawable.clothing, clothBg, Color.Black),
-    HOME("Home", R.drawable.home, homeBg, Color.Black),
-    HEALTH("Health", R.drawable.health, healthBg),
-    SCHOOL("School", R.drawable.school, schBg),
-    GROCERY("Grocery", R.drawable.grocery, groceryBg, Color.Black),
-    ELECTRICITY("Electricity", R.drawable.electricity, electricBg, Color.Black),
-    BUSINESS("Business", R.drawable.business, businessBg, Color.Black),
-    VEHICLE("Vehicle", R.drawable.vehicle, vehicleBg),
-    TAXI("Taxi", R.drawable.taxi, taxiBg),
-    LEISURE("Leisure", R.drawable.leisure, leisureBg, Color.Black),
-    GADGET("Gadget", R.drawable.gadget, gadgetBg),
-    TRAVEL("Travel", R.drawable.travel, travelBg, Color.Black),
-    SUBSCRIPTION("Subscription", R.drawable.sub, subBg),
-    PET("Pet", R.drawable.pet, petBg, Color.Black),
-    SNACK("Snack", R.drawable.snack, snackBg, Color.Black),
-    GIFT("Gift", R.drawable.gift, giftBg, Color.Black),
-    MISC("Miscellaneous", R.drawable.misc, miscBg)
+    FOOD_DRINK(
+        "Food & Drink",
+        R.string.category_food_drink,
+        R.drawable.drink,
+        food_drink,
+        Color.Black
+    ),
+    CLOTHING("Clothing", R.string.category_clothing, R.drawable.clothing, clothBg, Color.Black),
+    HOME("Home", R.string.category_home, R.drawable.home, homeBg, Color.Black),
+    HEALTH("Health", R.string.category_health, R.drawable.health, healthBg, Color.Black),
+    SCHOOL("School", R.string.category_school, R.drawable.school, schBg, Color.Black),
+    GROCERY("Grocery", R.string.category_grocery, R.drawable.grocery, groceryBg, Color.Black),
+    ELECTRICITY(
+        "Electricity",
+        R.string.category_electricity,
+        R.drawable.electricity,
+        electricBg,
+        Color.Black
+    ),
+    BUSINESS("Business", R.string.category_business, R.drawable.business, businessBg, Color.Black),
+    VEHICLE("Vehicle", R.string.category_vehicle, R.drawable.vehicle, vehicleBg, Color.Black),
+    TAXI("Taxi", R.string.category_taxi, R.drawable.taxi, taxiBg, Color.Black),
+    LEISURE("Leisure", R.string.category_leisure, R.drawable.leisure, leisureBg, Color.Black),
+    GADGET("Gadget", R.string.category_gadget, R.drawable.gadget, gadgetBg, Color.Black),
+    TRAVEL("Travel", R.string.category_travel, R.drawable.travel, travelBg, Color.Black),
+    SUBSCRIPTION(
+        "Subscription",
+        R.string.category_subscription,
+        R.drawable.sub,
+        subBg,
+        Color.Black
+    ),
+    PET("Pet", R.string.category_pet, R.drawable.pet, petBg, Color.Black),
+    SNACK("Snack", R.string.category_snack, R.drawable.snack, snackBg, Color.Black),
+    GIFT("Gift", R.string.category_gift, R.drawable.gift, giftBg, Color.Black),
+    MISC("Miscellaneous", R.string.category_misc, R.drawable.misc, miscBg, Color.Black)
 }
+
+
+
