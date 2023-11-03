@@ -66,6 +66,7 @@ import com.mobile.expenseapp.R
 import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.presentation.home_screen.components.AccountTag
 import com.mobile.expenseapp.presentation.home_screen.components.Category
+import com.mobile.expenseapp.presentation.home_screen.components.EntryTypePicker
 import com.mobile.expenseapp.presentation.home_screen.components.InfoBanner
 import com.mobile.expenseapp.presentation.home_screen.components.KeypadComponent
 import com.mobile.expenseapp.presentation.home_screen.components.TabButton
@@ -73,6 +74,7 @@ import com.mobile.expenseapp.presentation.ui.theme.Amber500
 import com.mobile.expenseapp.presentation.ui.theme.Red200
 import com.mobile.expenseapp.util.spacing
 import kotlinx.coroutines.launch
+import java.security.KeyStore.Entry
 import java.util.Calendar
 
 @ExperimentalFoundationApi
@@ -222,6 +224,9 @@ fun TransactionScreen(
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    // Make this the way to pick the transaction type, not the scaffold
+                    EntryTypePicker()
+
                     InfoBanner(shown = showInfoBanner, transactionType)
 
                     TextField(

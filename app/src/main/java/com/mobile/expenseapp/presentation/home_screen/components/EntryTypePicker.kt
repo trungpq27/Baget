@@ -24,16 +24,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
 import com.mobile.expenseapp.presentation.home_screen.TabButton
+import com.mobile.expenseapp.presentation.home_screen.TransactionType
 import com.mobile.expenseapp.util.spacing
 
 @Composable
-fun TabButton(
-    tabs: Array<TabButton> = TabButton.values(),
+fun EntryTypePicker(
+    tabs: Array<TransactionType> = TransactionType.values(),
     cornerRadius: Dp = 24.dp,
     onButtonClick: () -> Unit = { },
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val selectedTab by homeViewModel.tabButton.collectAsState()
+    val selectedTab by homeViewModel.transactionType.collectAsState()
     Surface(
         modifier = Modifier.padding(
             start = MaterialTheme.spacing.large,
@@ -70,7 +71,7 @@ fun TabButton(
 
                 TextButton(
                     onClick = {
-                        homeViewModel.selectTabButton(tab)
+                        homeViewModel.selectTransactionType(tab)
                         onButtonClick()
                     },
                     modifier = Modifier

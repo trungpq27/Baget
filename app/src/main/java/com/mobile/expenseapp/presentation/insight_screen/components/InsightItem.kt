@@ -33,7 +33,7 @@ import com.mobile.expenseapp.util.spacing
 fun InsightItem(cat: Category, currencyCode: String, amount: Double, percent: Float) {
     Card(
         elevation = 0.dp,
-        backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
+        backgroundColor = MaterialTheme.colors.secondary,
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .padding(vertical = MaterialTheme.spacing.small)
