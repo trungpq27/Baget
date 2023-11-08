@@ -57,7 +57,7 @@ fun WelcomeScreen(
             )
             GetStartedButton(pagerState = pagerState, modifier = Modifier.weight(2f)) {
                 navController.popBackStack()
-                navController.navigate("${Screen.CurrencyScreen.route}/${false}")
+                navController.navigate("${Screen.SignInScreen.route}")
             }
         }
     }

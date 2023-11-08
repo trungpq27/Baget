@@ -1,6 +1,6 @@
 package com.mobile.expenseapp.presentation.account_screen.components
 
-import android.widget.Space
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
@@ -27,26 +26,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
-import com.mobile.expenseapp.domain.model.Account
-import com.mobile.expenseapp.presentation.home_screen.amountFormat
-import com.mobile.expenseapp.util.spacing
-import com.mobile.expenseapp.presentation.home_screen.Account as AccountType
+import com.mobile.expenseapp.presentation.navigation.Screen
+import com.mobile.expenseapp.presentation.welcome_screen.WelcomeViewModel
 
 @ExperimentalMaterialApi
 @Composable
-fun SigninScreen() {
+fun SignInScreen(
+    navController: NavController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Bottom,
@@ -72,7 +71,7 @@ fun SigninScreen() {
                 value = username.value,
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = {username.value = it}
+                onValueChange = { username.value = it }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -84,7 +83,7 @@ fun SigninScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = {password.value = it}
+                onValueChange = { password.value = it }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -94,7 +93,13 @@ fun SigninScreen() {
                     .fillMaxWidth()
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        navController.popBackStack()
+                        welcomeViewModel.saveCurrencyLocale()
+//                        welcomeViewModel.saveOnBoardingState(completed = true)
+                        welcomeViewModel.createAccounts()
+                        navController.navigate(Screen.HomeScreen.route)
+                    },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -114,7 +119,10 @@ fun SigninScreen() {
 
             Row {
                 Divider(
-                    modifier = Modifier.fillMaxWidth().weight(1f).padding(top = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(top = 8.dp),
                     color = Color.Gray,
                     thickness = 1.dp
                 )
@@ -132,7 +140,10 @@ fun SigninScreen() {
                 )
 
                 Divider(
-                    modifier = Modifier.fillMaxWidth().weight(1f).padding(top = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(top = 8.dp),
                     color = Color.Gray,
                     thickness = 1.dp
                 )
@@ -144,7 +155,7 @@ fun SigninScreen() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = { },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {

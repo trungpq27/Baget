@@ -37,7 +37,7 @@ import com.mobile.expenseapp.R
 
 @ExperimentalMaterialApi
 @Composable
-fun SignupScreen() {
+fun SignUpScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Bottom,
