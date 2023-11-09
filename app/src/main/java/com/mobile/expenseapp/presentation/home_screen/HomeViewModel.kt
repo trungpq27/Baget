@@ -471,7 +471,7 @@ enum class TabButton(val title: String) {
 }
 
 enum class TransactionType(val title: String) {
-    INCOME("Income"), EXPENSE("Expense")
+    INCOME("Income"), EXPENSE("Expense"), TRANSFER("Transfer"),
 }
 
 enum class Account(val title: String, val iconRes: Int, val color: Color) {

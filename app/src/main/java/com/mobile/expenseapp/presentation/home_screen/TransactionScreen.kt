@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -71,6 +72,7 @@ import com.mobile.expenseapp.presentation.home_screen.components.InfoBanner
 import com.mobile.expenseapp.presentation.home_screen.components.KeypadComponent
 import com.mobile.expenseapp.presentation.home_screen.components.TabButton
 import com.mobile.expenseapp.presentation.ui.theme.Amber500
+import com.mobile.expenseapp.presentation.ui.theme.DarkSecondary100
 import com.mobile.expenseapp.presentation.ui.theme.Red200
 import com.mobile.expenseapp.util.spacing
 import kotlinx.coroutines.launch
@@ -229,6 +231,77 @@ fun TransactionScreen(
 
                     InfoBanner(shown = showInfoBanner, transactionType)
 
+                    val amount = remember { mutableStateOf(TextFieldValue()) }
+
+                    // Amount
+//                    TextField(
+//                        label = "Amount",
+//                        value = amount.value
+//                    )
+                    
+                    // Amount title
+                    Text(
+                        text = "Amount",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onSurface,
+                        modifier = Modifier
+                            .padding(
+                                horizontal = MaterialTheme.spacing.medium,
+                                vertical = MaterialTheme.spacing.small
+                            )
+                            .align(Alignment.Start)
+                    )
+
+                    // Amount number
+                    TextButton(
+                        onClick = {
+                            scope.launch {
+                                keyboardController?.hide()
+                                if (keypadBottomSheetState.bottomSheetState.isCollapsed)
+                                    keypadBottomSheetState.bottomSheetState.expand()
+                                else keypadBottomSheetState.bottomSheetState.collapse()
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Start)
+                            .padding(
+                                start = MaterialTheme.spacing.medium,
+                                top = MaterialTheme.spacing.medium,
+                                end = MaterialTheme.spacing.medium
+                            ),
+                        colors = ButtonDefaults.textButtonColors(DarkSecondary100),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = MaterialTheme.spacing.medium,
+                            vertical = MaterialTheme.spacing.small
+                        ),
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 12.dp
+                        )
+                    ) {
+                        Text(
+                            text = buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontWeight = FontWeight.W300,
+                                        fontSize = 24.sp
+                                    )
+                                ) {
+                                    append(currencyCode)
+                                    append(expenseAmount.amountFormat())
+                                }
+                            },
+                            color = MaterialTheme.colors.onSurface,
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = MaterialTheme.spacing.medium,
+                                    vertical = MaterialTheme.spacing.small
+                                )
+                        )
+                    }
+
                     TextField(
                         value = titleFieldValue.text,
                         onValueChange = { field ->
@@ -296,47 +369,7 @@ fun TransactionScreen(
                         }
                     }
 
-                    TextButton(
-                        onClick = {
-                            scope.launch {
-                                keyboardController?.hide()
-                                if (keypadBottomSheetState.bottomSheetState.isCollapsed)
-                                    keypadBottomSheetState.bottomSheetState.expand()
-                                else keypadBottomSheetState.bottomSheetState.collapse()
-                            }
-                        },
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(
-                                start = MaterialTheme.spacing.medium,
-                                top = MaterialTheme.spacing.small
-                            ),
-                        colors = ButtonDefaults.textButtonColors(Amber500.copy(alpha = 0.8f)),
-                        shape = RoundedCornerShape(12.dp),
-                        contentPadding = PaddingValues(
-                            horizontal = MaterialTheme.spacing.medium,
-                            vertical = MaterialTheme.spacing.small
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 12.dp
-                        )
-                    ) {
-                        Text(
-                            text = buildAnnotatedString {
-                                withStyle(
-                                    style = SpanStyle(
-                                        fontWeight = FontWeight.W300,
-                                        fontSize = 24.sp
-                                    )
-                                ) {
-                                    append(currencyCode)
-                                    append(expenseAmount.amountFormat())
-                                }
-                            },
-                            color = MaterialTheme.colors.surface,
-                        )
-                    }
+
                     if (limitKey) {
                         if (limitInfoWarning is HomeViewModel.UIEvent.Alert) {
                             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))

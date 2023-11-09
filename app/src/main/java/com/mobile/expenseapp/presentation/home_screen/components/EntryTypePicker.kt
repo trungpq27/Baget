@@ -37,8 +37,8 @@ fun EntryTypePicker(
     val selectedTab by homeViewModel.transactionType.collectAsState()
     Surface(
         modifier = Modifier.padding(
-            start = MaterialTheme.spacing.large,
-            end = MaterialTheme.spacing.large,
+            start = MaterialTheme.spacing.medium,
+            end = MaterialTheme.spacing.medium,
             top = MaterialTheme.spacing.small,
             bottom = MaterialTheme.spacing.small
         ),
