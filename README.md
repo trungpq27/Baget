@@ -35,3 +35,5 @@ Baget - Android Expense Application
   - Jetpack Compose: Google's modern UI toolkit for building intuitive and customizable Android interfaces.
   - AndroidX: A suite of libraries that helps developers use the latest Android features while maintaining backward compatibility.
   - Android Jetpack Components: Leveraging components like ViewModel, LiveData, Navigation, and Room for a robust and maintainable application.
+
+## [Server Repository](https://github.com/nam7v3/baget_server)
