@@ -19,13 +19,13 @@ import com.mobile.expenseapp.util.WindowInfo
 import com.mobile.expenseapp.util.rememberWindowInfo
 
 private val DarkColorPalette = darkColors(
-    primary = Indigo900,
-    secondary = Indigo900,
-    background = DeepPurple900,
-    surface = DeepPurple300,
+    primary = DarkPrimary100,
+    secondary = DarkSecondary100,
+    background = DarkBackGround,
+    surface = DarkPrimary30,
     error = Red200,
     onSurface = White,
-    onPrimary = Color.White,
+    onPrimary = White,
     onSecondary = Color.White,
     onBackground = Color.White
 )
@@ -44,16 +44,13 @@ private val LightColorPalette = lightColors(
 
 @ExperimentalMaterialApi
 @Composable
-fun BagetTheme(content: @Composable () -> Unit) {
-    val settingViewModel = hiltViewModel<SettingViewModel>()
-
-    // Access the isDarkMode property
-    val isDarkModeEnabled by settingViewModel.isDarkMode.collectAsState()
-    val colors = if (isDarkModeEnabled) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+//    val colors = if (darkTheme) {
+//        DarkColorPalette
+//    } else {
+//        LightColorPalette
+//    }
+    val colors = DarkColorPalette
 
     val windowInfo = rememberWindowInfo()
 

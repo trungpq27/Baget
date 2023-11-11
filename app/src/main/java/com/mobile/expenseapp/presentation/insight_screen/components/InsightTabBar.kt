@@ -33,7 +33,7 @@ fun InsightTabBar(
 ) {
     val selectedTab by insightViewModel.tabButton.collectAsState()
     Surface(
-        color = Color.DarkGray.copy(alpha = 0.1f),
+        color = MaterialTheme.colors.surface,
         shape = RoundedCornerShape(cornerRadius)
     ) {
         Row(
@@ -56,10 +56,10 @@ fun InsightTabBar(
                 title = "Income",
                 backgroundColor = animateColorAsState(
                     targetValue = if (selectedTab == TransactionType.INCOME)
-                        GreenAlpha700 else Color.Transparent
+                        MaterialTheme.colors.onSurface else Color.Transparent
                 ).value,
                 textColor = if (selectedTab == TransactionType.INCOME)
-                    Color.White else Color.Black
+                    Color.Black else Color.White
             )
 
             InsightBar(
@@ -71,10 +71,10 @@ fun InsightTabBar(
                 title = "Expense",
                 backgroundColor = animateColorAsState(
                     targetValue = if (selectedTab == TransactionType.EXPENSE)
-                        Red500 else Color.Transparent
+                        MaterialTheme.colors.onSurface else Color.Transparent
                 ).value,
                 textColor = if (selectedTab == TransactionType.EXPENSE)
-                    Color.White else Color.Black
+                    Color.Black else Color.White
             )
         }
     }

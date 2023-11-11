@@ -142,7 +142,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                                 text = label,
                                 style = MaterialTheme.typography.subtitle2,
                                 color = if (selectedDuration == label)
-                                    MaterialTheme.colors.primary
+                                    MaterialTheme.colors.onSurface
                                 else
                                     Color.Gray
                             )

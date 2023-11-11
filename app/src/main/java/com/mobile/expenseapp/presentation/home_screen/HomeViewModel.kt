@@ -81,6 +81,9 @@ class HomeViewModel @Inject constructor(
     var tabButton = MutableStateFlow(TabButton.TODAY)
         private set
 
+    var transactionType = MutableStateFlow(TransactionType.EXPENSE)
+        private set
+
     var category = MutableStateFlow(Category.FOOD_DRINK)
         private set
 
@@ -213,6 +216,10 @@ class HomeViewModel @Inject constructor(
 
     fun selectTabButton(button: TabButton) {
         tabButton.value = button
+    }
+
+    fun selectTransactionType(button: TransactionType) {
+        transactionType.value = button
     }
 
     fun selectCategory(category: Category) {
@@ -468,7 +475,7 @@ enum class TabButton(val title: String) {
 }
 
 enum class TransactionType(val title: String) {
-    INCOME("income"), EXPENSE("expense")
+    INCOME("Income"), EXPENSE("Expense"), TRANSFER("Transfer"),
 }
 
 enum class Account(val title: String, val content: Int, val iconRes: Int, val color: Color) {

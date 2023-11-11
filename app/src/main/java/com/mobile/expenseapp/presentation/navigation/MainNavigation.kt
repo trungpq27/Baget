@@ -14,6 +14,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.account_screen.AccountDetailScreen
 import com.mobile.expenseapp.presentation.account_screen.AccountScreen
+import com.mobile.expenseapp.presentation.account_screen.components.SignInScreen
+import com.mobile.expenseapp.presentation.auth_screen.SignUpScreen
 import com.mobile.expenseapp.presentation.home_screen.HomeScreen
 import com.mobile.expenseapp.presentation.home_screen.TransactionScreen
 import com.mobile.expenseapp.presentation.insight_screen.InsightScreen
@@ -32,9 +34,16 @@ fun MainNavigation(
     startDestination: String
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
+        composable(route = Screen.SignInScreen.route){
+            SignInScreen(navController = navController)
+        }
+        composable(route = Screen.SignUpScreen.route){
+            SignUpScreen()
+        }
         composable(route = Screen.WelcomeScreen.route) {
             WelcomeScreen(navController = navController)
         }
+
         composable(route = "${Screen.CurrencyScreen.route}/{setting}",
             arguments = listOf(
                 navArgument("setting") {

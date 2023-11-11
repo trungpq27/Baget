@@ -16,6 +16,13 @@ val Red200 = Color(0xFFEF9A9A)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 
+val DarkBackGround = Color(0xFF302D43)
+val DarkForeGround = Color(0xFFFFFFFF)
+val DarkPrimary100 = Color(0xFF7441E1)
+val DarkPrimary60 = Color(0xFF483285)
+val DarkPrimary30 = Color(0xFF75568c)
+val DarkSecondary100 = Color(0xFF4f4c5c)
+
 val GridButtonWhite = Color(0xFFE2E7EF)
 val GridBorderGray = Color(0xFFBBCAD0)
 

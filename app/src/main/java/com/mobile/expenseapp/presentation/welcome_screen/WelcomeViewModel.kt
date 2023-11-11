@@ -15,6 +15,8 @@ import com.mobile.expenseapp.presentation.welcome_screen.components.OnBoardingPa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.util.Currency
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +46,19 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
-    fun saveCurrency(currency: String) {
+    fun saveCurrencyLocale() {
+        val userLocale = Locale.getDefault()
+
+// Get the currency information based on the user's locale
+        val currency = Currency.getInstance(userLocale)
+        val currencySymbol = currency.getSymbol(userLocale)
+        val currencyCode = currency.currencyCode
+
+        viewModelScope.launch(IO) {
+            editCurrencyUseCase(currencyCode)
+        }
+    }
+    fun saveCurrency(currency: String){
         viewModelScope.launch(IO) {
             editCurrencyUseCase(currency)
         }

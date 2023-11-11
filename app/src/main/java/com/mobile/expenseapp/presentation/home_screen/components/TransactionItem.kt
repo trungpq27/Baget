@@ -57,7 +57,7 @@ fun TransactionItem(
         onClick = {
             onItemClick()
         },
-        backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
+        backgroundColor = MaterialTheme.colors.secondary,
         elevation = 0.dp,
         shape = RoundedCornerShape(24.dp),
         modifier = Modifier
@@ -130,8 +130,9 @@ fun TransactionItem(
                     tint = Color.Black,
                     modifier = Modifier
                         .background(
-                            Color.DarkGray.copy(alpha = 0.2f),
-                            RoundedCornerShape(8.dp)
+//                            Color.DarkGray.copy(alpha = 0.2f),
+                            category.bgRes,
+                            RoundedCornerShape(18.dp)
                         )
                         .padding(18.dp)
                 )
