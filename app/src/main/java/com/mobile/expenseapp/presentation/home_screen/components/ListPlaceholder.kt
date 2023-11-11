@@ -13,13 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.util.spacing
 
 @Composable
 fun ListPlaceholder(
+    navController: NavController,
     label: String =
-        "No transaction has been made so far. Tap the '+' button to  get started"
+        navController.context.getString(R.string.insight_content)
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

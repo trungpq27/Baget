@@ -22,12 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.util.spacing
 
 @Composable
-fun PrivacySetting() {
+fun PrivacySetting(navController: NavController) {
     val context = LocalContext.current
     TextButton(
         onClick = {
@@ -51,7 +52,7 @@ fun PrivacySetting() {
         )
     ) {
         Text(
-            text = "Privacy Policy",
+            text = navController.context.getString(R.string.settings_privacy_policy),
             style = MaterialTheme.typography.button,
             modifier = Modifier.weight(2f),
             textAlign = TextAlign.Start

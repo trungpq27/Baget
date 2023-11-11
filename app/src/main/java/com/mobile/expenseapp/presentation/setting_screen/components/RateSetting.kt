@@ -23,11 +23,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.util.spacing
 
 @Composable
-fun RateSetting() {
+fun RateSetting(navController: NavController) {
     val context = LocalContext.current
     val packageName = context.packageName
     TextButton(
@@ -55,7 +56,7 @@ fun RateSetting() {
         )
     ) {
         Text(
-            text = "Rate Us",
+            text = navController.context.getString(R.string.settings_rate),
             style = MaterialTheme.typography.button,
             modifier = Modifier.weight(2f),
             textAlign = TextAlign.Start

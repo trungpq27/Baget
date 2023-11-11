@@ -21,6 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.components.ListPlaceholder
 import com.mobile.expenseapp.presentation.home_screen.components.TransactionItem
 import com.mobile.expenseapp.util.spacing
@@ -29,7 +31,11 @@ import com.mobile.expenseapp.util.spacing
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun AccountDetailScreen(accountName: String?, accountViewModel: AccountViewModel = hiltViewModel()) {
+fun AccountDetailScreen(
+    accountName: String?,
+    navController: NavController,
+    accountViewModel: AccountViewModel = hiltViewModel()
+) {
 
     val transactions by accountViewModel.transactions.collectAsState()
     if (accountName != null) {
@@ -43,7 +49,7 @@ fun AccountDetailScreen(accountName: String?, accountViewModel: AccountViewModel
         )
     ) {
         transactions.ifEmpty {
-            ListPlaceholder()
+            ListPlaceholder(navController)
         }
 
         LazyColumn(
@@ -55,14 +61,17 @@ fun AccountDetailScreen(accountName: String?, accountViewModel: AccountViewModel
         ) {
             item {
                 Text(
-                    text = "Transactions",
+                    text = navController.context.getString(R.string.nav_transactions),
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Normal),
                 )
 
                 Text(
                     text = accountName!!,
-                    style = MaterialTheme.typography.h3.copy(fontSize = 20.sp, fontWeight = FontWeight.W700),
+                    style = MaterialTheme.typography.h3.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W700
+                    ),
                     color = MaterialTheme.colors.onBackground
                 )
             }
@@ -90,6 +99,7 @@ fun AccountDetailScreen(accountName: String?, accountViewModel: AccountViewModel
                 itemsIndexed(allTrx) { _, transaction ->
                     TransactionItem(
                         transaction = transaction,
+                        navController,
                         onItemClick = {}
                     )
                 }

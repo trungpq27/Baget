@@ -147,7 +147,7 @@ fun TransactionScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Add Transaction",
+                        text = navController.context.getString(R.string.transaction_add_transaction),
                         modifier = Modifier.weight(2f),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface
@@ -320,8 +320,8 @@ fun TransactionScreen(
                         placeholder = {
                             Text(
                                 text = if (transactionType == TransactionType.INCOME)
-                                    "Income title"
-                                else "Expense title",
+                                    navController.context.getString(R.string.transaction_income_title)
+                                else navController.context.getString(R.string.transaction_expense_title),
                                 style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.W600)
                             )
                         },
@@ -335,8 +335,8 @@ fun TransactionScreen(
 
                     Text(
                         text = if (transactionType == TransactionType.INCOME) {
-                            "Fund"
-                        } else "Pay with",
+                            navController.context.getString(R.string.transaction_fund)
+                        } else navController.context.getString(R.string.transaction_pay_with),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -365,7 +365,7 @@ fun TransactionScreen(
                             .align(Alignment.Start)
                     ) {
                         items(Account.values()) { account ->
-                            AccountTag(account = account)
+                            AccountTag(account = account, navController)
                         }
                     }
 
@@ -400,7 +400,7 @@ fun TransactionScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
                     Text(
-                        text = "Set category",
+                        text = navController.context.getString(R.string.transaction_set_category),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         letterSpacing = TextUnit(0.2f, TextUnitType.Sp),
@@ -420,7 +420,7 @@ fun TransactionScreen(
                             )
                     )
 
-                    Category()
+                    Category(navController)
                 }
             }
         }

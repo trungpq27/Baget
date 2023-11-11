@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Baget</string>
+
+    <!-- Navigation Drawer Items -->
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_transactions">Giao dịch</string>
+    <string name="nav_budget">Ngân sách</string>
+    <string name="nav_reports">Báo cáo</string>
+    <string name="nav_settings">Cài đặt</string>
+    <string name="nav_about">Giới thiệu</string>
+
+    <!-- Home Screen -->
+    <string name="home_total_balance">Tổng số dư</string>
+    <string name="home_income">Thu nhập</string>
+    <string name="home_expenses">Chi tiêu</string>
+    <string name="home_recent_transactions">Giao dịch gần đây</string>
+    <string name="home_no_transactions">Chưa có giao dịch nào</string>
+    <string name="home_add_income">THÊM THU NHẬP</string>
+    <string name="home_add_expense">THÊM CHI TIÊU</string>
+    <string name="home_balance">Số dư</string>
+
+    <!-- Insight Screen -->
+    <string name="insight_content">Chưa có giao dịch nào. Nhấn vào nút \'+\' để bắt đầu</string>
+    <string name="insight_total">Tổng cộng</string>
+    <string name="last_3_days">3 ngày gần đây</string>
+    <string name="last_7_days">7 ngày gần đây</string>
+    <string name="last_14_days">14 ngày gần đây</string>
+    <string name="this_month">Tháng này</string>
+    <string name="last_month">Tháng trước</string>
+    <string name="all">Tất cả</string>
+
+    <!-- Transaction Screen -->
+    <string name="transaction_title">Giao dịch</string>
+    <string name="transaction_date">Ngày</string>
+    <string name="transaction_amount">Số tiền</string>
+    <string name="transaction_description">Mô tả</string>
+    <string name="transaction_type">Loại</string>
+    <string name="transaction_income">Thu nhập</string>
+    <string name="transaction_expense">Chi tiêu</string>
+    <string name="transaction_add_transaction">Thêm giao dịch</string>
+    <string name="transaction_income_title">Tên khoản thu</string>
+    <string name="transaction_expense_title">Tên khoản chi</string>
+    <string name="transaction_fund">Quỹ</string>
+    <string name="transaction_pay_with">Thanh toán bằng</string>
+    <string name="transaction_set_category">Chọn danh mục</string>
+
+    <!-- Budget Screen -->
+    <string name="budget_title">Ngân sách</string>
+    <string name="budget_set_budget">Thiết lập ngân sách</string>
+    <string name="budget_category">Danh mục</string>
+    <string name="budget_amount">Số tiền</string>
+    <string name="budget_remaining">Còn lại</string>
+
+    <!-- Reports Screen -->
+    <string name="reports_title">Báo cáo</string>
+    <string name="reports_income">Thu nhập</string>
+    <string name="reports_expenses">Chi tiêu</string>
+    <string name="reports_no_data">Không có dữ liệu</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_currency">Tiền tệ</string>
+    <string name="settings_dark_mode">Chế độ tối</string>
+    <string name="settings_reset_data">Thiết lập lại dữ liệu</string>
+    <string name="settings_reset_warning">Bạn đang chuẩn bị xóa toàn bộ giao dịch trên ứng dụng. Hành động này không thể hoàn tác</string>
+    <string name="settings_limit_reminder">Nhắc nhở giới hạn</string>
+    <string name="settings_expense_limit">Giới hạn chi tiêu</string>
+    <string name="settings_expense_amount">Số tiền</string>
+    <string name="settings_set_limit">THIẾT LẬP</string>
+    <string name="settings_daily">Hàng ngày</string>
+    <string name="settings_weekly">Hàng tuần</string>
+    <string name="settings_monthly">Hàng tháng</string>
+    <string name="settings_rate">Đánh giá ứng dụng</string>
+    <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_version">Phiên bản</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_set_currency">Thiết lập tiền tệ</string>
+    <string name="welcome_get_started">Bắt đầu</string>
+    <string name="welcome_title_first_page">Thêm giao dịch</string>
+    <string name="welcome_content_first_page">Theo dõi thu nhập và chi tiêu của bạn</string>
+    <string name="welcome_title_second_page">Kiểm tra báo cáo</string>
+    <string name="welcome_content_second_page">Biểu đồ chi tiêu chi tiết hàng tuần và hàng tháng dựa trên giao dịch của bạn</string>
+    <string name="welcome_title_third_page">Đưa ra quyết định đúng đắn</string>
+    <string name="welcome_content_third_page">Kiểm soát luồng tiền của bạn và luôn ở trên cùng</string>
+
+    <!-- Account Screen   -->
+    <string name="account">Tài khoản</string>
+
+    <!-- Pay with -->
+    <string name="pay_with_cash">Tiền mặt</string>
+    <string name="pay_with_bank">Ngân hàng</string>
+    <string name="pay_with_card">Thẻ</string>
+
+    <!-- Category -->
+    <string name="category_food_drink">Ăn uống</string>
+    <string name="category_clothing">Thời trang</string>
+    <string name="category_home">Nhà cửa</string>
+    <string name="category_health">Sức khỏe</string>
+    <string name="category_school">Trường học</string>
+    <string name="category_grocery">Tạp hóa</string>
+    <string name="category_electricity">Điện</string>
+    <string name="category_business">Kinh doanh</string>
+    <string name="category_vehicle">Xe cộ</string>
+    <string name="category_taxi">Xe taxi</string>
+    <string name="category_leisure">Giải trí</string>
+    <string name="category_gadget">Thiết bị công nghệ</string>
+    <string name="category_travel">Du lịch</string>
+    <string name="category_subscription">Dịch vụ đăng ký</string>
+    <string name="category_pet">Thú cưng</string>
+    <string name="category_snack">Thức ăn nhẹ</string>
+    <string name="category_gift">Quà tặng</string>
+    <string name="category_misc">Đa dạng</string>
+
+    <!-- About Screen -->
+    <string name="about_title">Giới thiệu</string>
+    <string name="about_version">Phiên bản</string>
+    <string name="about_developer">Nhà phát triển</string>
+
+    <!-- Other Common Strings -->
+    <string name="ok">OK</string>
+    <string name="set">Thiết lập</string>
+    <string name="cancel">Hủy</string>
+    <string name="done">Hoàn tất</string>
+</resources>

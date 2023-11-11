@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
@@ -57,6 +58,7 @@ import kotlin.math.abs
 @Composable
 fun Header(
     bottomSheetScaffoldState: BottomSheetScaffoldState,
+    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()

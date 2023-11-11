@@ -7,9 +7,13 @@ import com.mobile.expenseapp.domain.usecase.read_datastore.GetCurrencyUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetExpenseLimitUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitKeyUseCase
+import com.mobile.expenseapp.domain.usecase.write_datastore.EditDarkModeUseCase
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.EraseTransactionUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.InsertAccountsUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
+import com.mobile.expenseapp.domain.usecase.write_datastore.EditLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitKeyUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EraseDatastoreUseCase
@@ -17,6 +21,7 @@ import com.mobile.expenseapp.presentation.home_screen.Account
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,18 +36,26 @@ class SettingViewModel @Inject constructor(
     private val editLimitKeyUseCase: EditLimitKeyUseCase,
     private val editLimitDurationUseCase: EditLimitDurationUseCase,
     private val getLimitDurationUseCase: GetLimitDurationUseCase,
-    private val eraseDatastoreUseCase: EraseDatastoreUseCase
+    private val eraseDatastoreUseCase: EraseDatastoreUseCase,
+    private val getDarkModeUseCase: GetDarkModeUseCase,
+    private val editDarkModeUseCase: EditDarkModeUseCase,
+    private val getLanguageUseCase: GetLanguageUseCase,
+    private val editLanguageUseCase: EditLanguageUseCase
 ) : ViewModel() {
+
 
     var currency = MutableStateFlow(String())
         private set
 
-    var expenseLimit = MutableStateFlow(0.0)
+    var expenseLimit = MutableStateFlow(.0)
         private set
 
     var expenseLimitDuration = MutableStateFlow(0)
         private set
-
+    var isDarkMode = MutableStateFlow(false)
+        private set
+    var language = MutableStateFlow(String())
+        private set
     var reminderLimit = MutableStateFlow(false)
         private set
 
@@ -70,6 +83,18 @@ class SettingViewModel @Inject constructor(
                 expenseLimitDuration.value = duration
             }
         }
+
+        viewModelScope.launch(IO) {
+            getDarkModeUseCase().collect { mode ->
+                isDarkMode.value = mode
+            }
+        }
+
+        viewModelScope.launch(IO) {
+            getLanguageUseCase().collect { selectedLanguage ->
+                language.value = selectedLanguage
+            }
+        }
     }
 
     fun eraseTransaction() {
@@ -95,9 +120,20 @@ class SettingViewModel @Inject constructor(
         }
     }
 
+    fun editLanguage(selectedLanguage: String) {
+        viewModelScope.launch(IO) {
+            editLanguageUseCase(selectedLanguage)
+        }
+    }
     fun editLimitKey(enabled: Boolean) {
         viewModelScope.launch(IO) {
             editLimitKeyUseCase(enabled)
+        }
+    }
+
+    fun editDarkMode(enabled: Boolean) {
+        viewModelScope.launch(IO) {
+            editDarkModeUseCase(enabled)
         }
     }
 
