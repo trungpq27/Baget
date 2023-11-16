@@ -128,4 +128,8 @@ dependencies {
     // sentry sdk
     implementation 'io.sentry:sentry-android:5.7.3'
 
+    def ktor_version = "2.3.6"
+    // HTTP request
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
 }
