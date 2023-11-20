@@ -43,7 +43,7 @@ fun WelcomeScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.weight(10f)
             ) { pageCount ->
-                PagerScreen(page = pages[pageCount])
+                PagerScreen(navController, page = pages[pageCount])
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
@@ -55,7 +55,7 @@ fun WelcomeScreen(
                 activeColor = MaterialTheme.colors.primary,
                 inactiveColor = Color.LightGray
             )
-            GetStartedButton(pagerState = pagerState, modifier = Modifier.weight(2f)) {
+            GetStartedButton(navController, pagerState = pagerState, modifier = Modifier.weight(2f)) {
                 navController.popBackStack()
                 navController.navigate("${Screen.SignInScreen.route}")
             }

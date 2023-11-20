@@ -1,9 +1,11 @@
-package com.mobile.expenseapp.presentation.setting_screen.components
-
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ButtonDefaults
@@ -17,11 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
 import com.mobile.expenseapp.presentation.ui.theme.Red500
 import com.mobile.expenseapp.util.spacing
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun EraseContent(
+fun LanguageContent(
     modalBottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
     navController: NavController,
@@ -44,17 +45,27 @@ fun EraseContent(
             .padding(MaterialTheme.spacing.medium)
     ) {
         val context = LocalContext.current
+
         Text(
-            text = navController.context.getString(R.string.settings_reset_data),
-            style = MaterialTheme.typography.subtitle2
+            text = "CHOOSE LANGUAGE",
+            style = MaterialTheme.typography.subtitle2,
         )
-        Text(
-            text = navController.context.getString(R.string.settings_reset_warning),
-            style = MaterialTheme.typography.body2,
-            textAlign = TextAlign.Center,
-            color = Color.DarkGray.copy(alpha = 0.5f),
-            modifier = Modifier.padding(top = MaterialTheme.spacing.medium)
-        )
+
+        LanguageOption("English") {
+            settingViewModel.editLanguage("en")
+            scope.launch {
+                modalBottomSheetState.hide()
+                Toast.makeText(context, "Language set to English", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        LanguageOption("Tiếng Việt") {
+            settingViewModel.editLanguage("vi")
+            scope.launch {
+                modalBottomSheetState.hide()
+                Toast.makeText(context, "Ngôn ngữ đã được đặt thành Tiếng Việt", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         TextButton(
             onClick = {
@@ -69,31 +80,29 @@ fun EraseContent(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             Text(
-                text = navController.context.getString(R.string.cancel),
+                text = "CANCEL",
                 style = MaterialTheme.typography.button
             )
         }
+    }
+}
 
-        TextButton(
-            onClick = {
-                scope.launch {
-                    settingViewModel.eraseTransaction()
-                    modalBottomSheetState.hide()
-                    Toast.makeText(context, navController.context.getText(R.string.done), Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Red500,
-                contentColor = Color.White
-            ),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            Text(
-                text = navController.context.getString(R.string.ok),
-                style = MaterialTheme.typography.button
-            )
-        }
+@Composable
+fun LanguageOption(
+    text: String,
+    onLanguageSelected: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+//            .background(MaterialTheme.colorScheme.primaryVariant)
+            .clickable { onLanguageSelected() }
+            .padding(MaterialTheme.spacing.medium),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.subtitle2.copy(fontWeight = FontWeight.Normal),
+        )
     }
 }

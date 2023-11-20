@@ -17,10 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.util.spacing
 
 @Composable
-fun VersionSetting() {
+fun VersionSetting(navController: NavController) {
     TextButton(
         onClick = {
         },
@@ -31,7 +33,7 @@ fun VersionSetting() {
                 vertical = MaterialTheme.spacing.small
             ),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
+            backgroundColor = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface
         ),
         shape = RoundedCornerShape(12.dp),
@@ -41,7 +43,7 @@ fun VersionSetting() {
         )
     ) {
         Text(
-            text = "Version",
+            text = navController.context.getString(R.string.settings_version),
             style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.weight(2f),
             textAlign = TextAlign.Start

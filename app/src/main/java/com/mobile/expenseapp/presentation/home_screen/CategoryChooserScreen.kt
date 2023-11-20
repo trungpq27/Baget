@@ -29,7 +29,7 @@ import com.mobile.expenseapp.util.spacing
 @ExperimentalMaterialApi
 @Composable
 fun CategoryChooserScreen(
-
+    navController: NavController
 ) {
     Box (
         modifier = Modifier
@@ -58,7 +58,7 @@ fun CategoryChooserScreen(
                 )
             }
 
-            Category()
+            Category(navController = navController)
         }
 
     }

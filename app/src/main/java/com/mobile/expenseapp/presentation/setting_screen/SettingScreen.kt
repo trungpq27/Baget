@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.presentation.setting_screen
 
+import LanguageContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
@@ -32,9 +33,12 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.setting_screen.components.CurrencySetting
+import com.mobile.expenseapp.presentation.setting_screen.components.DarkModeSetting
 import com.mobile.expenseapp.presentation.setting_screen.components.EraseContent
 import com.mobile.expenseapp.presentation.setting_screen.components.EraseSetting
+import com.mobile.expenseapp.presentation.setting_screen.components.LanguageSetting
 import com.mobile.expenseapp.presentation.setting_screen.components.LimitContent
 import com.mobile.expenseapp.presentation.setting_screen.components.LimitSetting
 import com.mobile.expenseapp.presentation.setting_screen.components.PrivacySetting
@@ -52,6 +56,7 @@ fun SettingScreen(
 ) {
 
     val currency by settingViewModel.currency.collectAsState()
+    val language by settingViewModel.language.collectAsState()
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
@@ -65,10 +70,13 @@ fun SettingScreen(
             Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
                 when (sheetRankState.value) {
                     1 -> {
-                        LimitContent(modalBottomSheetState, scope)
+                        LimitContent(modalBottomSheetState, scope, navController)
                     }
                     2 -> {
-                        EraseContent(modalBottomSheetState, scope)
+                        EraseContent(modalBottomSheetState, scope, navController)
+                    }
+                    3 -> {
+                        LanguageContent(modalBottomSheetState, scope, navController)
                     }
                 }
             }
@@ -87,7 +95,7 @@ fun SettingScreen(
                         .fillMaxSize()
                 ) {
                     Text(
-                        text = "Settings",
+                        text = navController.context.getString(R.string.nav_settings),
                         style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.W700),
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -106,18 +114,21 @@ fun SettingScreen(
 
                         CurrencySetting(currency, navController)
 
-                        LimitSetting(modalBottomSheetState, scope) {
+                        LimitSetting(modalBottomSheetState, scope, navController) {
                             sheetRankState.value = it
                         }
 
-                        ReminderSetting()
-
-                        EraseSetting(modalBottomSheetState, scope) {
+                        ReminderSetting(navController)
+                        DarkModeSetting(navController)
+                        LanguageSetting(language,modalBottomSheetState, scope, navController) {
+                            sheetRankState.value = it
+                        }
+                        EraseSetting(modalBottomSheetState, scope, navController) {
                             sheetRankState.value = it
                         }
 
                         Text(
-                            text = "App",
+                            text = navController.context.getString(R.string.app_name),
                             style = MaterialTheme.typography.subtitle1,
                             color = Color.DarkGray.copy(alpha = 0.8f),
                             modifier = Modifier
@@ -130,14 +141,15 @@ fun SettingScreen(
                             textAlign = TextAlign.Start
                         )
 
-                        RateSetting()
+                        RateSetting(navController)
 
-                        PrivacySetting()
+                        PrivacySetting(navController)
 
-                        VersionSetting()
+                        VersionSetting(navController)
                     }
                 }
             }
         }
     }
 }
+

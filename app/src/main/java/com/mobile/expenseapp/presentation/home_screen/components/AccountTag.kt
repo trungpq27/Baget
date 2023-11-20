@@ -30,7 +30,13 @@ import com.mobile.expenseapp.util.spacing
 
 @ExperimentalUnitApi
 @Composable
-fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
+//fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
+//=======
+fun AccountTag(
+    account: Account,
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel()
+) {
     val selectedAccount by homeViewModel.account.collectAsState()
     val isSelected = selectedAccount == account
 
@@ -62,14 +68,13 @@ fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel(),
         )
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
         Text(
-            text = account.title,
+            text = navController.context.getString(account.content),
             style = MaterialTheme.typography.subtitle2,
             fontWeight = FontWeight.Bold,
             letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
         )
     }
 }
-
 @ExperimentalUnitApi
 @Preview(showBackground = true)
 @Composable

@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.account_screen.AccountDetailScreen
 import com.mobile.expenseapp.presentation.account_screen.AccountScreen
 import com.mobile.expenseapp.presentation.account_screen.components.SignInScreen
@@ -92,13 +93,13 @@ fun MainNavigation(
             )
         }
         composable(route = Screen.CategoryChooserScreen.route) {
-            CategoryChooserScreen()
+            CategoryChooserScreen(navController)
         }
         composable(route = Screen.AccountChooserScreen.route) {
             AccountChooserScreen(navController)
         }
         composable(route = Screen.InsightScreen.route) {
-            InsightScreen()
+            InsightScreen(navController = navController)
         }
         composable(route = Screen.AccountScreen.route) {
             AccountScreen(navController = navController)
@@ -108,11 +109,11 @@ fun MainNavigation(
             arguments = listOf(
                 navArgument("accountType") {
                     type = NavType.StringType
-                    defaultValue = "Cash"
+                    defaultValue = navController.context.getString(R.string.pay_with_cash)
                     nullable = true
                 })
         ) { entry ->
-            AccountDetailScreen(entry.arguments?.getString("accountType"))
+            AccountDetailScreen(entry.arguments?.getString("accountType"),navController)
         }
         composable(route = Screen.SettingScreen.route) {
             SettingScreen(navController = navController)

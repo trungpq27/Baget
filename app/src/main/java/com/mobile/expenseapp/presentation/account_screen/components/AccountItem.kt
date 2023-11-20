@@ -29,6 +29,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.domain.model.Account
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.util.spacing
@@ -36,14 +38,14 @@ import com.mobile.expenseapp.presentation.home_screen.Account as AccountType
 
 @ExperimentalMaterialApi
 @Composable
-fun AccountItem(account: Account, currency: String, onItemClick: (String) -> Unit) {
+fun AccountItem(account: Account, currency: String, navController: NavController, onItemClick: (String) -> Unit) {
     Card(
         onClick = {
             onItemClick(account.account)
         },
 //        backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
         elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.secondary,
+        backgroundColor = MaterialTheme.colors.surface,
         shape = RoundedCornerShape(24.dp),
         modifier = Modifier
             .fillMaxWidth()

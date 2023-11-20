@@ -2,6 +2,7 @@ package com.mobile.expenseapp.presentation.setting_screen.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,24 +18,33 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
-import com.mobile.expenseapp.presentation.ui.theme.Red500
+import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
+import com.mobile.expenseapp.presentation.home_screen.amountFormat
+import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
 import com.mobile.expenseapp.util.spacing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.intellij.lang.annotations.Language
 
 @ExperimentalMaterialApi
 @Composable
-fun EraseSetting(modalBottomSheetState: ModalBottomSheetState, scope: CoroutineScope, navController: NavController, onItemClick: (Int) -> Unit) {
-
+fun LanguageSetting(language: String, modalBottomSheetState: ModalBottomSheetState,
+                    scope: CoroutineScope,
+                    navController: NavController,
+                    onItemClick: (Int) -> Unit,) {
     TextButton(
         onClick = {
+            // Handle language change action
+            // You can implement logic to change the app's language here
+            onItemClick(3)
             scope.launch {
-                onItemClick(2)
                 modalBottomSheetState.show()
             }
         },
@@ -45,8 +55,8 @@ fun EraseSetting(modalBottomSheetState: ModalBottomSheetState, scope: CoroutineS
                 vertical = MaterialTheme.spacing.small
             ),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Red500,
-            contentColor = MaterialTheme.colors.surface
+            backgroundColor = MaterialTheme.colors.surface,
+            contentColor = MaterialTheme.colors.onSurface
         ),
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(
@@ -55,15 +65,19 @@ fun EraseSetting(modalBottomSheetState: ModalBottomSheetState, scope: CoroutineS
         )
     ) {
         Text(
-            text = navController.context.getString(R.string.settings_reset_data),
+            text = navController.context.getString(R.string.settings_language),
             style = MaterialTheme.typography.button,
-            modifier = Modifier.weight(2f),
+            modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start
         )
 
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                text = language,
+                style = MaterialTheme.typography.subtitle2
+            )
             Icon(
-                painter = painterResource(R.drawable.edit),
+                painter = painterResource(id = R.drawable.edit),
                 contentDescription = null,
                 modifier = Modifier.then(Modifier.size(16.dp))
             )

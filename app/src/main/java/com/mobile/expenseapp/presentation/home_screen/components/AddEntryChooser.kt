@@ -84,7 +84,7 @@ fun AddEntryChooser(
             }
 
             Text(
-                text = "ADD INCOME",
+                text = navController.context.getString(R.string.home_add_income),
                 style = MaterialTheme.typography.subtitle2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 4.dp),
@@ -118,7 +118,7 @@ fun AddEntryChooser(
             }
 
             Text(
-                text = "ADD EXPENSE",
+                text = navController.context.getString(R.string.home_add_expense),
                 style = MaterialTheme.typography.subtitle2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 4.dp),

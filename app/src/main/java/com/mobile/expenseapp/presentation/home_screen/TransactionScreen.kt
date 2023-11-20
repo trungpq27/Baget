@@ -176,7 +176,7 @@ fun TransactionScreen(
                     }
 
                     Text(
-                        text = "Add Transaction",
+                        text = navController.context.getString(R.string.transaction_add_transaction),
                         modifier = Modifier.weight(2f),
                         style = MaterialTheme.typography.h5,
                         color = MaterialTheme.colors.onSurface

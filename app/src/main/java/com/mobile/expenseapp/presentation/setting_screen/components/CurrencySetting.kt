@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.presentation.setting_screen.components
 
+import android.provider.Settings.System.getString
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.util.spacing
 
+
 @Composable
 fun CurrencySetting(currency: String, navController: NavController) {
     TextButton(
@@ -37,7 +39,7 @@ fun CurrencySetting(currency: String, navController: NavController) {
                 vertical = MaterialTheme.spacing.small
             ),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
+            backgroundColor = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface
         ),
         shape = RoundedCornerShape(12.dp),
@@ -47,7 +49,7 @@ fun CurrencySetting(currency: String, navController: NavController) {
         )
     ) {
         Text(
-            text = "Currency",
+            text = navController.context.getString(R.string.settings_currency),
             style = MaterialTheme.typography.button,
             modifier = Modifier.weight(2f),
             textAlign = TextAlign.Start

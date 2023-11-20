@@ -72,7 +72,7 @@ fun HomeScreen(
         ) {
 
             // header
-            Header(bottomSheetScaffoldState)
+            Header(bottomSheetScaffoldState, navController)
 
             // Button tabs
             TabButton()
@@ -81,7 +81,7 @@ fun HomeScreen(
 
             AnimatedVisibility(visible = currentTabButton == TabButton.TODAY) {
                 dailyTransactions.ifEmpty {
-                    ListPlaceholder()
+                    ListPlaceholder(navController)
                 }
                 LazyColumn(
                     state = lazyListState,
@@ -96,6 +96,7 @@ fun HomeScreen(
                     itemsIndexed(dailyTransactions) { pos, dailyTransaction ->
                         TransactionItem(
                             transaction = dailyTransaction,
+                            navController,
                             onItemClick = {
                                 val trxType = dailyTransaction.transactionType
                                 if (trxType == TransactionType.INCOME.title)
@@ -115,7 +116,7 @@ fun HomeScreen(
             // monthly expenses
             AnimatedVisibility(visible = currentTabButton == TabButton.MONTH) {
                 monthlyTransactions.ifEmpty {
-                    ListPlaceholder()
+                    ListPlaceholder(navController)
                 }
                 LazyColumn(
                     state = lazyListState,
@@ -151,6 +152,7 @@ fun HomeScreen(
                         itemsIndexed(monthlyTransaction) { pos, transaction ->
                             TransactionItem(
                                 transaction = transaction,
+                                navController,
                                 onItemClick = {
                                     val trxType = transaction.transactionType
                                     if (trxType == TransactionType.INCOME.title)

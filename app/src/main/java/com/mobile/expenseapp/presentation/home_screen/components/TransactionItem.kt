@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.presentation.home_screen.Category
@@ -42,6 +43,7 @@ import com.mobile.expenseapp.util.spacing
 @Composable
 fun TransactionItem(
     transaction: Transaction,
+    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
     onItemClick: () -> Unit
 ) {
@@ -79,7 +81,7 @@ fun TransactionItem(
             ) {
 
                 Text(
-                    text = category.title,
+                    text = navController.context.getString(category.content),
                     style = MaterialTheme.typography.button,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
