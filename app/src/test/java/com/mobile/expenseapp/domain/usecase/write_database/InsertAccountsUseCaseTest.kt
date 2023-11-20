@@ -22,6 +22,6 @@ class InsertAccountsUseCaseTest {
     @Test
     fun `correctly inserts list of accounts to database`() = runBlocking {
         insertAccountsUseCase(anyList())
-        verify(transactionRepository, times(1)).insertAccount(anyList())
+        verify(transactionRepository, times(1)).insertAccounts(anyList())
     }
 }

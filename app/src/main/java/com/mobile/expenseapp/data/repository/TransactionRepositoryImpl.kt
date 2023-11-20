@@ -7,12 +7,17 @@ import com.mobile.expenseapp.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) : TransactionRepository {
+class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) :
+    TransactionRepository {
+    override suspend fun insertTransactions(dailyExpense: List<TransactionDto>) {
+        dao.insertTransactions(transaction = dailyExpense)
+    }
+
     override suspend fun insertTransaction(dailyExpense: TransactionDto) {
         dao.insertTransaction(transaction = dailyExpense)
     }
 
-    override suspend fun insertAccount(accounts: List<AccountDto>) {
+    override suspend fun insertAccounts(accounts: List<AccountDto>) {
         dao.insertAccounts(accounts)
     }
 
@@ -20,7 +25,7 @@ class TransactionRepositoryImpl @Inject constructor(private val dao: Transaction
         return dao.getTransactionByAccount(accountType)
     }
 
-    override fun getDailyTransaction(entryDate: String) : Flow<List<TransactionDto>> {
+    override fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>> {
         return dao.getDailyTransaction(entryDate)
     }
 
@@ -33,7 +38,7 @@ class TransactionRepositoryImpl @Inject constructor(private val dao: Transaction
     }
 
     override fun getAllTransaction(): Flow<List<TransactionDto>> {
-       return dao.getAllTransaction()
+        return dao.getAllTransaction()
     }
 
     override fun eraseTransaction() {

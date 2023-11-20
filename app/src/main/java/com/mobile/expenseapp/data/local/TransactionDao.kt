@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTransactions(transaction: List<TransactionDto>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transaction: TransactionDto)
@@ -19,19 +21,19 @@ interface TransactionDao {
     suspend fun insertAccounts(accounts: List<AccountDto>)
 
     @Query("SELECT * FROM transaction_table WHERE entry_date = :entryDate")
-    fun getDailyTransaction(entryDate: String) : Flow<List<TransactionDto>>
+    fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>>
 
     @Query("SELECT * FROM transaction_table WHERE account = :accountType")
     fun getTransactionByAccount(accountType: String): Flow<List<TransactionDto>>
 
     @Query("SELECT * FROM account_table WHERE account = :account")
-    fun getAccount(account: String) : Flow<AccountDto>
+    fun getAccount(account: String): Flow<AccountDto>
 
     @Query("SELECT * FROM account_table")
-    fun getAccounts() : Flow<List<AccountDto>>
+    fun getAccounts(): Flow<List<AccountDto>>
 
     @Query("SELECT * FROM transaction_table")
-    fun getAllTransaction() : Flow<List<TransactionDto>>
+    fun getAllTransaction(): Flow<List<TransactionDto>>
 
     @Query("DELETE FROM transaction_table")
     fun eraseTransaction()

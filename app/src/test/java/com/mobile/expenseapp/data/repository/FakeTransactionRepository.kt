@@ -38,11 +38,15 @@ class FakeTransactionRepository : TransactionRepository {
         AccountDto(3, Account.BANK.title, 5.0, 10.0, 5.0)
     )
 
+    override suspend fun insertTransactions(dailyExpense: List<TransactionDto>) {
+        return
+    }
+
     override suspend fun insertTransaction(dailyExpense: TransactionDto) {
         return
     }
 
-    override suspend fun insertAccount(accounts: List<AccountDto>) {
+    override suspend fun insertAccounts(accounts: List<AccountDto>) {
         return
     }
 

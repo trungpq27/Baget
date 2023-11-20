@@ -5,10 +5,10 @@ import com.mobile.expenseapp.data.local.entity.TransactionDto
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
-
+    suspend fun insertTransactions(dailyExpense: List<TransactionDto>)
     suspend fun insertTransaction(dailyExpense: TransactionDto)
 
-    suspend fun insertAccount(accounts: List<AccountDto>)
+    suspend fun insertAccounts(accounts: List<AccountDto>)
 
     fun getDailyTransaction(entryDate: String) : Flow<List<TransactionDto>>
 
