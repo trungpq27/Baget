@@ -1,9 +1,12 @@
 package com.mobile.expenseapp.presentation.home_screen.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -30,8 +33,8 @@ import com.mobile.expenseapp.util.spacing
 fun Category(
     expenseItems: Array<Category> = Category.values()
 ) {
-    FlowRow(
-        crossAxisSpacing = MaterialTheme.spacing.small,
+    Column(
+//        crossAxisSpacing = MaterialTheme.spacing.small,
         modifier = Modifier.padding(
             start = MaterialTheme.spacing.medium,
             top = MaterialTheme.spacing.medium,
@@ -50,10 +53,13 @@ fun CategoryTag(category: Category, homeViewModel: HomeViewModel = hiltViewModel
     val selected by homeViewModel.category.collectAsState()
     var isSelected = selected.title == category.title
     TextButton(
-        modifier = Modifier.padding(end = MaterialTheme.spacing.small),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = MaterialTheme.spacing.small),
         onClick = {
             homeViewModel.selectCategory(category)
-            isSelected = selected.title == category.title
+//            isSelected = selected.title == category.title
+            
         },
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(

@@ -1,8 +1,12 @@
 package com.mobile.expenseapp.presentation.home_screen
 
+import android.provider.ContactsContract.CommonDataKinds.Note
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +26,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxColors
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -30,6 +39,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
@@ -55,6 +66,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
@@ -66,11 +78,11 @@ import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.presentation.home_screen.components.AccountTag
-import com.mobile.expenseapp.presentation.home_screen.components.Category
 import com.mobile.expenseapp.presentation.home_screen.components.EntryTypePicker
 import com.mobile.expenseapp.presentation.home_screen.components.InfoBanner
 import com.mobile.expenseapp.presentation.home_screen.components.KeypadComponent
 import com.mobile.expenseapp.presentation.home_screen.components.TabButton
+import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.presentation.ui.theme.Amber500
 import com.mobile.expenseapp.presentation.ui.theme.DarkSecondary100
 import com.mobile.expenseapp.presentation.ui.theme.Red200
@@ -140,16 +152,33 @@ fun TransactionScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = MaterialTheme.spacing.medium,
+                            start = MaterialTheme.spacing.small,
                             end = MaterialTheme.spacing.medium,
                             top = MaterialTheme.spacing.small
                         ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .scale(0.75f)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.remove),
+                            contentDescription = "close",
+                            tint = MaterialTheme.colors.onSurface,
+                            modifier = Modifier
+                                .scale(0.8f)
+                        )
+                    }
+
                     Text(
                         text = "Add Transaction",
                         modifier = Modifier.weight(2f),
-                        style = MaterialTheme.typography.subtitle1,
+                        style = MaterialTheme.typography.h5,
                         color = MaterialTheme.colors.onSurface
                     )
 
@@ -201,43 +230,18 @@ fun TransactionScreen(
                                 .scale(0.8f)
                         )
                     }
-
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        },
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .scale(0.75f)
-                            .border(1.dp, MaterialTheme.colors.onSurface, CircleShape)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.remove),
-                            contentDescription = "close",
-                            tint = MaterialTheme.colors.onSurface,
-                            modifier = Modifier
-                                .scale(0.8f)
-                        )
-                    }
                 }
 
                 Column(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
                     // Make this the way to pick the transaction type, not the scaffold
                     EntryTypePicker()
 
                     InfoBanner(shown = showInfoBanner, transactionType)
-
-                    val amount = remember { mutableStateOf(TextFieldValue()) }
-
-                    // Amount
-//                    TextField(
-//                        label = "Amount",
-//                        value = amount.value
-//                    )
                     
                     // Amount title
                     Text(
@@ -267,7 +271,6 @@ fun TransactionScreen(
                             .align(Alignment.Start)
                             .padding(
                                 start = MaterialTheme.spacing.medium,
-                                top = MaterialTheme.spacing.medium,
                                 end = MaterialTheme.spacing.medium
                             ),
                         colors = ButtonDefaults.textButtonColors(DarkSecondary100),
@@ -302,41 +305,28 @@ fun TransactionScreen(
                         )
                     }
 
-                    TextField(
-                        value = titleFieldValue.text,
-                        onValueChange = { field ->
-                            homeViewModel.setTransactionTitle(field)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.spacing.medium,
-                                top = MaterialTheme.spacing.small,
-                                end = MaterialTheme.spacing.medium,
-                                bottom = MaterialTheme.spacing.medium
-                            ),
-                        maxLines = 1,
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = if (transactionType == TransactionType.INCOME)
-                                    "Income title"
-                                else "Expense title",
-                                style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.W600)
-                            )
-                        },
-                        textStyle = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.W600),
-                        colors = TextFieldDefaults.textFieldColors(
-                            focusedIndicatorColor = MaterialTheme.colors.primary,
-                            cursorColor = MaterialTheme.colors.primary,
-                            backgroundColor = Color.LightGray
-                        )
-                    )
+                    // Picker
+//                    LazyRow(
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        modifier = Modifier
+//                            .padding(
+//                                horizontal = MaterialTheme.spacing.medium,
+//                                vertical = MaterialTheme.spacing.small
+//                            )
+//                            .align(Alignment.Start)
+//                    ) {
+//                        items(Account.values()) { account ->
+//                            AccountTag(account = account, navController = navController)
+//                        }
+//                    }
 
+                    // Account type
                     Text(
-                        text = if (transactionType == TransactionType.INCOME) {
-                            "Fund"
-                        } else "Pay with",
+//                        text = if (transactionType == TransactionType.INCOME) {
+//                            "Fund"
+//                        } else "Pay with",
+                        text = "Account",
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -344,31 +334,83 @@ fun TransactionScreen(
                                 horizontal = MaterialTheme.spacing.medium,
                                 vertical = MaterialTheme.spacing.small
                             )
-                            .align(Alignment.Start)
-                    )
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium
-                            )
+                            .align(Alignment.Start),
                     )
 
-                    LazyRow(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                    // Account picker
+                    TextButton(
+                        onClick = {
+                            navController.navigate(Screen.AccountChooserScreen.route)
+                        },
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .fillMaxWidth()
+                            .background(Color.Transparent)
+                            .padding(
+                                horizontal = MaterialTheme.spacing.medium,
+                                vertical = MaterialTheme.spacing.small
+                            ),
+                        border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = MaterialTheme.spacing.medium,
+                            vertical = MaterialTheme.spacing.medium
+                        ),
+                    ) {
+                        Text(
+                            text = "Choose an account",
+                            textAlign = TextAlign.Start,
+                            color = MaterialTheme.colors.onSurface
+                        )
+                    }
+
+                    // Category type
+                    Text(
+//                        text = if (transactionType == TransactionType.INCOME) {
+//                            "Fund"
+//                        } else "Pay with",
+                        text = "Category",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
                             .padding(
                                 horizontal = MaterialTheme.spacing.medium,
                                 vertical = MaterialTheme.spacing.small
                             )
+                            .align(Alignment.Start),
+                    )
+
+                    // Category type picker
+                    TextButton(
+                        onClick = {
+                            navController.navigate(Screen.CategoryChooserScreen.route)
+                        },
+                        modifier = Modifier
                             .align(Alignment.Start)
+                            .fillMaxWidth()
+                            .background(Color.Transparent)
+                            .padding(
+                                horizontal = MaterialTheme.spacing.medium,
+                                vertical = MaterialTheme.spacing.small
+                            ),
+                        border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = MaterialTheme.spacing.medium,
+                            vertical = MaterialTheme.spacing.medium
+                        ),
                     ) {
-                        items(Account.values()) { account ->
-                            AccountTag(account = account)
-                        }
+                        Text(
+                            text = "Choose a category",
+                            color = MaterialTheme.colors.onSurface
+                        )
                     }
 
+                    // Note field
+                    NoteTextField(titleFieldValue, homeViewModel)
+
+                    // Set time interval
+                    SetRepeatable()
 
                     if (limitKey) {
                         if (limitInfoWarning is HomeViewModel.UIEvent.Alert) {
@@ -396,33 +438,110 @@ fun TransactionScreen(
                             }
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-
-                    Text(
-                        text = "Set category",
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.onSurface,
-                        letterSpacing = TextUnit(0.2f, TextUnitType.Sp),
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium,
-                                vertical = MaterialTheme.spacing.small
-                            )
-                    )
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium
-                            )
-                    )
-
-                    Category()
                 }
             }
         }
     }
+}
+
+@Composable
+fun AccountPicker() {
+
+}
+
+@Composable
+fun NoteTextField(
+    noteTextField: TextFieldValue,
+    homeViewModel: HomeViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        // Note
+        Text(
+            text = "Note",
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.onSurface,
+            modifier = Modifier
+                .padding(
+                    horizontal = MaterialTheme.spacing.medium,
+                    vertical = MaterialTheme.spacing.small
+                )
+                .align(Alignment.Start)
+        )
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = MaterialTheme.spacing.medium
+                ),
+//                .border(BorderStroke(1.dp, MaterialTheme.colors.primary)),
+            shape = RoundedCornerShape(6.dp),
+            value = noteTextField.text,
+            onValueChange = { field -> homeViewModel.setTransactionTitle(field) },
+            label = { Text("Add note") },
+        )
+    }
+}
+
+@Composable
+fun SetRepeatable() {
+    val checkedState = remember { mutableStateOf(false) }
+
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = MaterialTheme.spacing.medium
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Checkbox(
+            checked = checkedState.value,
+            onCheckedChange = { checkedState.value = it },
+            colors = CheckboxDefaults.colors(MaterialTheme.colors.primary)
+        )
+        
+        Text(text = "Set as auto-transaction")
+    }
+
+    // checkbox (not finished)
+//    if (checkedState) {
+//        Column {
+//
+//        }
+//    }
+
+    Row (
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+
+    ) {
+        TextButton(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+//                .align(Alignment.Start)
+                .fillMaxWidth()
+                .background(Color.Transparent)
+                .padding(
+                    horizontal = MaterialTheme.spacing.medium,
+                    vertical = MaterialTheme.spacing.small
+                ),
+            border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+            shape = RoundedCornerShape(6.dp),
+            contentPadding = PaddingValues(
+                horizontal = MaterialTheme.spacing.medium,
+                vertical = MaterialTheme.spacing.medium
+            ),
+        ) {
+            Text(text = "Repeat timer")
+        }
+    }
+
 }

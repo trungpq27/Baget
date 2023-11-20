@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Account
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
@@ -29,13 +30,14 @@ import com.mobile.expenseapp.util.spacing
 
 @ExperimentalUnitApi
 @Composable
-fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel()) {
+fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
     val selectedAccount by homeViewModel.account.collectAsState()
     val isSelected = selectedAccount == account
 
     TextButton(
         onClick = {
             homeViewModel.selectAccount(account)
+            navController.navigateUp()
         },
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(
@@ -72,5 +74,5 @@ fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel())
 @Preview(showBackground = true)
 @Composable
 fun AccountTagPreview() {
-    AccountTag(account = Account.CARD)
+//    AccountTag(account = Account.CARD)
 }
