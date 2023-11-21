@@ -12,9 +12,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.presentation.navigation.MainScreen
 import com.mobile.expenseapp.presentation.ui.theme.BagetTheme
+import com.mobile.expenseapp.util.MyWorkManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
@@ -34,6 +37,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Create a one-time work request
+        val workRequest = OneTimeWorkRequestBuilder<MyWorkManager>().build()
+
+        // Enqueue the work request
+        WorkManager.getInstance(this).enqueue(workRequest)
+
+
 
         setContent {
             BagetTheme {
