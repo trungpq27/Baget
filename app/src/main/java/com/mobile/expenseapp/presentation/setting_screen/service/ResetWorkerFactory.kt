@@ -14,6 +14,9 @@ class ResetWorkerFactory @Inject constructor(private val editExpenseLimitUseCase
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        return LimitResetWorker(appContext, workerParameters, editExpenseLimitUseCase)
+        return when(workerClassName){
+            LimitResetWorker::class.java.name -> LimitResetWorker(appContext, workerParameters, editExpenseLimitUseCase)
+            else -> null
+        }
     }
 }
