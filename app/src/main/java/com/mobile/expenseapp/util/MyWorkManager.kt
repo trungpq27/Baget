@@ -14,6 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -40,6 +41,8 @@ class MyWorkManager(context: Context, workerParams: WorkerParameters) :
             applicationContext.getString(R.string.noti_title),
             applicationContext.getString(R.string.noti_content)
         )
+
+
         return Result.success()
     }
 
@@ -79,30 +82,22 @@ class MyWorkManager(context: Context, workerParams: WorkerParameters) :
 
     companion object {
         fun notificationDailyTask(context: Context) {
-            val now = System.currentTimeMillis()
-            val ninePM = getNinePMInMillis(now)
-            val initialDelay = ninePM - now
-
-            // Create a periodic work request with an initial delay
-            val workRequest = PeriodicWorkRequestBuilder<MyWorkManager>(
-                repeatInterval = 1, // repeatInterval in days
-                repeatIntervalTimeUnit = TimeUnit.DAYS
-            )
-                .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+            val currentDate = Calendar.getInstance()
+            val dueDate = Calendar.getInstance()
+            // Set Execution around 9pm
+            dueDate.set(Calendar.HOUR_OF_DAY, 21)
+            dueDate.set(Calendar.MINUTE, 0)
+            dueDate.set(Calendar.SECOND, 0)
+            if (dueDate.before(currentDate)) {
+                dueDate.add(Calendar.HOUR_OF_DAY, 24)
+            }
+            val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
+            val dailyWorkRequest = OneTimeWorkRequestBuilder<MyWorkManager>()
+                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+//                .addTag(TAG_OUTPUT)
                 .build()
-
-            // Enqueue the work request
-            WorkManager.getInstance(context).enqueue(workRequest)
-        }
-
-        private fun getNinePMInMillis(currentTimeMillis: Long): Long {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = currentTimeMillis
-            calendar.set(Calendar.HOUR_OF_DAY, 21) // 9 PM
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            return calendar.timeInMillis
+            WorkManager.getInstance(context)
+                .enqueue(dailyWorkRequest)
         }
     }
 }
