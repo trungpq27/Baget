@@ -1,10 +1,17 @@
 package com.mobile.expenseapp.domain.repository
 
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
+
+    suspend fun insertSchedule(schedule: ScheduleDto)
+
+    fun getAllSchedules(): Flow<List<ScheduleDto>>
+
+    fun eraseSchedules()
 
     suspend fun insertTransaction(dailyExpense: TransactionDto)
 

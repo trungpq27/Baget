@@ -1,7 +1,7 @@
 package com.mobile.expenseapp.domain.model
 
-import java.sql.Date
 import java.sql.Timestamp
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 data class Schedule(

@@ -2,9 +2,8 @@ package com.mobile.expenseapp.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.mobile.expenseapp.domain.model.Schedule
-import java.sql.Date
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 @Entity(tableName = "schedule_table")
