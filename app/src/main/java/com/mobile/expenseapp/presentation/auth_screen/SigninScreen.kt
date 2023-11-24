@@ -96,7 +96,7 @@ fun SignInScreen(
                     onClick = {
                         navController.popBackStack()
                         welcomeViewModel.saveCurrencyLocale()
-//                        welcomeViewModel.saveOnBoardingState(completed = true)
+                        welcomeViewModel.saveOnBoardingState(completed = true)
                         welcomeViewModel.createAccounts()
                         navController.navigate(Screen.HomeScreen.route)
                     },

@@ -1,6 +1,7 @@
 package com.mobile.expenseapp.data.repository
 
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.domain.repository.TransactionRepository
 import com.mobile.expenseapp.presentation.home_screen.Account
@@ -38,11 +39,19 @@ class FakeTransactionRepository : TransactionRepository {
         AccountDto(3, Account.BANK.title, 5.0, 10.0, 5.0)
     )
 
+    private val scheduleList = listOf<ScheduleDto>(
+
+    )
+
     override suspend fun insertTransaction(dailyExpense: TransactionDto) {
         return
     }
 
     override suspend fun insertAccount(accounts: List<AccountDto>) {
+        return
+    }
+
+    override suspend fun insertSchedule(schedule: ScheduleDto) {
         return
     }
 
@@ -76,7 +85,17 @@ class FakeTransactionRepository : TransactionRepository {
         }
     }
 
+    override fun getAllSchedules(): Flow<List<ScheduleDto>> {
+        return flow {
+            emit(scheduleList)
+        }
+    }
+
     override fun eraseTransaction() {
+
+    }
+
+    override fun eraseSchedules() {
 
     }
 

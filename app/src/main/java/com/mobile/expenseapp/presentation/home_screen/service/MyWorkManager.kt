@@ -1,4 +1,4 @@
-package com.mobile.expenseapp.util
+package com.mobile.expenseapp.presentation.home_screen.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,33 +7,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.R
-import com.mobile.expenseapp.presentation.main.MainActivity
+import com.mobile.expenseapp.di.BagetApplication
 import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.Calendar
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
-@ExperimentalComposeUiApi
 @InternalCoroutinesApi
-@ExperimentalPagerApi
-@ExperimentalUnitApi
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
-class MyWorkManager(context: Context, workerParams: WorkerParameters) :
-    CoroutineWorker(context, workerParams) {
+class MyWorkManager(
+    context: Context,
+    workerParams: WorkerParameters
+) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
         Log.d("Worker", "Successful")
@@ -41,12 +31,10 @@ class MyWorkManager(context: Context, workerParams: WorkerParameters) :
             applicationContext.getString(R.string.noti_title),
             applicationContext.getString(R.string.noti_content)
         )
-
-
         return Result.success()
     }
 
-    fun createNotification(title: String, description: String) {
+    private fun createNotification(title: String, description: String) {
 
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -59,7 +47,7 @@ class MyWorkManager(context: Context, workerParams: WorkerParameters) :
         }
 
         // Intent to open your activity when the notification is tapped
-        val intent = Intent(applicationContext, MainActivity::class.java)
+        val intent = Intent(applicationContext, BagetApplication::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
