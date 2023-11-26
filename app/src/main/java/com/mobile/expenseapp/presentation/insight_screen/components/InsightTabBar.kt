@@ -71,7 +71,7 @@ fun InsightTabBar(
                 title = "Expense",
                 backgroundColor = animateColorAsState(
                     targetValue = if (selectedTab == TransactionType.EXPENSE)
-                        MaterialTheme.colors.onSurface else Color.Transparent
+                        MaterialTheme.colors.primary else Color.Transparent
                 ).value,
                 textColor = if (selectedTab == TransactionType.EXPENSE)
                     Color.Black else Color.White

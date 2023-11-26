@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -34,6 +38,8 @@ import androidx.compose.material.CheckboxColors
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -55,6 +61,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -337,10 +344,16 @@ fun TransactionScreen(
                             .align(Alignment.Start),
                     )
 
+                    // Dropdown account picker
+                    var expandedAccountState by remember { mutableStateOf(false) }
+                    var accountItems: Array<Account> = Account.values()
+                    var selectedAccount by remember { mutableStateOf(Account.CARD) }
+
+
                     // Account picker
                     TextButton(
                         onClick = {
-                            navController.navigate(Screen.AccountChooserScreen.route)
+//                            navController.navigate(Screen.AccountChooserScreen.route)
                         },
                         modifier = Modifier
                             .align(Alignment.Start)
@@ -357,11 +370,71 @@ fun TransactionScreen(
                             vertical = MaterialTheme.spacing.medium
                         ),
                     ) {
-                        Text(
-                            text = "Choose an account",
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colors.onSurface
-                        )
+//                        Text(
+//                            text = "Choose an account",
+//                            textAlign = TextAlign.Start,
+//                            color = MaterialTheme.colors.onSurface
+//                        )
+                        Box (
+                            modifier = Modifier
+                                .clickable {
+                                    expandedAccountState = !expandedAccountState
+                                }
+                                .fillMaxSize()
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = selectedAccount.iconRes
+                                    ),
+                                    contentDescription = selectedAccount.title,
+                                )
+
+                                Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+
+                                Text(
+                                    text = navController.context.getString(selectedAccount.content),
+                                    style = MaterialTheme.typography.subtitle1
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = expandedAccountState,
+                                onDismissRequest = { expandedAccountState = false },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                accountItems.forEachIndexed { index, account ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            homeViewModel.selectAccount(account)
+                                            expandedAccountState = false
+                                            selectedAccount = account
+                                        },
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(
+                                                    id = account.iconRes
+                                                ),
+                                                contentDescription = account.title,
+                                            )
+                                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+                                            Text(
+                                                text = navController.context.getString(account.content),
+                                                style = MaterialTheme.typography.subtitle2,
+                                                fontWeight = FontWeight.Bold,
+                                                letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // Category type
@@ -380,10 +453,14 @@ fun TransactionScreen(
                             .align(Alignment.Start),
                     )
 
+                    var expandedCategoryState by remember { mutableStateOf(false) }
+                    var expenseItems: Array<Category> = Category.values()
+                    var selectedCategory by remember { mutableStateOf(Category.FOOD_DRINK) }
+
                     // Category type picker
                     TextButton(
                         onClick = {
-                            navController.navigate(Screen.CategoryChooserScreen.route)
+//                            navController.navigate(Screen.CategoryChooserScreen.route)
                         },
                         modifier = Modifier
                             .align(Alignment.Start)
@@ -400,10 +477,68 @@ fun TransactionScreen(
                             vertical = MaterialTheme.spacing.medium
                         ),
                     ) {
-                        Text(
-                            text = "Choose a category",
-                            color = MaterialTheme.colors.onSurface
-                        )
+                        Box (
+                            modifier = Modifier
+                                .clickable {
+                                    expandedCategoryState = !expandedCategoryState
+                                }
+                                .fillMaxSize()
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = selectedCategory.iconRes
+                                    ),
+                                    contentDescription = selectedCategory.title,
+                                )
+
+                                Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+
+                                Text(
+                                    text = navController.context.getString(selectedCategory.content),
+                                    style = MaterialTheme.typography.subtitle1
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = expandedCategoryState,
+                                onDismissRequest = { expandedCategoryState = false },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .requiredHeight(300.dp)
+                            ) {
+                                expenseItems.forEachIndexed { index, category ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            homeViewModel.selectCategory(category)
+                                            expandedCategoryState = false
+                                            selectedCategory = category
+                                        },
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(
+                                                    id = category.iconRes
+                                                ),
+                                                contentDescription = category.title,
+                                            )
+                                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+                                            Text(
+                                                text = navController.context.getString(category.content),
+                                                style = MaterialTheme.typography.subtitle2,
+                                                fontWeight = FontWeight.Bold,
+                                                letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // Note field

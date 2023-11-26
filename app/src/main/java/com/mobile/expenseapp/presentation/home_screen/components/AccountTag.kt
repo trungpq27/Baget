@@ -43,7 +43,6 @@ fun AccountTag(
     TextButton(
         onClick = {
             homeViewModel.selectAccount(account)
-            navController.navigateUp()
         },
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(
