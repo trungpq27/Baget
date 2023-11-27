@@ -9,9 +9,13 @@ import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.presentation.home_screen.TransactionType
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface TransactionDao {
+
+    @Query("SELECT * FROM transaction_table WHERE timestamp = :transactionTimestamp")
+    fun getTransactionByTimestamp(transactionTimestamp: Date): Flow<TransactionDto>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSchedule(schedule: ScheduleDto)

@@ -31,18 +31,5 @@ data class ScheduleDto(
     @ColumnInfo(name = "last_time_added")
     val lastTimeAdded: Date,
 ) {
-    fun toSchedule() = Schedule(
-        transaction = Transaction(
-            date = transactionDto,
-            dateOfEntry = "", // Provide appropriate default values or modify the constructor accordingly
-            amount = 0.0,
-            account = "",
-            category = "",
-            transactionType = "",
-            title = ""
-        ),
-        timeSchedule = timeSchedule,
-        timeUnit = TimeUnit.valueOf(timeUnit),
-        lastTimeAdded = lastTimeAdded
-    )
+
 }

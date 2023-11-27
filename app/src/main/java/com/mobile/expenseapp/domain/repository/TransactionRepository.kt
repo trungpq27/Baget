@@ -4,9 +4,10 @@ import com.mobile.expenseapp.data.local.entity.AccountDto
 import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 interface TransactionRepository {
-
+    suspend fun getTransactionByTimestamp(timestamp: Date): Flow<TransactionDto>
     suspend fun insertSchedule(schedule: ScheduleDto)
 
     fun getAllSchedules(): Flow<List<ScheduleDto>>

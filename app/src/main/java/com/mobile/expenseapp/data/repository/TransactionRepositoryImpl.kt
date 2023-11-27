@@ -6,10 +6,14 @@ import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) : TransactionRepository {
 
+    override suspend fun getTransactionByTimestamp(transactionTimestamp: Date): Flow<TransactionDto> {
+        return dao.getTransactionByTimestamp(transactionTimestamp)
+    }
     override suspend fun insertSchedule(schedule: ScheduleDto) {
         dao.insertSchedule(schedule)
     }
