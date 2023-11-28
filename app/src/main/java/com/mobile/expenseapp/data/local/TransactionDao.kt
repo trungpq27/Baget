@@ -5,14 +5,28 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.presentation.home_screen.TransactionType
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransactions(transaction: List<TransactionDto>)
+
+    @Query("SELECT * FROM transaction_table WHERE timestamp = :transactionTimestamp")
+    fun getTransactionByTimestamp(transactionTimestamp: Date): Flow<TransactionDto>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSchedule(schedule: ScheduleDto)
+
+    @Query("SELECT * FROM schedule_table")
+    fun getAllSchedules(): Flow<List<ScheduleDto>>
+
+    @Query("DELETE FROM schedule_table")
+    fun eraseSchedules()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transaction: TransactionDto)

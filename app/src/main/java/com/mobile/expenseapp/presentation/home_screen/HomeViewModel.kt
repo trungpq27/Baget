@@ -238,6 +238,12 @@ class HomeViewModel @Inject constructor(
         currentTime.value = time
     }
 
+    fun insertNewTransaction(transactionDto: TransactionDto) {
+        viewModelScope.launch(IO) {
+            insertDailyTransactionUseCase(transactionDto)
+        }
+    }
+
     fun insertDailyTransaction(
         date: String,
         amount: Double,

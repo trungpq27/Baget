@@ -2,15 +2,31 @@ package com.mobile.expenseapp.data.repository
 
 import com.mobile.expenseapp.data.local.TransactionDao
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import javax.inject.Inject
 
-class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) :
-    TransactionRepository {
+class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) : TransactionRepository {
     override suspend fun insertTransactions(dailyExpense: List<TransactionDto>) {
         dao.insertTransactions(transaction = dailyExpense)
+    }
+
+    override suspend fun getTransactionByTimestamp(transactionTimestamp: Date): Flow<TransactionDto> {
+        return dao.getTransactionByTimestamp(transactionTimestamp)
+    }
+    override suspend fun insertSchedule(schedule: ScheduleDto) {
+        dao.insertSchedule(schedule)
+    }
+
+    override fun getAllSchedules(): Flow<List<ScheduleDto>> {
+        return dao.getAllSchedules()
+    }
+
+    override fun eraseSchedules() {
+        dao.eraseSchedules()
     }
 
     override suspend fun insertTransaction(dailyExpense: TransactionDto) {
