@@ -9,7 +9,7 @@ import java.util.Date
 interface TransactionRepository {
     suspend fun getTransactionByTimestamp(timestamp: Date): Flow<TransactionDto>
     suspend fun insertSchedule(schedule: ScheduleDto)
-
+    fun updateSchedule(schedule: ScheduleDto)
     fun getAllSchedules(): Flow<List<ScheduleDto>>
 
     fun eraseSchedules()

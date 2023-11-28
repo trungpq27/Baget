@@ -9,8 +9,8 @@ import com.mobile.expenseapp.domain.usecase.read_database.GetTransactionByTimest
 import com.mobile.expenseapp.domain.usecase.write_database.InsertNewScheduleUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.InsertNewTransactionUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.UpdateScheduleUseCase
 import com.mobile.expenseapp.presentation.home_screen.service.MyAutoAddWorker
-import com.mobile.expenseapp.presentation.setting_screen.service.LimitResetWorker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
@@ -21,7 +21,9 @@ class ResetWorkerFactory @Inject constructor(
     private val editExpenseLimitUseCase: EditExpenseLimitUseCase,
     private val insertNewTransactionUseCase: InsertNewTransactionUseCase,
     private val getTransactionByTimestampUseCase: GetTransactionByTimestampUseCase,
-    private val getAllScheduleUseCase: GetAllScheduleUseCase
+    private val getAllScheduleUseCase: GetAllScheduleUseCase,
+    private val insertNewScheduleUseCase: InsertNewScheduleUseCase,
+    private val updateScheduleUseCase: UpdateScheduleUseCase
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -32,8 +34,18 @@ class ResetWorkerFactory @Inject constructor(
         return when (workerClassName) {
             LimitResetWorker::class.java.name ->
                 LimitResetWorker(context, workerParameters, editExpenseLimitUseCase)
+
             MyAutoAddWorker::class.java.name ->
-                MyAutoAddWorker(context, workerParameters, insertNewTransactionUseCase, getTransactionByTimestampUseCase, getAllScheduleUseCase)
+                MyAutoAddWorker(
+                    context,
+                    workerParameters,
+                    insertNewTransactionUseCase,
+                    getTransactionByTimestampUseCase,
+                    getAllScheduleUseCase,
+                    insertNewScheduleUseCase,
+                    updateScheduleUseCase
+                )
+
             else -> null
         }
     }
