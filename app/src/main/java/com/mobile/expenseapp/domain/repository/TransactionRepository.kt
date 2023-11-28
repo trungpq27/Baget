@@ -11,7 +11,7 @@ interface TransactionRepository {
     suspend fun insertTransactions(dailyExpense: List<TransactionDto>)
     suspend fun getTransactionByTimestamp(timestamp: Date): Flow<TransactionDto>
     suspend fun insertSchedule(schedule: ScheduleDto)
-
+    fun updateSchedule(schedule: ScheduleDto)
     fun getAllSchedules(): Flow<List<ScheduleDto>>
 
     fun eraseSchedules()

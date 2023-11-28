@@ -30,6 +30,10 @@ class TransactionRepositoryImpl @Inject constructor(private val dao: Transaction
         return dao.getAllSchedules()
     }
 
+    override fun updateSchedule(schedule: ScheduleDto) {
+        dao.updateSchedule(schedule)
+    }
+
     override fun eraseSchedules() {
         dao.eraseSchedules()
     }

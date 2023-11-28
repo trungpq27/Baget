@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.mobile.expenseapp.data.local.entity.AccountDto
 import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
@@ -27,6 +28,9 @@ interface TransactionDao {
 
     @Query("SELECT * FROM schedule_table")
     fun getAllSchedules(): Flow<List<ScheduleDto>>
+
+    @Update
+    fun updateSchedule(schedule: ScheduleDto)
 
     @Query("DELETE FROM schedule_table")
     fun eraseSchedules()

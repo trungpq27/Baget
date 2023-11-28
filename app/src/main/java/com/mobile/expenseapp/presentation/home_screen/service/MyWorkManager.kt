@@ -7,19 +7,33 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.core.app.NotificationCompat
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.R
-import com.mobile.expenseapp.di.BagetApplication
+import com.mobile.expenseapp.presentation.main.MainActivity
 import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.Calendar
-import java.util.Date
 import java.util.concurrent.TimeUnit
 
 @InternalCoroutinesApi
+@ExperimentalComposeUiApi
+//@InternalCoroutinesApi
+//@AndroidEntryPoint
+@ExperimentalPagerApi
+@ExperimentalUnitApi
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
 class MyWorkManager(
     context: Context,
     workerParams: WorkerParameters
@@ -47,7 +61,7 @@ class MyWorkManager(
         }
 
         // Intent to open your activity when the notification is tapped
-        val intent = Intent(applicationContext, BagetApplication::class.java)
+        val intent = Intent(applicationContext, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
@@ -55,6 +69,7 @@ class MyWorkManager(
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
+
 
         // Notification creation with the PendingIntent
         val notificationBuilder = NotificationCompat.Builder(applicationContext, "101")
@@ -84,8 +99,14 @@ class MyWorkManager(
                 .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
 //                .addTag(TAG_OUTPUT)
                 .build()
-            WorkManager.getInstance(context)
-                .enqueue(dailyWorkRequest)
+
+            val uniqueWorkName = "Notification"
+
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                uniqueWorkName,
+                ExistingWorkPolicy.REPLACE,
+                dailyWorkRequest
+            )
         }
     }
 }

@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.mobile.expenseapp.presentation.navigation.MainScreen
 import com.mobile.expenseapp.presentation.ui.theme.BagetTheme
-import com.mobile.expenseapp.presentation.home_screen.service.MyWorkManager.Companion.notificationDailyTask
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
@@ -35,9 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        notificationDailyTask(applicationContext)
-//        MyAutoAddWorker.createAutoAddWorkRequest(applicationContext)
 
         setContent {
             BagetTheme {
