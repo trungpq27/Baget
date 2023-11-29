@@ -238,12 +238,6 @@ class HomeViewModel @Inject constructor(
         currentTime.value = time
     }
 
-    fun insertNewTransaction(transactionDto: TransactionDto) {
-        viewModelScope.launch(IO) {
-            insertDailyTransactionUseCase(transactionDto)
-        }
-    }
-
     fun insertDailyTransaction(
         date: String,
         amount: Double,
@@ -481,7 +475,7 @@ enum class TabButton(val title: String) {
 }
 
 enum class TransactionType(val title: String) {
-    INCOME("Income"), EXPENSE("Expense"), TRANSFER("Transfer"),
+    INCOME("income"), EXPENSE("expense"), TRANSFER("Transfer"),
 }
 
 enum class Account(val title: String, val content: Int, val iconRes: Int, val color: Color) {
