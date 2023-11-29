@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.mobile.expenseapp.domain.usecase.read_database.GetAccountUseCase
 import com.mobile.expenseapp.domain.usecase.read_database.GetAllScheduleUseCase
 import com.mobile.expenseapp.domain.usecase.read_database.GetTransactionByTimestampUseCase
-import com.mobile.expenseapp.domain.usecase.write_database.InsertNewScheduleUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.InsertAccountsUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.InsertNewTransactionUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.UpdateScheduleUseCase
@@ -22,8 +23,9 @@ class ResetWorkerFactory @Inject constructor(
     private val insertNewTransactionUseCase: InsertNewTransactionUseCase,
     private val getTransactionByTimestampUseCase: GetTransactionByTimestampUseCase,
     private val getAllScheduleUseCase: GetAllScheduleUseCase,
-    private val insertNewScheduleUseCase: InsertNewScheduleUseCase,
-    private val updateScheduleUseCase: UpdateScheduleUseCase
+    private val updateScheduleUseCase: UpdateScheduleUseCase,
+    private val getAccountUseCase: GetAccountUseCase,
+    private val insertAccountsUseCase: InsertAccountsUseCase,
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -42,8 +44,9 @@ class ResetWorkerFactory @Inject constructor(
                     insertNewTransactionUseCase,
                     getTransactionByTimestampUseCase,
                     getAllScheduleUseCase,
-                    insertNewScheduleUseCase,
-                    updateScheduleUseCase
+                    updateScheduleUseCase,
+                    getAccountUseCase,
+                    insertAccountsUseCase,
                 )
 
             else -> null

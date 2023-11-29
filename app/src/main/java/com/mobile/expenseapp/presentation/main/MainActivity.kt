@@ -13,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.mobile.expenseapp.presentation.home_screen.service.MyAutoAddWorker
+import com.mobile.expenseapp.presentation.home_screen.service.MyWorkManager
 import com.mobile.expenseapp.presentation.navigation.MainScreen
 import com.mobile.expenseapp.presentation.ui.theme.BagetTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +36,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Example: Schedule a daily notification task
+        MyWorkManager.notificationDailyTask(applicationContext)
+
+        // Example: Create a one-time work request for auto-adding entries
+        MyAutoAddWorker.createAutoAddWorkRequest(applicationContext)
 
         setContent {
             BagetTheme {
