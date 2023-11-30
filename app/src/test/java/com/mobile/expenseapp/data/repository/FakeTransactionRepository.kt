@@ -39,6 +39,9 @@ class FakeTransactionRepository : TransactionRepository {
         AccountDto(3, Account.BANK.title, 5.0, 10.0, 5.0)
     )
 
+    override suspend fun insertSchedules(schedules: List<ScheduleDto>) {
+    }
+
     override suspend fun insertTransactions(dailyExpense: List<TransactionDto>) {
         return
     }
@@ -57,6 +60,9 @@ class FakeTransactionRepository : TransactionRepository {
 
     override suspend fun insertSchedule(schedule: ScheduleDto) {
         return
+    }
+
+    override fun updateSchedule(schedule: ScheduleDto) {
     }
 
     override fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>> {

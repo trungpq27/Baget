@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.service
 
+import android.util.Log
 import com.mobile.expenseapp.data.local.entity.LocalData
 import com.mobile.expenseapp.service.entity.Login
 import com.mobile.expenseapp.service.request.toSync
@@ -26,67 +27,82 @@ import io.ktor.serialization.gson.gson
 
 
 const val SERVER_URL = "http://10.0.2.2:8080"
+
 object APIRepository {
-    private val client = HttpClient(OkHttp){
-        install(ContentNegotiation){
+    private val client = HttpClient(OkHttp) {
+        install(ContentNegotiation) {
             gson()
         }
-        install(Logging){
+        install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.ALL
         }
     }
+
     suspend fun register(username: String, password: String): Boolean {
-        val response: HttpResponse = client.post( "$SERVER_URL/auth/register") {
-            contentType(ContentType.Application.Json)
-            setBody(Login(username, password))
-        }
-        return when(response.status){
-            HttpStatusCode.OK -> true
-            else -> false
-        }
-    }
-
-    suspend fun login(username: String, password: String): String?{
-        val response: HttpResponse = client.post("$SERVER_URL/auth/login"){
-            contentType(ContentType.Application.Json)
-            setBody(Login(username, password))
-        }
-        return when(response.status){
-            HttpStatusCode.OK -> {
-                val status: LoginResponse = response.body()
-                status.token
+        return try {
+            val response: HttpResponse = client.post("$SERVER_URL/auth/register") {
+                contentType(ContentType.Application.Json)
+                setBody(Login(username, password))
             }
-            else -> null
+            when (response.status) {
+                HttpStatusCode.OK -> true
+                else -> false
+            }
+        } catch (e: Exception) {
+            Log.e("APIRepository", e.message ?: "")
+            false
         }
     }
 
-    suspend fun healthCheck(): Boolean{
+    suspend fun login(username: String, password: String): Result<String> {
+        return try {
+            val response: HttpResponse = client.post("$SERVER_URL/auth/login") {
+                contentType(ContentType.Application.Json)
+                setBody(Login(username, password))
+            }
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    val status: LoginResponse = response.body()
+                    Result.success(status.token)
+                }
+                else -> Result.failure(Exception("Invalid credentials"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun healthCheck(): Boolean {
         val response: HttpResponse = client.get("$SERVER_URL/healthcheck")
         return response.status == HttpStatusCode.OK
     }
 
     suspend fun syncGet(token: String): LocalData? {
-        val response: HttpResponse = client.get("$SERVER_URL/sync") {
-            header(HttpHeaders.Authorization, "Bearer $token")
-            contentType(ContentType.Application.Json)
-        }
-        return try{
+        return try {
+            val response: HttpResponse = client.get("$SERVER_URL/sync") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+                contentType(ContentType.Application.Json)
+            }
             response.body<SyncResponse>().data.toDto()
-        }catch (e: Exception){
+        } catch (e: Exception) {
             null
         }
     }
 
-    suspend fun syncPost(token: String, localData: LocalData): Boolean{
-        val syncRequest = localData.toSync()
-        val response: HttpResponse = client.post("$SERVER_URL/sync"){
-            header(HttpHeaders.Authorization, "Bearer $token")
-            contentType(ContentType.Application.Json)
-            setBody(syncRequest)
-        }
+    suspend fun syncPost(token: String, localData: LocalData): Boolean {
+        return try {
+            val syncRequest = localData.toSync()
+            val response: HttpResponse = client.post("$SERVER_URL/sync") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+                contentType(ContentType.Application.Json)
+                setBody(syncRequest)
+            }
 
-        println("Body: ${response.body<String>()}")
-        return response.status == HttpStatusCode.OK
+            println("Body: ${response.body<String>()}")
+            response.status == HttpStatusCode.OK
+        }catch(e: Exception){
+            false
+        }
     }
 }

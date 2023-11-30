@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.presentation.auth_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
@@ -30,13 +31,16 @@ class AuthViewModel @Inject constructor(
     fun login(username: String, password: String) {
         viewModelScope.launch(IO) {
             _loginState.value = LoginState.Loading
-            val token = APIRepository.login(username, password)
-            if (token != null) {
-                editLoginTokenUseCase(token)
-                _loginState.value = LoginState.Success
-            } else {
-                _loginState.value = LoginState.Failure
-            }
+            val result = APIRepository.login(username, password)
+            result.fold(
+                onSuccess = { token ->
+                    editLoginTokenUseCase(token)
+                    _loginState.value = LoginState.Success
+                },
+                onFailure = { _ ->
+                    _loginState.value = LoginState.Failure
+                }
+            )
         }
     }
 
@@ -49,7 +53,7 @@ class AuthViewModel @Inject constructor(
                         syncFromRemoteUseCase(remoteData)
                     }
                 } else {
-                    println("You are not login")
+                    Log.d("sync", "Not login")
                 }
             }
         }
