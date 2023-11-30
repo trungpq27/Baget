@@ -8,5 +8,6 @@ class SyncFromRemoteUseCase @Inject constructor(private val repo: TransactionRep
     suspend operator fun invoke(data: LocalData) {
         repo.insertTransactions(data.transactions)
         repo.insertAccounts(data.accounts)
+        repo.insertSchedules(data.schedules)
     }
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b2e543081da5d1a6c309540c4466f6e4",
+    "identityHash": "20e903d99637155df0af4dcb5c4cfee7",
     "entities": [
       {
         "tableName": "transaction_table",
@@ -103,12 +103,62 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "schedule_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transactionTimestamp` INTEGER NOT NULL, `time_schedule` INTEGER NOT NULL, `time_unit` TEXT NOT NULL, `last_time_added` INTEGER NOT NULL, PRIMARY KEY(`transactionTimestamp`), FOREIGN KEY(`transactionTimestamp`) REFERENCES `transaction_table`(`timestamp`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "transactionDto",
+            "columnName": "transactionTimestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeSchedule",
+            "columnName": "time_schedule",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeUnit",
+            "columnName": "time_unit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastTimeAdded",
+            "columnName": "last_time_added",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "transactionTimestamp"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "transaction_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "transactionTimestamp"
+            ],
+            "referencedColumns": [
+              "timestamp"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b2e543081da5d1a6c309540c4466f6e4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '20e903d99637155df0af4dcb5c4cfee7')"
     ]
   }
 }

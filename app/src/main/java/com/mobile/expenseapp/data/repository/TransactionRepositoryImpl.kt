@@ -10,13 +10,18 @@ import java.util.Date
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) : TransactionRepository {
+    override suspend fun insertSchedules(schedules: List<ScheduleDto>) {
+        dao.insertSchedules(schedules)
+    }
+
     override suspend fun insertTransactions(dailyExpense: List<TransactionDto>) {
         dao.insertTransactions(transaction = dailyExpense)
     }
 
-    override suspend fun getTransactionByTimestamp(transactionTimestamp: Date): Flow<TransactionDto> {
-        return dao.getTransactionByTimestamp(transactionTimestamp)
+    override suspend fun getTransactionByTimestamp(timestamp: Date): Flow<TransactionDto> {
+        return dao.getTransactionByTimestamp(timestamp)
     }
+
     override suspend fun insertSchedule(schedule: ScheduleDto) {
         dao.insertSchedule(schedule)
     }

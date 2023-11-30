@@ -14,6 +14,9 @@ import java.util.Date
 @Dao
 interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSchedules(transaction: List<ScheduleDto>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransactions(transaction: List<TransactionDto>)
 
     @Query("SELECT * FROM transaction_table WHERE timestamp = :transactionTimestamp")

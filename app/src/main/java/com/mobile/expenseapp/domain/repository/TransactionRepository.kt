@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface TransactionRepository {
+    suspend fun insertSchedules(schedules: List<ScheduleDto>)
     suspend fun insertTransactions(dailyExpense: List<TransactionDto>)
     suspend fun getTransactionByTimestamp(timestamp: Date): Flow<TransactionDto>
     suspend fun insertSchedule(schedule: ScheduleDto)
@@ -19,7 +20,7 @@ interface TransactionRepository {
 
     suspend fun insertAccounts(accounts: List<AccountDto>)
 
-    fun getDailyTransaction(entryDate: String) : Flow<List<TransactionDto>>
+    fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>>
 
     fun getTransactionByAccount(accountType: String): Flow<List<TransactionDto>>
 
@@ -27,7 +28,7 @@ interface TransactionRepository {
 
     fun getAccounts(): Flow<List<AccountDto>>
 
-    fun getAllTransaction() : Flow<List<TransactionDto>>
+    fun getAllTransaction(): Flow<List<TransactionDto>>
 
     fun eraseTransaction()
 
