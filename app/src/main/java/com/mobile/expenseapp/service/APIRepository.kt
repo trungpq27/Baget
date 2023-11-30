@@ -26,7 +26,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
 
 
-const val SERVER_URL = "http://157.230.194.15:8080"
+const val SERVER_URL = "http://10.0.2.2:8080"
 
 
 object APIRepository {

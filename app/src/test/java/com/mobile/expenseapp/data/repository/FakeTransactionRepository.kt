@@ -46,6 +46,10 @@ class FakeTransactionRepository : TransactionRepository {
         return
     }
 
+    override suspend fun getTransactionByTimestamp(timestamp: Date): Flow<TransactionDto> {
+        TODO("Not yet implemented")
+    }
+
     private val scheduleList = listOf<ScheduleDto>(
 
     )

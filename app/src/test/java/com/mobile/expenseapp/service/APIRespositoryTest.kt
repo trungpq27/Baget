@@ -43,7 +43,7 @@ class APIRespositoryTest {
         val username = "nam7v3"
         val password = "nam7v3"
 
-        assert(APIRepository.login(username, password) != null)
+        assert(APIRepository.login(username, password).isSuccess)
     }
 
     @Test
@@ -52,7 +52,8 @@ class APIRespositoryTest {
         val password = generateRandomString(10)
 
         assert(APIRepository.register(username, password))
-        val token = APIRepository.login(username, password) ?: throw AssertionError("No token was sent")
+        val result = APIRepository.login(username, password)
+        val token = result.getOrThrow()
         println("TOKEN: $token")
         val syncRequest = SyncRequest(
             listOf(
@@ -79,7 +80,8 @@ class APIRespositoryTest {
                     "OOGa BOooga",
                     "Dooge"
                 ),
-            )
+            ),
+            listOf()
         )
 
         assert(APIRepository.syncPost(token, syncRequest.toDto()))
