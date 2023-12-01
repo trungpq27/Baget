@@ -55,7 +55,7 @@ fun SignInScreen(
     val password = remember { mutableStateOf(TextFieldValue()) }
     val loginState by authViewModel.loginState.collectAsState()
 
-    when(loginState){
+    when (loginState) {
         is LoginState.Success -> {
             navController.popBackStack()
             welcomeViewModel.saveCurrencyLocale()
@@ -171,7 +171,9 @@ fun SignInScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        navController.navigate(Screen.SignUpScreen.route)
+                    },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {

@@ -22,9 +22,17 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> get() = _loginState
+
+    val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
+    val registerState: StateFlow<RegisterState> get() = _registerState
     fun register(username: String, password: String) {
         viewModelScope.launch(IO) {
-            APIRepository.register(username, password)
+            val result = APIRepository.register(username, password)
+            if (result) {
+                _registerState.value = RegisterState.Success
+            } else {
+                _registerState.value = RegisterState.Failure
+            }
         }
     }
 
@@ -32,15 +40,12 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             _loginState.value = LoginState.Loading
             val result = APIRepository.login(username, password)
-            result.fold(
-                onSuccess = { token ->
-                    editLoginTokenUseCase(token)
-                    _loginState.value = LoginState.Success
-                },
-                onFailure = { _ ->
-                    _loginState.value = LoginState.Failure
-                }
-            )
+            result.fold(onSuccess = { token ->
+                editLoginTokenUseCase(token)
+                _loginState.value = LoginState.Success
+            }, onFailure = { _ ->
+                _loginState.value = LoginState.Failure
+            })
         }
     }
 
@@ -59,6 +64,13 @@ class AuthViewModel @Inject constructor(
         }
         _loginState.value = LoginState.Idle
     }
+}
+
+sealed class RegisterState {
+    object Idle : RegisterState()
+    object Loading : RegisterState()
+    object Success : RegisterState()
+    object Failure : RegisterState()
 }
 
 sealed class LoginState {
