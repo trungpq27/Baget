@@ -10,6 +10,7 @@ import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitKeyUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLanguageUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.EraseScheduleUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.EraseTransactionUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.InsertAccountsUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
@@ -21,7 +22,6 @@ import com.mobile.expenseapp.presentation.home_screen.Account
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,7 +40,8 @@ class SettingViewModel @Inject constructor(
     private val getDarkModeUseCase: GetDarkModeUseCase,
     private val editDarkModeUseCase: EditDarkModeUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
-    private val editLanguageUseCase: EditLanguageUseCase
+    private val editLanguageUseCase: EditLanguageUseCase,
+    private val eraseScheduleUseCase: EraseScheduleUseCase
 ) : ViewModel() {
 
 
@@ -111,6 +112,8 @@ class SettingViewModel @Inject constructor(
             eraseTransactionUseCase()
             // erase datastore
             eraseDatastoreUseCase()
+            //erase schedules
+            eraseScheduleUseCase()
         }
     }
 
