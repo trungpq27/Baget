@@ -1,6 +1,5 @@
 package com.mobile.expenseapp.presentation.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -46,12 +45,15 @@ private val LightColorPalette = lightColors(
 @ExperimentalMaterialApi
 @Composable
 fun BagetTheme(content: @Composable () -> Unit) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
-    val colors = DarkColorPalette
+    val settingViewModel = hiltViewModel<SettingViewModel>()
+
+    // Access the isDarkMode property
+    val isDarkModeEnabled by settingViewModel.isDarkMode.collectAsState()
+    val colors = if (isDarkModeEnabled) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
 
     val windowInfo = rememberWindowInfo()
 
