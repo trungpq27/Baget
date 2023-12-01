@@ -3,9 +3,9 @@ package com.mobile.expenseapp.presentation.home_screen.service
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.WorkRequest
 import androidx.work.WorkerParameters
 import com.mobile.expenseapp.domain.usecase.read_database.GetLocalDataUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
@@ -37,11 +37,15 @@ class SyncWorker(
 
     companion object {
         fun schedulePeriodicWork(context: Context) {
-            val periodicWorkRequest: WorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(
-                repeatInterval = 1, repeatIntervalTimeUnit = TimeUnit.HOURS
+            val periodicWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+                repeatInterval = 10, repeatIntervalTimeUnit = TimeUnit.MINUTES
             ).build()
 
-            WorkManager.getInstance(context).enqueue(periodicWorkRequest)
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                "Sync",
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicWorkRequest
+            )
         }
     }
 }
