@@ -38,7 +38,7 @@ fun MainNavigation(
             SignInScreen(navController = navController)
         }
         composable(route = Screen.SignUpScreen.route){
-            SignUpScreen()
+            SignUpScreen(navController = navController)
         }
         composable(route = Screen.WelcomeScreen.route) {
             WelcomeScreen(navController = navController)

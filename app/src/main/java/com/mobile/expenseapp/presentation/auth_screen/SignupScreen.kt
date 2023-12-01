@@ -19,6 +19,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,11 +35,26 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.mobile.expenseapp.R
+import com.mobile.expenseapp.presentation.navigation.Screen
 
 @ExperimentalMaterialApi
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
+
+    val registerState by authViewModel.registerState.collectAsState()
+
+    when (registerState) {
+        is RegisterState.Success -> {
+            navController.navigate(Screen.SignInScreen.route)
+        }
+        else -> {}
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Bottom,
@@ -98,7 +115,11 @@ fun SignUpScreen() {
                     .fillMaxWidth()
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        if(password_repeat.value.text == password.value.text){
+                            authViewModel.register(username.value.text, password.value.text)
+                        }
+                    },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
