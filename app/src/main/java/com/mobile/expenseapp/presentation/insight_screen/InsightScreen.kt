@@ -41,6 +41,7 @@ import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.home_screen.components.ListPlaceholder
+import com.mobile.expenseapp.presentation.insight_screen.components.BarChart
 import com.mobile.expenseapp.presentation.insight_screen.components.DonutChart
 import com.mobile.expenseapp.presentation.insight_screen.components.InsightItem
 import com.mobile.expenseapp.presentation.insight_screen.components.InsightTabBar
@@ -93,7 +94,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             )
         )
     }
-    var selectedDuration by remember { mutableStateOf(limitDuration.last()) }
+    var selectedDuration by remember { mutableStateOf(limitDuration[0]) }
 
     Surface(
         color = MaterialTheme.colors.background,
@@ -176,6 +177,11 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                 textAlign = TextAlign.Start
             )
 
+            // BarChart
+//            LazyColumn {
+//                BarChart(data = filteredCategories, max_value = )
+//            }
+
             LazyColumn {
                 item {
                     if (filteredTransactions.isNotEmpty())
@@ -191,6 +197,8 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             filteredTransactions.ifEmpty {
                 ListPlaceholder(navController)
             }
+            
+            
         }
     }
 }

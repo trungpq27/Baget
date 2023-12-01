@@ -32,7 +32,8 @@ fun EntryTypePicker(
     tabs: Array<TransactionType> = TransactionType.values(),
     cornerRadius: Dp = 24.dp,
     onButtonClick: () -> Unit = { },
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    transactionType: TransactionType
 ) {
     val selectedTab by homeViewModel.transactionType.collectAsState()
     Surface(

@@ -246,7 +246,7 @@ fun TransactionScreen(
                     verticalArrangement = Arrangement.Top
                 ) {
                     // Make this the way to pick the transaction type, not the scaffold
-                    EntryTypePicker()
+//                    EntryTypePicker(transactionType = transactionType)
 
                     InfoBanner(shown = showInfoBanner, transactionType)
                     
@@ -280,7 +280,7 @@ fun TransactionScreen(
                                 start = MaterialTheme.spacing.medium,
                                 end = MaterialTheme.spacing.medium
                             ),
-                        colors = ButtonDefaults.textButtonColors(DarkSecondary100),
+                        colors = ButtonDefaults.textButtonColors(MaterialTheme.colors.primary),
                         shape = RoundedCornerShape(6.dp),
                         contentPadding = PaddingValues(
                             horizontal = MaterialTheme.spacing.medium,
@@ -311,22 +311,6 @@ fun TransactionScreen(
                                 )
                         )
                     }
-
-                    // Picker
-//                    LazyRow(
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        verticalAlignment = Alignment.CenterVertically,
-//                        modifier = Modifier
-//                            .padding(
-//                                horizontal = MaterialTheme.spacing.medium,
-//                                vertical = MaterialTheme.spacing.small
-//                            )
-//                            .align(Alignment.Start)
-//                    ) {
-//                        items(Account.values()) { account ->
-//                            AccountTag(account = account, navController = navController)
-//                        }
-//                    }
 
                     // Account type
                     Text(
@@ -625,7 +609,7 @@ fun NoteTextField(
 
 @Composable
 fun SetRepeatable() {
-    val checkedState = remember { mutableStateOf(false) }
+    var checkedState by remember { mutableStateOf(false) }
 
     Row (
         modifier = Modifier
@@ -637,8 +621,8 @@ fun SetRepeatable() {
         horizontalArrangement = Arrangement.Start
     ) {
         Checkbox(
-            checked = checkedState.value,
-            onCheckedChange = { checkedState.value = it },
+            checked = checkedState,
+            onCheckedChange = { checkedState = !checkedState },
             colors = CheckboxDefaults.colors(MaterialTheme.colors.primary)
         )
         
@@ -646,37 +630,84 @@ fun SetRepeatable() {
     }
 
     // checkbox (not finished)
-//    if (checkedState) {
-//        Column {
-//
-//        }
-//    }
-
-    Row (
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-
-    ) {
-        TextButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-//                .align(Alignment.Start)
-                .fillMaxWidth()
-                .background(Color.Transparent)
-                .padding(
+    if (checkedState) {
+        Column {
+            var expandedAutoState by remember { mutableStateOf(false) }
+            var autoItems by remember {
+                mutableStateOf(
+                    listOf(
+                        "Daily",
+                        "Weekly",
+                        "Monthly",
+                        "Yearly "
+                    )
+                )
+            }
+            var selectedAuto by remember { mutableStateOf("Repeat timer") }
+            
+            TextButton(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    //                .align(Alignment.Start)
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+                    .padding(
+                        horizontal = MaterialTheme.spacing.medium,
+                        vertical = MaterialTheme.spacing.small
+                    ),
+                border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+                shape = RoundedCornerShape(6.dp),
+                contentPadding = PaddingValues(
                     horizontal = MaterialTheme.spacing.medium,
-                    vertical = MaterialTheme.spacing.small
+                    vertical = MaterialTheme.spacing.medium
                 ),
-            border = BorderStroke(1.dp, MaterialTheme.colors.primary),
-            shape = RoundedCornerShape(6.dp),
-            contentPadding = PaddingValues(
-                horizontal = MaterialTheme.spacing.medium,
-                vertical = MaterialTheme.spacing.medium
-            ),
-        ) {
-            Text(text = "Repeat timer")
+            ) {
+                Box (
+                    modifier = Modifier
+                        .clickable {
+                            expandedAutoState = !expandedAutoState
+                        }
+                        .fillMaxSize()
+                    ) {
+                    Row (
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        Text(
+                            text = selectedAuto,
+                            style = MaterialTheme.typography.subtitle1
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expandedAutoState,
+                        onDismissRequest = { expandedAutoState = false },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        autoItems.forEachIndexed { index, auto ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    expandedAutoState = false
+                                },
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = auto,
+                                        style = MaterialTheme.typography.subtitle2,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+
+
 
 }
