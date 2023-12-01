@@ -13,6 +13,7 @@ import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.domain.repository.DatastoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = "whiz_key_store")
@@ -27,6 +28,16 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
     private val selectedLanguage = stringPreferencesKey(Constants.CURRENCY_LANGUAGE)
     private val expenseLimit = doublePreferencesKey(Constants.EXPENSE_LIMIT_KEY)
     private val limitDuration = intPreferencesKey(Constants.LIMIT_DURATION)
+    private val loginToken = stringPreferencesKey("baget_login_token")
+
+    override suspend fun writeLoginToken(token: String) {
+        datastore.edit { store ->
+            store[loginToken] = token
+        }
+    }
+
+    override suspend fun readLoginToken(): Flow<String?> =
+        datastore.data.map { pref -> pref[loginToken] }
 
     override suspend fun writeOnboardingKeyToDataStore(completed: Boolean) {
         datastore.edit { store ->

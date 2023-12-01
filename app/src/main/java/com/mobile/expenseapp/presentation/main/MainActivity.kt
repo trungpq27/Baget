@@ -1,8 +1,8 @@
 package com.mobile.expenseapp.presentation.main
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -13,6 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.mobile.expenseapp.presentation.home_screen.service.MyAutoAddWorker
+import com.mobile.expenseapp.presentation.home_screen.service.MyWorkManager
+import com.mobile.expenseapp.presentation.home_screen.service.SyncWorker
 import com.mobile.expenseapp.presentation.navigation.MainScreen
 import com.mobile.expenseapp.presentation.ui.theme.BagetTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,14 +30,18 @@ import javax.inject.Inject
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MyWorkManager.notificationDailyTask(applicationContext)
 
+        MyAutoAddWorker.createAutoAddWorkRequest(applicationContext)
+
+        SyncWorker.schedulePeriodicWork(applicationContext)
         setContent {
             BagetTheme {
                 Surface(color = MaterialTheme.colors.background) {

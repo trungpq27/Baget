@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.presentation.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -44,7 +45,7 @@ private val LightColorPalette = lightColors(
 
 @ExperimentalMaterialApi
 @Composable
-fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun BagetTheme(content: @Composable () -> Unit) {
 //    val colors = if (darkTheme) {
 //        DarkColorPalette
 //    } else {
