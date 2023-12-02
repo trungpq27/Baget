@@ -2,6 +2,7 @@ package com.mobile.expenseapp.data.repository
 
 import com.mobile.expenseapp.data.local.TransactionDao
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.LocalData
 import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.domain.repository.TransactionRepository
@@ -10,6 +11,14 @@ import java.util.Date
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(private val dao: TransactionDao) : TransactionRepository {
+    override suspend fun syncDatabase(data: LocalData) {
+        dao.syncDatabase(data)
+    }
+
+    override suspend fun eraseDatabase() {
+        dao.eraseDatabase()
+    }
+
     override suspend fun insertSchedules(schedules: List<ScheduleDto>) {
         dao.insertSchedules(schedules)
     }
@@ -71,7 +80,7 @@ class TransactionRepositoryImpl @Inject constructor(private val dao: Transaction
     }
 
     override fun eraseTransaction() {
-        dao.eraseTransaction()
+        dao.eraseTransactions()
     }
 
     override fun getCurrentDayExpTransaction(): Flow<List<TransactionDto>> {

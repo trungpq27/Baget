@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.EraseDatabaseUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.SyncFromRemoteUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLoginTokenUseCase
 import com.mobile.expenseapp.service.APIRepository
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val editLoginTokenUseCase: EditLoginTokenUseCase,
     private val getLoginTokenUseCase: GetLoginTokenUseCase,
-    private val syncFromRemoteUseCase: SyncFromRemoteUseCase
+    private val syncFromRemoteUseCase: SyncFromRemoteUseCase,
+    private val eraseDatabaseUseCase: EraseDatabaseUseCase
 ) : ViewModel() {
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> get() = _loginState
@@ -63,6 +65,12 @@ class AuthViewModel @Inject constructor(
             }
         }
         _loginState.value = LoginState.Idle
+    }
+
+    fun clearOnFreshLogin(){
+        viewModelScope.launch{
+            eraseDatabaseUseCase()
+        }
     }
 }
 

@@ -62,6 +62,7 @@ fun SignInScreen(
 //            welcomeViewModel.saveOnBoardingState(completed = true)
             welcomeViewModel.createAccounts()
 
+            authViewModel.clearOnFreshLogin()
             authViewModel.syncToRemoteWhenLogin()
             navController.navigate(Screen.HomeScreen.route)
         }

@@ -2,21 +2,22 @@ package com.mobile.expenseapp.presentation.setting_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobile.expenseapp.domain.usecase.read_database.GetLocalDataUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetCurrencyUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetExpenseLimitUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitKeyUseCase
-import com.mobile.expenseapp.domain.usecase.write_database.EraseAccountsUseCase
-import com.mobile.expenseapp.domain.usecase.write_database.EraseScheduleUseCase
-import com.mobile.expenseapp.domain.usecase.write_database.EraseTransactionUseCase
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.EraseDatabaseUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitKeyUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EraseDatastoreUseCase
+import com.mobile.expenseapp.service.APIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
-    private val eraseTransactionUseCase: EraseTransactionUseCase,
     private val getExpenseLimitUseCase: GetExpenseLimitUseCase,
     private val editExpenseLimitUseCase: EditExpenseLimitUseCase,
     private val getLimitKeyUseCase: GetLimitKeyUseCase,
@@ -38,8 +38,9 @@ class SettingViewModel @Inject constructor(
     private val editDarkModeUseCase: EditDarkModeUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
     private val editLanguageUseCase: EditLanguageUseCase,
-    private val eraseScheduleUseCase: EraseScheduleUseCase,
-    private val eraseAccountsUseCase: EraseAccountsUseCase
+    private val eraseDatabaseUseCase: EraseDatabaseUseCase,
+    private val getLoginTokenUseCase: GetLoginTokenUseCase,
+    private val getLocalDataUseCase: GetLocalDataUseCase
 ) : ViewModel() {
 
 
@@ -60,7 +61,7 @@ class SettingViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(IO) {
-            getCurrencyUseCase().collect { selectedCurrency->
+            getCurrencyUseCase().collect { selectedCurrency ->
                 currency.value = selectedCurrency
             }
         }
@@ -98,14 +99,14 @@ class SettingViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch(IO) {
-            // reset account
-            eraseAccountsUseCase()
-            // erase transactions
-            eraseTransactionUseCase()
-            // erase datastore
-            eraseDatastoreUseCase()
-            //erase schedules
-            eraseScheduleUseCase()
+            getLoginTokenUseCase().collect { token ->
+                if (token != null) {
+                    getLocalDataUseCase().collect { data ->
+                        APIRepository.syncPost(token, data)
+                        eraseDatabaseUseCase()
+                    }
+                }
+            }
         }
     }
 
@@ -120,6 +121,7 @@ class SettingViewModel @Inject constructor(
             editLanguageUseCase(selectedLanguage)
         }
     }
+
     fun editLimitKey(enabled: Boolean) {
         viewModelScope.launch(IO) {
             editLimitKeyUseCase(enabled)
