@@ -2,8 +2,9 @@ package com.mobile.expenseapp.presentation.home_screen.service
 
 import android.content.Context
 import android.util.Log
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -37,15 +38,18 @@ class SyncWorker(
 
     companion object {
         fun schedulePeriodicWork(context: Context) {
-            val periodicWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(
-                repeatInterval = 10, repeatIntervalTimeUnit = TimeUnit.MINUTES
-            ).build()
+            val workManager = WorkManager.getInstance(context)
+            val existingWorkInfo = workManager.getWorkInfosByTag("baget_sync").get()
 
-            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                "Sync",
-                ExistingPeriodicWorkPolicy.KEEP,
-                periodicWorkRequest
-            )
+            if (existingWorkInfo.isNullOrEmpty()) {
+                val constraints =
+                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+                val periodicWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+                    repeatInterval = 10, repeatIntervalTimeUnit = TimeUnit.MINUTES
+                ).setConstraints(constraints).addTag("baget_sync").build()
+
+                workManager.enqueue(periodicWorkRequest)
+            }
         }
     }
 }
