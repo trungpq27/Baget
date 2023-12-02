@@ -45,7 +45,7 @@ class SyncWorker(
                 val constraints =
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
                 val periodicWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(
-                    repeatInterval = 10, repeatIntervalTimeUnit = TimeUnit.MINUTES
+                    repeatInterval = 30, repeatIntervalTimeUnit = TimeUnit.SECONDS
                 ).setConstraints(constraints).addTag("baget_sync").build()
 
                 workManager.enqueue(periodicWorkRequest)

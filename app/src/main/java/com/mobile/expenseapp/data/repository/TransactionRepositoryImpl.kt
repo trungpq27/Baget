@@ -46,6 +46,10 @@ class TransactionRepositoryImpl @Inject constructor(private val dao: Transaction
         dao.insertAccounts(accounts)
     }
 
+    override fun eraseAccounts() {
+        dao.eraseAccounts()
+    }
+
     override fun getTransactionByAccount(accountType: String): Flow<List<TransactionDto>> {
         return dao.getTransactionByAccount(accountType)
     }

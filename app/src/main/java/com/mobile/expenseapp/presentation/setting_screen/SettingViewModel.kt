@@ -2,23 +2,21 @@ package com.mobile.expenseapp.presentation.setting_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobile.expenseapp.data.local.entity.AccountDto
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetCurrencyUseCase
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetExpenseLimitUseCase
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitKeyUseCase
-import com.mobile.expenseapp.domain.usecase.write_datastore.EditDarkModeUseCase
-import com.mobile.expenseapp.domain.usecase.read_datastore.GetDarkModeUseCase
-import com.mobile.expenseapp.domain.usecase.read_datastore.GetLanguageUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.EraseAccountsUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.EraseScheduleUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.EraseTransactionUseCase
-import com.mobile.expenseapp.domain.usecase.write_database.InsertAccountsUseCase
+import com.mobile.expenseapp.domain.usecase.write_datastore.EditDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitKeyUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EraseDatastoreUseCase
-import com.mobile.expenseapp.presentation.home_screen.Account
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +26,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
-    private val insertAccountsUseCase: InsertAccountsUseCase,
     private val eraseTransactionUseCase: EraseTransactionUseCase,
     private val getExpenseLimitUseCase: GetExpenseLimitUseCase,
     private val editExpenseLimitUseCase: EditExpenseLimitUseCase,
@@ -41,7 +38,8 @@ class SettingViewModel @Inject constructor(
     private val editDarkModeUseCase: EditDarkModeUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
     private val editLanguageUseCase: EditLanguageUseCase,
-    private val eraseScheduleUseCase: EraseScheduleUseCase
+    private val eraseScheduleUseCase: EraseScheduleUseCase,
+    private val eraseAccountsUseCase: EraseAccountsUseCase
 ) : ViewModel() {
 
 
@@ -98,16 +96,10 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun eraseTransaction() {
+    fun logout() {
         viewModelScope.launch(IO) {
             // reset account
-            insertAccountsUseCase(
-                listOf(
-                    AccountDto(1, Account.CASH.title, 0.0, 0.0, 0.0),
-                    AccountDto(2, Account.BANK.title, 0.0, 0.0, 0.0),
-                    AccountDto(3, Account.CARD.title, 0.0, 0.0, 0.0)
-                )
-            )
+            eraseAccountsUseCase()
             // erase transactions
             eraseTransactionUseCase()
             // erase datastore

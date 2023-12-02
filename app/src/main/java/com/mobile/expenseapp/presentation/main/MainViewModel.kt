@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             getOnBoardingKeyUseCase().collect { completed ->
                 if (completed)
-                    startDestination.value = Screen.HomeScreen.route
+                    startDestination.value = Screen.SignInScreen.route
             }
 
             isLoading.value = false

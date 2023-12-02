@@ -29,6 +29,21 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
     private val expenseLimit = doublePreferencesKey(Constants.EXPENSE_LIMIT_KEY)
     private val limitDuration = intPreferencesKey(Constants.LIMIT_DURATION)
     private val loginToken = stringPreferencesKey("baget_login_token")
+    private val isLoggedIn = booleanPreferencesKey("baget_is_logged_in")
+    override suspend fun writeIsLoggedIn(loggedIn: Boolean) {
+        datastore.edit { store ->
+            store[isLoggedIn] = loggedIn
+        }
+    }
+
+    override suspend fun readIsLoggedIn(): Flow<Boolean> {
+        val preferences = datastore.data
+        return flow {
+            preferences.collect { pref ->
+                emit(pref[isLoggedIn] ?: false)
+            }
+        }
+    }
 
     override suspend fun writeLoginToken(token: String) {
         datastore.edit { store ->
@@ -149,6 +164,7 @@ class DatastoreRepositoryImpl @Inject constructor(context: Context) : DatastoreR
             it.remove(limitKey)
             it.remove(limitDuration)
             it.remove(expenseLimit)
+            it.remove(loginToken)
         }
     }
 }

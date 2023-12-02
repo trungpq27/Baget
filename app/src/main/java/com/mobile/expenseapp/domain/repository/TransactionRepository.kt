@@ -19,6 +19,7 @@ interface TransactionRepository {
     suspend fun insertTransaction(dailyExpense: TransactionDto)
 
     suspend fun insertAccounts(accounts: List<AccountDto>)
+    fun eraseAccounts()
 
     fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>>
 

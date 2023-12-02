@@ -41,6 +41,9 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccounts(accounts: List<AccountDto>)
 
+    @Query("DELETE FROM account_table")
+    fun eraseAccounts()
+
     @Query("SELECT * FROM transaction_table WHERE entry_date = :entryDate")
     fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>>
 
