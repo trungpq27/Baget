@@ -63,7 +63,7 @@ fun TabButton(
                 )
 
                 val textColor by animateColorAsState(
-                    if (selectedTab == tab) MaterialTheme.colors.surface
+                    if (selectedTab == tab) MaterialTheme.colors.onSurface
                     else MaterialTheme.colors.onSurface,
                     animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
                 )

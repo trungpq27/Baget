@@ -32,10 +32,10 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = LightBlue500,
-    secondary = LightBlue500,
-    background = Grey100,
-    surface = White,
+    primary = LightPrimary100,
+    secondary = LightSecondary100,
+    background = LightBackGround,
+    surface = LightPrimary30,
     error = Red500,
     onSurface = Black,
     onPrimary = Color.White,
@@ -45,13 +45,12 @@ private val LightColorPalette = lightColors(
 
 @ExperimentalMaterialApi
 @Composable
-fun BagetTheme(content: @Composable () -> Unit) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
-    val colors = DarkColorPalette
+fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
 
     val windowInfo = rememberWindowInfo()
 

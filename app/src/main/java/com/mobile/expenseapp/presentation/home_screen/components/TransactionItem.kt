@@ -57,7 +57,7 @@ fun TransactionItem(
         onClick = {
             onItemClick()
         },
-        backgroundColor = MaterialTheme.colors.secondary,
+        backgroundColor = MaterialTheme.colors.surface,
         elevation = 0.dp,
         shape = RoundedCornerShape(24.dp),
         modifier = Modifier
@@ -141,6 +141,7 @@ fun TransactionItem(
                     if (transaction.title.isNotEmpty()) {
                         Text(
                             text = transaction.title,
+                            color = MaterialTheme.colors.onSurface,
                             style = MaterialTheme.typography.body2,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis

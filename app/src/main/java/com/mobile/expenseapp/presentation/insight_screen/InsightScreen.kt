@@ -1,7 +1,10 @@
 package com.mobile.expenseapp.presentation.insight_screen
 
+import android.os.Trace
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -20,6 +25,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -38,14 +45,18 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
+import com.mobile.expenseapp.common.Constants
+import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.home_screen.components.ListPlaceholder
 import com.mobile.expenseapp.presentation.insight_screen.components.BarChart
+import com.mobile.expenseapp.presentation.insight_screen.components.BarType
 import com.mobile.expenseapp.presentation.insight_screen.components.DonutChart
 import com.mobile.expenseapp.presentation.insight_screen.components.InsightItem
 import com.mobile.expenseapp.presentation.insight_screen.components.InsightTabBar
 import com.mobile.expenseapp.util.spacing
+import kotlin.math.round
 
 @ExperimentalFoundationApi
 @ExperimentalUnitApi
@@ -84,50 +95,54 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
     var expandedState by remember { mutableStateOf(false) }
     val limitDuration by remember {
         mutableStateOf(
-            listOf(
-                "Last 3 Days", "Last 7 Days", "Last 14 Days", "This Month",
-                "Last Month", "All"
-            )
+                listOf(
+                        navController.context.getString(R.string.last_3_days),
+                        navController.context.getString(R.string.last_7_days),
+                        navController.context.getString(R.string.last_14_days),
+                        navController.context.getString(R.string.this_month),
+                        navController.context.getString(R.string.last_month),
+                        navController.context.getString(R.string.all)
+                )
         )
     }
     var selectedDuration by remember { mutableStateOf(limitDuration[0]) }
 
     Surface(
-        color = MaterialTheme.colors.background,
-        modifier = Modifier.padding(
-            start = MaterialTheme.spacing.medium,
-            end = MaterialTheme.spacing.medium,
-            top = MaterialTheme.spacing.small
-        )
+            color = MaterialTheme.colors.background,
+            modifier = Modifier.padding(
+                    start = MaterialTheme.spacing.medium,
+                    end = MaterialTheme.spacing.medium,
+                    top = MaterialTheme.spacing.small
+            )
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                        .fillMaxSize()
         ) {
             Row(
-                modifier = Modifier
-                    .clickable {
-                        expandedState = !expandedState
-                    }
-                    .padding(MaterialTheme.spacing.medium),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier
+                            .clickable {
+                                expandedState = !expandedState
+                            }
+                            .padding(MaterialTheme.spacing.medium),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = selectedDuration,
-                    style = MaterialTheme.typography.subtitle1
+                        text = selectedDuration,
+                        style = MaterialTheme.typography.subtitle1
                 )
 
                 Icon(
-                    painter = painterResource(R.drawable.pop_up),
-                    contentDescription = null,
-                    tint = MaterialTheme.colors.onSurface
+                        painter = painterResource(R.drawable.pop_up),
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onSurface
                 )
 
                 DropdownMenu(
-                    expanded = expandedState,
-                    onDismissRequest = { expandedState = false }
+                        expanded = expandedState,
+                        onDismissRequest = { expandedState = false }
                 ) {
                     limitDuration.forEachIndexed { index, label ->
                         DropdownMenuItem(onClick = {
@@ -136,12 +151,12 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                             expandedState = false
                         }) {
                             Text(
-                                text = label,
-                                style = MaterialTheme.typography.subtitle2,
-                                color = if (selectedDuration == label)
-                                    MaterialTheme.colors.primary
-                                else
-                                    Color.Gray
+                                    text = label,
+                                    style = MaterialTheme.typography.subtitle2,
+                                    color = if (selectedDuration == label)
+                                        MaterialTheme.colors.onSurface
+                                    else
+                                        Color.Gray
                             )
                         }
                     }
@@ -155,46 +170,95 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Total",
-                color = MaterialTheme.colors.onSurface,
-                style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
-                letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start
+                    text = navController.context.getString(R.string.insight_total),
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                    letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
+                    modifier = Modifier
+                            .fillMaxWidth(),
+                    textAlign = TextAlign.Start
             )
 
             Text(
-                text = currencyCode + total.toString().amountFormat(),
-                style = MaterialTheme.typography.h3.copy(fontSize = 20.sp),
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start
+                    text = currencyCode + total.toString().amountFormat(),
+                    style = MaterialTheme.typography.h3.copy(fontSize = 20.sp),
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier
+                            .fillMaxWidth(),
+                    textAlign = TextAlign.Start
             )
 
+            Spacer(modifier = Modifier.height(32.dp))
+
             // BarChart
-//            LazyColumn {
-//                BarChart(data = filteredCategories, max_value = )
-//            }
+            insightViewModel.getFilteredTransaction(3)
+            val thisMonthTransaction by insightViewModel.filteredTransaction.collectAsState()
+            insightViewModel.getFilteredTransaction(4)
+            val temp by insightViewModel.filteredTransaction.collectAsState()
+            val lastMonthTransaction = mutableListOf<Transaction>()
+            thisMonthTransaction.forEach {
+                if(!temp.contains(it))
+                    lastMonthTransaction.add(it)
+            }
+            var thisMonthTotal = 0.0
+            var lastMonthTotal = 0.0
 
-            LazyColumn {
-                item {
-                    if (filteredTransactions.isNotEmpty())
-                        DonutChart(filteredCategories, percentProgress)
-                }
-
-                itemsIndexed(filteredCategories) { index, category ->
-                    val amount = groupedData[category.title]?.sumOf { it.amount }
-                    InsightItem(cat = category, currencyCode, amount = amount!!, percentProgress[index])
-                }
+            thisMonthTransaction.forEach {
+                thisMonthTotal += it.amount
+            }
+            lastMonthTransaction.forEach {
+                lastMonthTotal += it.amount
             }
 
-            filteredTransactions.ifEmpty {
-                ListPlaceholder(navController)
+            insightViewModel.getFilteredTransaction()
+
+
+            val barData_ = listOf(lastMonthTotal.toInt(), thisMonthTotal.toInt())
+            val graphBarData = mutableListOf<Float>()
+            barData_.forEachIndexed { index, value ->
+                graphBarData.add(index = index, element = value.toFloat() / barData_.maxOf { it }.toFloat())
             }
-            
-            
+            val xAxisScaleData = mutableListOf("Last month", "This month")
+
+            Column (
+                    modifier = Modifier
+                            .padding(MaterialTheme.spacing.medium)
+            ) {
+                LazyColumn (
+                        modifier = Modifier.padding(MaterialTheme.spacing.small)
+                ) {
+
+                    // bar chart
+                    item {
+                        BarChart(
+                                graphBarData = graphBarData,
+                                xAxisScaleData = xAxisScaleData,
+                                barData_ = barData_,
+                                height = 200.dp,
+                                roundType = BarType.CIRCULAR_TYPE,
+                                barWidth = 20.dp,
+                                barColor = MaterialTheme.colors.primary,
+                                barArrangement = Arrangement.Start,
+                                insightViewModel = insightViewModel
+                        )
+                    }
+
+                    // donut
+                    item {
+                        if (filteredTransactions.isNotEmpty())
+                            DonutChart(filteredCategories, percentProgress)
+                    }
+
+                    itemsIndexed(filteredCategories) { index, category ->
+                        val amount = groupedData[category.title]?.sumOf { it.amount }
+                        InsightItem(cat = category, currencyCode, amount = amount!!, percentProgress[index])
+                    }
+                }
+
+                filteredTransactions.ifEmpty {
+                    ListPlaceholder(navController)
+                }
+            }
         }
     }
 }
