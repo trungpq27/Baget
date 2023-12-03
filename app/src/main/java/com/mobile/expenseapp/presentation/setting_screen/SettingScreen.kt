@@ -24,12 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -41,10 +38,9 @@ import com.mobile.expenseapp.presentation.setting_screen.components.EraseSetting
 import com.mobile.expenseapp.presentation.setting_screen.components.LanguageSetting
 import com.mobile.expenseapp.presentation.setting_screen.components.LimitContent
 import com.mobile.expenseapp.presentation.setting_screen.components.LimitSetting
-import com.mobile.expenseapp.presentation.setting_screen.components.PrivacySetting
-import com.mobile.expenseapp.presentation.setting_screen.components.RateSetting
 import com.mobile.expenseapp.presentation.setting_screen.components.ReminderSetting
-import com.mobile.expenseapp.presentation.setting_screen.components.VersionSetting
+import com.mobile.expenseapp.presentation.setting_screen.components.ScheduleList
+import com.mobile.expenseapp.presentation.setting_screen.components.ScheduleSetting
 import com.mobile.expenseapp.util.spacing
 
 @ExperimentalMaterialApi
@@ -57,6 +53,7 @@ fun SettingScreen(
 
     val currency by settingViewModel.currency.collectAsState()
     val language by settingViewModel.language.collectAsState()
+    val scheduleList by settingViewModel.scheduleList.collectAsState()
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
@@ -72,11 +69,17 @@ fun SettingScreen(
                     1 -> {
                         LimitContent(modalBottomSheetState, scope, navController)
                     }
+
                     2 -> {
                         EraseContent(modalBottomSheetState, scope, navController)
                     }
+
                     3 -> {
                         LanguageContent(modalBottomSheetState, scope, navController)
+                    }
+
+                    4 -> {
+                        ScheduleList(modalBottomSheetState, scope, navController,onScheduleClick = {}, onDeleteClick = {})
                     }
                 }
             }
@@ -113,39 +116,21 @@ fun SettingScreen(
                     ) {
 
                         CurrencySetting(currency, navController)
-
+                        ScheduleSetting(modalBottomSheetState, scope, navController){
+                            sheetRankState.value = it
+                        }
                         LimitSetting(modalBottomSheetState, scope, navController) {
                             sheetRankState.value = it
                         }
 
                         ReminderSetting(navController)
                         DarkModeSetting(navController)
-                        LanguageSetting(language,modalBottomSheetState, scope, navController) {
+                        LanguageSetting(language, modalBottomSheetState, scope, navController) {
                             sheetRankState.value = it
                         }
                         EraseSetting(modalBottomSheetState, scope, navController) {
                             sheetRankState.value = it
                         }
-
-                        Text(
-                            text = navController.context.getString(R.string.app_name),
-                            style = MaterialTheme.typography.subtitle1,
-                            color = Color.DarkGray.copy(alpha = 0.8f),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = MaterialTheme.spacing.medium,
-                                    vertical = MaterialTheme.spacing.medium
-                                ),
-                            letterSpacing = TextUnit(0.2f, TextUnitType.Sp),
-                            textAlign = TextAlign.Start
-                        )
-
-                        RateSetting(navController)
-
-                        PrivacySetting(navController)
-
-                        VersionSetting(navController)
                     }
                 }
             }

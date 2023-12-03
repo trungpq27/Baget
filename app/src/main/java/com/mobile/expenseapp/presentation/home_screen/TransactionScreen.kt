@@ -1,13 +1,9 @@
 package com.mobile.expenseapp.presentation.home_screen
 
-import android.provider.ContactsContract.CommonDataKinds.Note
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,24 +16,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxColors
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -45,12 +33,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
@@ -73,7 +58,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
@@ -84,18 +68,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.common.Constants
-import com.mobile.expenseapp.presentation.home_screen.components.AccountTag
-import com.mobile.expenseapp.presentation.home_screen.components.EntryTypePicker
 import com.mobile.expenseapp.presentation.home_screen.components.InfoBanner
 import com.mobile.expenseapp.presentation.home_screen.components.KeypadComponent
-import com.mobile.expenseapp.presentation.home_screen.components.TabButton
-import com.mobile.expenseapp.presentation.navigation.Screen
-import com.mobile.expenseapp.presentation.ui.theme.Amber500
-import com.mobile.expenseapp.presentation.ui.theme.DarkSecondary100
 import com.mobile.expenseapp.presentation.ui.theme.Red200
 import com.mobile.expenseapp.util.spacing
 import kotlinx.coroutines.launch
-import java.security.KeyStore.Entry
 import java.util.Calendar
 
 @ExperimentalFoundationApi
@@ -111,7 +88,6 @@ fun TransactionScreen(
     transactionStatus: Int?,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-
     val transactionType = TransactionType.values()[transactionTag!!]
     val scope = rememberCoroutineScope()
     val keypadBottomSheetState = rememberBottomSheetScaffoldState(
@@ -249,7 +225,7 @@ fun TransactionScreen(
 //                    EntryTypePicker(transactionType = transactionType)
 
                     InfoBanner(shown = showInfoBanner, transactionType)
-                    
+
                     // Amount title
                     Text(
                         text = "Amount",
@@ -359,14 +335,14 @@ fun TransactionScreen(
 //                            textAlign = TextAlign.Start,
 //                            color = MaterialTheme.colors.onSurface
 //                        )
-                        Box (
+                        Box(
                             modifier = Modifier
                                 .clickable {
                                     expandedAccountState = !expandedAccountState
                                 }
                                 .fillMaxSize()
                         ) {
-                            Row (
+                            Row(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 Icon(
@@ -461,14 +437,14 @@ fun TransactionScreen(
                             vertical = MaterialTheme.spacing.medium
                         ),
                     ) {
-                        Box (
+                        Box(
                             modifier = Modifier
                                 .clickable {
                                     expandedCategoryState = !expandedCategoryState
                                 }
                                 .fillMaxSize()
                         ) {
-                            Row (
+                            Row(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 Icon(
@@ -608,10 +584,9 @@ fun NoteTextField(
 }
 
 @Composable
-fun SetRepeatable() {
+fun SetRepeatable(homeViewModel: HomeViewModel = hiltViewModel()) {
     var checkedState by remember { mutableStateOf(false) }
-
-    Row (
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
@@ -625,7 +600,7 @@ fun SetRepeatable() {
             onCheckedChange = { checkedState = !checkedState },
             colors = CheckboxDefaults.colors(MaterialTheme.colors.primary)
         )
-        
+
         Text(text = "Set as auto-transaction")
     }
 
@@ -633,7 +608,7 @@ fun SetRepeatable() {
     if (checkedState) {
         Column {
             var expandedAutoState by remember { mutableStateOf(false) }
-            var autoItems by remember {
+            val autoItems by remember {
                 mutableStateOf(
                     listOf(
                         "Daily",
@@ -644,9 +619,9 @@ fun SetRepeatable() {
                 )
             }
             var selectedAuto by remember { mutableStateOf("Repeat timer") }
-            
+
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = {  },
                 modifier = Modifier
                     //                .align(Alignment.Start)
                     .fillMaxWidth()
@@ -662,14 +637,14 @@ fun SetRepeatable() {
                     vertical = MaterialTheme.spacing.medium
                 ),
             ) {
-                Box (
+                Box(
                     modifier = Modifier
                         .clickable {
                             expandedAutoState = !expandedAutoState
                         }
                         .fillMaxSize()
-                    ) {
-                    Row (
+                ) {
+                    Row(
                         modifier = Modifier.fillMaxSize(),
                     ) {
                         Text(
@@ -688,6 +663,14 @@ fun SetRepeatable() {
                             DropdownMenuItem(
                                 onClick = {
                                     expandedAutoState = false
+                                    var timeSchedule = 1
+                                    when (auto) {
+                                        "Daily" -> timeSchedule = 1
+                                        "Weekly" ->   timeSchedule = 7// 7 days in a week
+                                        "Monthly" ->  timeSchedule = 30// Assuming 30 days in a month
+                                        "Yearly" ->  timeSchedule = 365// Assuming 365 days in a year
+                                    }
+                                    homeViewModel.setTimeSchedule(timeSchedule)
                                 },
                             ) {
                                 Row(
@@ -707,7 +690,5 @@ fun SetRepeatable() {
             }
         }
     }
-
-
-
+    homeViewModel.setAutoAdd(checkedState)
 }

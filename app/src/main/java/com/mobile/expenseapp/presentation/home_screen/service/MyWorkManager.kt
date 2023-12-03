@@ -75,7 +75,7 @@ class MyWorkManager(
         val notificationBuilder = NotificationCompat.Builder(applicationContext, "101")
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+//            .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentIntent(pendingIntent) // Set the PendingIntent
             .setAutoCancel(true)
 
@@ -89,7 +89,7 @@ class MyWorkManager(
             val dueDate = Calendar.getInstance()
             // Set Execution around 9pm
             dueDate.set(Calendar.HOUR_OF_DAY, 21)
-            dueDate.set(Calendar.MINUTE, 0)
+            dueDate.set(Calendar.MINUTE, 55)
             dueDate.set(Calendar.SECOND, 0)
             if (dueDate.before(currentDate)) {
                 dueDate.add(Calendar.HOUR_OF_DAY, 24)

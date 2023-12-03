@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.common.Constants
+import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.domain.usecase.GetDateUseCase
@@ -21,6 +22,7 @@ import com.mobile.expenseapp.domain.usecase.read_datastore.GetExpenseLimitUseCas
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLimitKeyUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.InsertAccountsUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.InsertNewScheduleUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.InsertNewTransactionUseCase
 import com.mobile.expenseapp.presentation.ui.theme.businessBg
 import com.mobile.expenseapp.presentation.ui.theme.clothBg
@@ -52,6 +54,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -71,7 +74,8 @@ class HomeViewModel @Inject constructor(
     private val getLimitKeyUseCase: GetLimitKeyUseCase,
     private val getCurrentDayExpTransactionUseCase: GetCurrentDayExpTransactionUseCase,
     private val getWeeklyExpTransactionUseCase: GetWeeklyExpTransactionUseCase,
-    private val getMonthlyExpTransactionUse: GetMonthlyExpTransactionUse
+    private val getMonthlyExpTransactionUse: GetMonthlyExpTransactionUse,
+    private val insertNewScheduleUseCase: InsertNewScheduleUseCase
 ) : ViewModel() {
 
     private var decimal: String = String()
@@ -105,7 +109,13 @@ class HomeViewModel @Inject constructor(
     var transactionTitle = MutableStateFlow(String())
         private set
 
+    var scheduleTime = MutableStateFlow(0)
+        private set
+
     var showInfoBanner = MutableStateFlow(false)
+        private set
+
+    var addAuto = MutableStateFlow(false)
         private set
 
     var totalIncome = MutableStateFlow(0.0)
@@ -120,8 +130,7 @@ class HomeViewModel @Inject constructor(
     var date = MutableStateFlow(String())
         private set
 
-    var currentTime = MutableStateFlow(Calendar.getInstance().time)
-        private set
+    private var currentTime = MutableStateFlow(Calendar.getInstance().time)
 
     var selectedCurrencyCode = MutableStateFlow(String())
         private set
@@ -234,8 +243,16 @@ class HomeViewModel @Inject constructor(
         transactionTitle.value = title
     }
 
+    fun setTimeSchedule(time: Int) {
+        scheduleTime.value = time
+    }
+
     fun setCurrentTime(time: Date) {
         currentTime.value = time
+    }
+
+    fun setAutoAdd(newState: Boolean) {
+        addAuto.value = newState
     }
 
     fun insertDailyTransaction(
@@ -264,6 +281,11 @@ class HomeViewModel @Inject constructor(
                 transactionTitle
             )
             insertDailyTransactionUseCase(newTransaction)
+            val checkAuto = addAuto.value
+            if (checkAuto == true) {
+                val schedule = ScheduleDto(newTransaction.date,scheduleTime.value.toLong(), TimeUnit.DAYS.toString(), newTransaction.date )
+                insertNewScheduleUseCase(schedule)
+            }
 
             if (transactionType == Constants.INCOME) {
                 val currentAccount = getAccountUseCase(account.value.title).first()

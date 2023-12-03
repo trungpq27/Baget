@@ -1,6 +1,7 @@
 package com.mobile.expenseapp.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -47,6 +48,9 @@ interface TransactionDao {
 
     @Update
     fun updateSchedule(schedule: ScheduleDto)
+
+    @Delete
+    fun deleteSchedule(schedule: ScheduleDto)
 
     @Query("DELETE FROM schedule_table")
     fun eraseSchedules()
@@ -99,7 +103,7 @@ interface TransactionDao {
     @Query("SELECT * FROM transaction_table WHERE entry_date >= date('now', 'start of month') AND entry_date < date('now', 'localtime') AND transaction_type = :transactionType")
     fun getStartOfMonthTransaction(transactionType: String): Flow<List<TransactionDto>>
 
-    @Query("SELECT * FROM transaction_table WHERE entry_date >= date('now', '-1 month') AND entry_date < date('now', 'localtime') AND transaction_type = :transactionType")
+    @Query("SELECT * FROM transaction_table WHERE timestamp >= strftime('%s', 'now', '-1 month') AND timestamp < strftime('%s', 'now', 'start of month') AND transaction_type = :transactionType")
     fun getLastMonthTransaction(transactionType: String): Flow<List<TransactionDto>>
 
     @Query("SELECT * FROM transaction_table WHERE transaction_type = :transactionType")
