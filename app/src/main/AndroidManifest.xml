@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Baget">
+        android:theme="@style/Theme.Baget"
+        android:usesCleartextTraffic="true">
         <activity
             android:name="com.mobile.expenseapp.presentation.main.MainActivity"
             android:exported="true"
@@ -24,6 +25,7 @@
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
+            android:multiprocess="true"
             tools:node="remove">
         </provider>
 

@@ -20,6 +20,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,6 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
+import com.mobile.expenseapp.presentation.auth_screen.AuthViewModel
+import com.mobile.expenseapp.presentation.auth_screen.LoginState
 import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.presentation.welcome_screen.WelcomeViewModel
 
@@ -44,16 +48,32 @@ import com.mobile.expenseapp.presentation.welcome_screen.WelcomeViewModel
 @Composable
 fun SignInScreen(
     navController: NavController,
-    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+    welcomeViewModel: WelcomeViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
+    val username = remember { mutableStateOf(TextFieldValue()) }
+    val password = remember { mutableStateOf(TextFieldValue()) }
+    val loginState by authViewModel.loginState.collectAsState()
+
+    when (loginState) {
+        is LoginState.Success -> {
+            navController.popBackStack()
+            welcomeViewModel.saveCurrencyLocale()
+//            welcomeViewModel.saveOnBoardingState(completed = true)
+            welcomeViewModel.createAccounts()
+
+            authViewModel.syncToRemoteWhenLogin()
+            navController.navigate(Screen.HomeScreen.route)
+        }
+        else -> {}
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.padding(20.dp)
         ) {
-            val username = remember { mutableStateOf(TextFieldValue()) }
-            val password = remember { mutableStateOf(TextFieldValue()) }
 
             Text(
                 text = "Login",
@@ -94,11 +114,7 @@ fun SignInScreen(
             ) {
                 Button(
                     onClick = {
-                        navController.popBackStack()
-                        welcomeViewModel.saveCurrencyLocale()
-//                        welcomeViewModel.saveOnBoardingState(completed = true)
-                        welcomeViewModel.createAccounts()
-                        navController.navigate(Screen.HomeScreen.route)
+                        authViewModel.login(username.value.text, password.value.text)
                     },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -155,7 +171,9 @@ fun SignInScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {
+                        navController.navigate(Screen.SignUpScreen.route)
+                    },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {

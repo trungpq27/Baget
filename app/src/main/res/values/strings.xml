@@ -121,6 +121,10 @@
     <string name="about_version">Version</string>
     <string name="about_developer">Developer</string>
 
+    <!-- Notification -->
+    <string name="noti_title">Don\'t forget to nurture your financial garden!</string>
+    <string name="noti_content">Your financial success is like a garden; it needs constant care. Time to water your transactions! 💸🌱</string>
+
     <!-- Other Common Strings -->
     <string name="ok">OK</string>
     <string name="set">Set</string>

@@ -4,13 +4,36 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.presentation.home_screen.TransactionType
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface TransactionDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSchedules(transaction: List<ScheduleDto>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTransactions(transaction: List<TransactionDto>)
+
+    @Query("SELECT * FROM transaction_table WHERE timestamp = :transactionTimestamp")
+    fun getTransactionByTimestamp(transactionTimestamp: Date): Flow<TransactionDto>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSchedule(schedule: ScheduleDto)
+
+    @Query("SELECT * FROM schedule_table")
+    fun getAllSchedules(): Flow<List<ScheduleDto>>
+
+    @Update
+    fun updateSchedule(schedule: ScheduleDto)
+
+    @Query("DELETE FROM schedule_table")
+    fun eraseSchedules()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transaction: TransactionDto)
@@ -19,19 +42,19 @@ interface TransactionDao {
     suspend fun insertAccounts(accounts: List<AccountDto>)
 
     @Query("SELECT * FROM transaction_table WHERE entry_date = :entryDate")
-    fun getDailyTransaction(entryDate: String) : Flow<List<TransactionDto>>
+    fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>>
 
     @Query("SELECT * FROM transaction_table WHERE account = :accountType")
     fun getTransactionByAccount(accountType: String): Flow<List<TransactionDto>>
 
     @Query("SELECT * FROM account_table WHERE account = :account")
-    fun getAccount(account: String) : Flow<AccountDto>
+    fun getAccount(account: String): Flow<AccountDto>
 
     @Query("SELECT * FROM account_table")
-    fun getAccounts() : Flow<List<AccountDto>>
+    fun getAccounts(): Flow<List<AccountDto>>
 
     @Query("SELECT * FROM transaction_table")
-    fun getAllTransaction() : Flow<List<TransactionDto>>
+    fun getAllTransaction(): Flow<List<TransactionDto>>
 
     @Query("DELETE FROM transaction_table")
     fun eraseTransaction()

@@ -115,6 +115,10 @@
     <string name="category_gift">Quà tặng</string>
     <string name="category_misc">Đa dạng</string>
 
+    <!-- Notification -->
+    <string name="noti_title">Đừng quên chăm sóc vườn tài chính của bạn!</string>
+    <string name="noti_content">Sự thành công tài chính của bạn giống như một khu vườn; nó cần sự chăm sóc liên tục. Đến lúc tưới cây giao dịch của bạn! 💸🌱</string>
+
     <!-- About Screen -->
     <string name="about_title">Giới thiệu</string>
     <string name="about_version">Phiên bản</string>

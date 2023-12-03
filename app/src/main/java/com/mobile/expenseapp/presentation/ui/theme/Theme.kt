@@ -45,7 +45,7 @@ private val LightColorPalette = lightColors(
 
 @ExperimentalMaterialApi
 @Composable
-fun BagetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun BagetTheme(content: @Composable () -> Unit) {
 //    val colors = if (darkTheme) {
 //        DarkColorPalette
 //    } else {

@@ -85,12 +85,8 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
     val limitDuration by remember {
         mutableStateOf(
             listOf(
-                navController.context.getString(R.string.last_3_days),
-                navController.context.getString(R.string.last_7_days),
-                navController.context.getString(R.string.last_14_days),
-                navController.context.getString(R.string.this_month),
-                navController.context.getString(R.string.last_month),
-                navController.context.getString(R.string.all)
+                "Last 3 Days", "Last 7 Days", "Last 14 Days", "This Month",
+                "Last Month", "All"
             )
         )
     }
@@ -143,7 +139,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                                 text = label,
                                 style = MaterialTheme.typography.subtitle2,
                                 color = if (selectedDuration == label)
-                                    MaterialTheme.colors.onSurface
+                                    MaterialTheme.colors.primary
                                 else
                                     Color.Gray
                             )
@@ -159,7 +155,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = navController.context.getString(R.string.insight_total),
+                text = "Total",
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
                 letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
