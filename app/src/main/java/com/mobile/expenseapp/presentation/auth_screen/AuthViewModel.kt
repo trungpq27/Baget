@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.EraseDatabaseUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.SyncFromRemoteUseCase
+import com.mobile.expenseapp.domain.usecase.write_datastore.EditIsLoggedInUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLoginTokenUseCase
 import com.mobile.expenseapp.service.APIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,12 +21,13 @@ class AuthViewModel @Inject constructor(
     private val editLoginTokenUseCase: EditLoginTokenUseCase,
     private val getLoginTokenUseCase: GetLoginTokenUseCase,
     private val syncFromRemoteUseCase: SyncFromRemoteUseCase,
-    private val eraseDatabaseUseCase: EraseDatabaseUseCase
+    private val eraseDatabaseUseCase: EraseDatabaseUseCase,
+    private val editIsLoggedInUseCase: EditIsLoggedInUseCase
 ) : ViewModel() {
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> get() = _loginState
 
-    val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
+    private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> get() = _registerState
     fun register(username: String, password: String) {
         viewModelScope.launch(IO) {
@@ -44,6 +46,7 @@ class AuthViewModel @Inject constructor(
             val result = APIRepository.login(username, password)
             result.fold(onSuccess = { token ->
                 editLoginTokenUseCase(token)
+                editIsLoggedInUseCase(true)
                 _loginState.value = LoginState.Success
             }, onFailure = { _ ->
                 _loginState.value = LoginState.Failure
@@ -67,8 +70,8 @@ class AuthViewModel @Inject constructor(
         _loginState.value = LoginState.Idle
     }
 
-    fun clearOnFreshLogin(){
-        viewModelScope.launch{
+    fun clearOnFreshLogin() {
+        viewModelScope.launch {
             eraseDatabaseUseCase()
         }
     }

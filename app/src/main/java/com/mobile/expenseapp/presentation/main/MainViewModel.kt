@@ -2,6 +2,7 @@ package com.mobile.expenseapp.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobile.expenseapp.domain.usecase.read_datastore.GetIsLoggedInUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetOnBoardingKeyUseCase
 import com.mobile.expenseapp.presentation.navigation.Screen
 import kotlinx.coroutines.Dispatchers.IO
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @InternalCoroutinesApi
 class MainViewModel @Inject constructor(
-    private val getOnBoardingKeyUseCase: GetOnBoardingKeyUseCase
+    private val getOnBoardingKeyUseCase: GetOnBoardingKeyUseCase,
+    private val getIsLoggedInUseCase: GetIsLoggedInUseCase
 ) : ViewModel() {
 
     var isLoading = MutableStateFlow(true)
@@ -29,6 +31,13 @@ class MainViewModel @Inject constructor(
             }
 
             isLoading.value = false
+        }
+
+        viewModelScope.launch(IO) {
+            getIsLoggedInUseCase().collect { isLoggedIn ->
+                if (isLoggedIn)
+                    startDestination.value = Screen.HomeScreen.route
+            }
         }
     }
 }

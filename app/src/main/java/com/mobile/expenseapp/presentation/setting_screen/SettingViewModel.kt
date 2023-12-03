@@ -13,10 +13,10 @@ import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.EraseDatabaseUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditDarkModeUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditExpenseLimitUseCase
+import com.mobile.expenseapp.domain.usecase.write_datastore.EditIsLoggedInUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLanguageUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitDurationUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLimitKeyUseCase
-import com.mobile.expenseapp.domain.usecase.write_datastore.EraseDatastoreUseCase
 import com.mobile.expenseapp.service.APIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -33,14 +33,14 @@ class SettingViewModel @Inject constructor(
     private val editLimitKeyUseCase: EditLimitKeyUseCase,
     private val editLimitDurationUseCase: EditLimitDurationUseCase,
     private val getLimitDurationUseCase: GetLimitDurationUseCase,
-    private val eraseDatastoreUseCase: EraseDatastoreUseCase,
     private val getDarkModeUseCase: GetDarkModeUseCase,
     private val editDarkModeUseCase: EditDarkModeUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
     private val editLanguageUseCase: EditLanguageUseCase,
     private val eraseDatabaseUseCase: EraseDatabaseUseCase,
     private val getLoginTokenUseCase: GetLoginTokenUseCase,
-    private val getLocalDataUseCase: GetLocalDataUseCase
+    private val getLocalDataUseCase: GetLocalDataUseCase,
+    private val editIsLoggedInUseCase: EditIsLoggedInUseCase,
 ) : ViewModel() {
 
 
@@ -104,6 +104,7 @@ class SettingViewModel @Inject constructor(
                     getLocalDataUseCase().collect { data ->
                         APIRepository.syncPost(token, data)
                         eraseDatabaseUseCase()
+                        editIsLoggedInUseCase(false)
                     }
                 }
             }

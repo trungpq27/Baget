@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
+import com.mobile.expenseapp.presentation.navigation.Screen
 
 @ExperimentalMaterialApi
 @Composable
@@ -50,7 +51,11 @@ fun SignUpScreen(
 
     when (registerState) {
         is RegisterState.Success -> {
-            navController.navigateUp()
+            navController.navigate(Screen.SignInScreen.route){
+                popUpTo(Screen.SignInScreen.route){
+                    inclusive = true
+                }
+            }
         }
         else -> {}
     }
