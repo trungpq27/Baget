@@ -25,12 +25,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.util.spacing
 
 @Composable
-fun InsightItem(cat: Category, currencyCode: String, amount: Double, percent: Float) {
+fun InsightItem(cat: Category, currencyCode: String, amount: Double, percent: Float, navController: NavController) {
     Card(
         elevation = 0.dp,
         backgroundColor = MaterialTheme.colors.secondary,
@@ -62,7 +64,7 @@ fun InsightItem(cat: Category, currencyCode: String, amount: Double, percent: Fl
                     .weight(2f)
             ) {
                 Text(
-                    text = cat.title,
+                    text = navController.context.getString(cat.content),
                     color = MaterialTheme.colors.onSurface,
                     style = MaterialTheme.typography.body2,
                     textAlign = TextAlign.Start

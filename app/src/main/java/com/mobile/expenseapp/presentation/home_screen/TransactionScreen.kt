@@ -228,7 +228,7 @@ fun TransactionScreen(
 
                     // Amount title
                     Text(
-                        text = "Amount",
+                        text = navController.context.getString(R.string.transaction_amount),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -293,7 +293,7 @@ fun TransactionScreen(
 //                        text = if (transactionType == TransactionType.INCOME) {
 //                            "Fund"
 //                        } else "Pay with",
-                        text = "Account",
+                        text = navController.context.getString(R.string.account),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -402,7 +402,7 @@ fun TransactionScreen(
 //                        text = if (transactionType == TransactionType.INCOME) {
 //                            "Fund"
 //                        } else "Pay with",
-                        text = "Category",
+                        text = navController.context.getString(R.string.transaction_set_category),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -505,7 +505,7 @@ fun TransactionScreen(
                     NoteTextField(titleFieldValue, homeViewModel)
 
                     // Set time interval
-                    SetRepeatable()
+                    SetRepeatable(navController)
 
                     if (limitKey) {
                         if (limitInfoWarning is HomeViewModel.UIEvent.Alert) {
@@ -584,7 +584,7 @@ fun NoteTextField(
 }
 
 @Composable
-fun SetRepeatable(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun SetRepeatable(navController: NavController, homeViewModel: HomeViewModel = hiltViewModel()) {
     var checkedState by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
@@ -601,7 +601,7 @@ fun SetRepeatable(homeViewModel: HomeViewModel = hiltViewModel()) {
             colors = CheckboxDefaults.colors(MaterialTheme.colors.primary)
         )
 
-        Text(text = "Set as auto-transaction")
+        Text(text = navController.context.getString(R.string.transaction_auto_add))
     }
 
     // checkbox (not finished)
@@ -621,7 +621,7 @@ fun SetRepeatable(homeViewModel: HomeViewModel = hiltViewModel()) {
             var selectedAuto by remember { mutableStateOf("Repeat timer") }
 
             TextButton(
-                onClick = {  },
+                onClick = { },
                 modifier = Modifier
                     //                .align(Alignment.Start)
                     .fillMaxWidth()
@@ -666,9 +666,9 @@ fun SetRepeatable(homeViewModel: HomeViewModel = hiltViewModel()) {
                                     var timeSchedule = 1
                                     when (auto) {
                                         "Daily" -> timeSchedule = 1
-                                        "Weekly" ->   timeSchedule = 7// 7 days in a week
-                                        "Monthly" ->  timeSchedule = 30// Assuming 30 days in a month
-                                        "Yearly" ->  timeSchedule = 365// Assuming 365 days in a year
+                                        "Weekly" -> timeSchedule = 7// 7 days in a week
+                                        "Monthly" -> timeSchedule = 30// Assuming 30 days in a month
+                                        "Yearly" -> timeSchedule = 365// Assuming 365 days in a year
                                     }
                                     homeViewModel.setTimeSchedule(timeSchedule)
                                 },

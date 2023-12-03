@@ -125,9 +125,6 @@ fun SettingScreen(
 
                         ReminderSetting(navController)
                         DarkModeSetting(navController)
-                        LanguageSetting(language, modalBottomSheetState, scope, navController) {
-                            sheetRankState.value = it
-                        }
                         EraseSetting(modalBottomSheetState, scope, navController) {
                             sheetRankState.value = it
                         }

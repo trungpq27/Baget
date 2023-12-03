@@ -86,8 +86,12 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
     val limitDuration by remember {
         mutableStateOf(
             listOf(
-                "Last 3 Days", "Last 7 Days", "Last 14 Days", "This Month",
-                "Last Month", "All"
+                navController.context.getString(R.string.last_3_days),
+                navController.context.getString(R.string.last_7_days),
+                navController.context.getString(R.string.last_14_days),
+                navController.context.getString(R.string.this_month),
+                navController.context.getString(R.string.last_month),
+                navController.context.getString(R.string.all)
             )
         )
     }
@@ -156,7 +160,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Total",
+                text = navController.context.getString(R.string.insight_total),
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
                 letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
@@ -187,7 +191,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
 
                 itemsIndexed(filteredCategories) { index, category ->
                     val amount = groupedData[category.title]?.sumOf { it.amount }
-                    InsightItem(cat = category, currencyCode, amount = amount!!, percentProgress[index])
+                    InsightItem(cat = category, currencyCode, amount = amount!!, percentProgress[index], navController)
                 }
             }
 

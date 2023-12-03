@@ -20,6 +20,8 @@
     <string name="home_add_income">THÊM THU NHẬP</string>
     <string name="home_add_expense">THÊM CHI TIÊU</string>
     <string name="home_balance">Số dư</string>
+    <string name="home_today">Hôm nay</string>
+    <string name="home_month">Tháng này</string>
 
     <!-- Insight Screen -->
     <string name="insight_content">Chưa có giao dịch nào. Nhấn vào nút \'+\' để bắt đầu</string>
@@ -45,6 +47,7 @@
     <string name="transaction_fund">Quỹ</string>
     <string name="transaction_pay_with">Thanh toán bằng</string>
     <string name="transaction_set_category">Chọn danh mục</string>
+    <string name="transaction_auto_add">Đặt tự động nhập</string>
 
     <!-- Budget Screen -->
     <string name="budget_title">Ngân sách</string>

@@ -20,6 +20,8 @@
     <string name="home_add_income">ADD INCOME</string>
     <string name="home_add_expense">ADD EXPENSE</string>
     <string name="home_balance">Balance</string>
+    <string name="home_today">Today</string>
+    <string name="home_month">Month</string>
     
     <!-- Insight Screen -->
     <string name="insight_content">No transaction has been made so far. Tap the \'+\' button to  get started</string>
@@ -46,6 +48,7 @@
     <string name="transaction_fund">Fund</string>
     <string name="transaction_pay_with">Pay with</string>
     <string name="transaction_set_category">Set category</string>
+    <string name="transaction_auto_add">Set as auto-transaction</string>
 
     <!-- Budget Screen -->
     <string name="budget_title">Budget</string>
