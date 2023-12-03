@@ -78,7 +78,6 @@ fun HomeScreen(
             TabButton()
 
             // daily expenses
-
             AnimatedVisibility(visible = currentTabButton == TabButton.TODAY) {
                 dailyTransactions.ifEmpty {
                     ListPlaceholder(navController)

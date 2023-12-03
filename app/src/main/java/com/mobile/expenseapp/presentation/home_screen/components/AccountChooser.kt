@@ -18,21 +18,24 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowRow
 import com.mobile.expenseapp.R
+import com.mobile.expenseapp.presentation.home_screen.Account
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
 import com.mobile.expenseapp.util.spacing
 
 @ExperimentalUnitApi
 @Composable
-fun Category(
+fun AccountChooser(
+//    account: Account,
     navController: NavController,
-    expenseItems: Array<Category> = Category.values()
+    accountItems: Array<Account> = Account.values()
 ) {
     Column(
 //        crossAxisSpacing = MaterialTheme.spacing.small,
@@ -42,53 +45,8 @@ fun Category(
             bottom = MaterialTheme.spacing.medium,
         ),
     ) {
-        expenseItems.forEach {
-            CategoryTag(category = it, navController)
+        accountItems.forEach {
+            AccountTag(account = it, navController = navController)
         }
-    }
-}
-
-@ExperimentalUnitApi
-@Composable
-fun CategoryTag(
-    category: Category,
-    navController: NavController,
-    homeViewModel: HomeViewModel = hiltViewModel()
-) {
-    val selected by homeViewModel.category.collectAsState()
-    var isSelected = selected.title == category.title
-    TextButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = MaterialTheme.spacing.small),
-        onClick = {
-            homeViewModel.selectCategory(category)
-//            isSelected = selected.title == category.title
-            
-        },
-        shape = RoundedCornerShape(12.dp),
-        contentPadding = PaddingValues(
-            horizontal = MaterialTheme.spacing.medium,
-            vertical = MaterialTheme.spacing.small
-        ),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = if (isSelected) {
-                category.bgRes.copy(alpha = 0.95f)
-            } else MaterialTheme.colors.surface, contentColor = if (isSelected) {
-                category.colorRes
-            } else MaterialTheme.colors.onSurface
-        ),
-    ) {
-        Icon(
-            painter = if (!isSelected) {
-                painterResource(id = R.drawable.add_cat)
-            } else painterResource(id = category.iconRes),
-            contentDescription = category.title,
-        )
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
-        Text(
-            text = navController.context.getString(category.content),
-            style = MaterialTheme.typography.button
-        )
     }
 }

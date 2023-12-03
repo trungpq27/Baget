@@ -57,7 +57,7 @@ fun TabButton(
 
             tabs.forEach { tab ->
                 val backgroundColor by animateColorAsState(
-                    if (selectedTab == tab) MaterialTheme.colors.onSurface
+                    if (selectedTab == tab) MaterialTheme.colors.primary
                     else Color.Transparent,
                     animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing)
                 )
