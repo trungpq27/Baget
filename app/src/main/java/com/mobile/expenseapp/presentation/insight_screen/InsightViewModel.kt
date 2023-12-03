@@ -7,6 +7,7 @@ import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get14DayTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get3DayTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get7DayTransaction
+import com.mobile.expenseapp.domain.usecase.read_database.GetAllTransactionUseCase
 import com.mobile.expenseapp.domain.usecase.read_database.GetLastMonthTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.GetStartOfMonthTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.GetTransactionByTypeUseCase
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsightViewModel @Inject constructor(
+    private val getAllTransactionUseCase: GetAllTransactionUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val get3DayTransaction: Get3DayTransaction,
     private val get7DayTransaction: Get7DayTransaction,
