@@ -39,7 +39,7 @@ fun ReminderSetting(
                 vertical = MaterialTheme.spacing.small
             ),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
+            backgroundColor = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface
         ),
         shape = RoundedCornerShape(12.dp),

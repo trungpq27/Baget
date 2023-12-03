@@ -5,6 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,8 +17,10 @@ import com.mobile.expenseapp.presentation.account_screen.AccountDetailScreen
 import com.mobile.expenseapp.presentation.account_screen.AccountScreen
 import com.mobile.expenseapp.presentation.account_screen.components.SignInScreen
 import com.mobile.expenseapp.presentation.auth_screen.SignUpScreen
+import com.mobile.expenseapp.presentation.home_screen.AccountChooserScreen
 import com.mobile.expenseapp.presentation.home_screen.HomeScreen
 import com.mobile.expenseapp.presentation.home_screen.TransactionScreen
+import com.mobile.expenseapp.presentation.home_screen.CategoryChooserScreen
 import com.mobile.expenseapp.presentation.insight_screen.InsightScreen
 import com.mobile.expenseapp.presentation.setting_screen.SettingScreen
 import com.mobile.expenseapp.presentation.welcome_screen.CurrencyScreen
@@ -88,6 +91,12 @@ fun MainNavigation(
                 transactionPos = entry.arguments?.getInt("trxPos"),
                 transactionStatus = entry.arguments?.getInt("trxStatus")
             )
+        }
+        composable(route = Screen.CategoryChooserScreen.route) {
+            CategoryChooserScreen(navController)
+        }
+        composable(route = Screen.AccountChooserScreen.route) {
+            AccountChooserScreen(navController)
         }
         composable(route = Screen.InsightScreen.route) {
             InsightScreen(navController = navController)

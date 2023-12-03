@@ -1,8 +1,13 @@
 package com.mobile.expenseapp.presentation.home_screen
 
+import android.provider.ContactsContract.CommonDataKinds.Note
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +18,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -22,14 +30,23 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxColors
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
@@ -44,6 +61,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -55,6 +73,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
@@ -66,11 +85,11 @@ import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.presentation.home_screen.components.AccountTag
-import com.mobile.expenseapp.presentation.home_screen.components.Category
 import com.mobile.expenseapp.presentation.home_screen.components.EntryTypePicker
 import com.mobile.expenseapp.presentation.home_screen.components.InfoBanner
 import com.mobile.expenseapp.presentation.home_screen.components.KeypadComponent
 import com.mobile.expenseapp.presentation.home_screen.components.TabButton
+import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.presentation.ui.theme.Amber500
 import com.mobile.expenseapp.presentation.ui.theme.DarkSecondary100
 import com.mobile.expenseapp.presentation.ui.theme.Red200
@@ -140,16 +159,33 @@ fun TransactionScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = MaterialTheme.spacing.medium,
+                            start = MaterialTheme.spacing.small,
                             end = MaterialTheme.spacing.medium,
                             top = MaterialTheme.spacing.small
                         ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .scale(0.75f)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.remove),
+                            contentDescription = "close",
+                            tint = MaterialTheme.colors.onSurface,
+                            modifier = Modifier
+                                .scale(0.8f)
+                        )
+                    }
+
                     Text(
                         text = navController.context.getString(R.string.transaction_add_transaction),
                         modifier = Modifier.weight(2f),
-                        style = MaterialTheme.typography.subtitle1,
+                        style = MaterialTheme.typography.h5,
                         color = MaterialTheme.colors.onSurface
                     )
 
@@ -201,43 +237,18 @@ fun TransactionScreen(
                                 .scale(0.8f)
                         )
                     }
-
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        },
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .scale(0.75f)
-                            .border(1.dp, MaterialTheme.colors.onSurface, CircleShape)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.remove),
-                            contentDescription = "close",
-                            tint = MaterialTheme.colors.onSurface,
-                            modifier = Modifier
-                                .scale(0.8f)
-                        )
-                    }
                 }
 
                 Column(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
                     // Make this the way to pick the transaction type, not the scaffold
-                    EntryTypePicker()
+//                    EntryTypePicker(transactionType = transactionType)
 
                     InfoBanner(shown = showInfoBanner, transactionType)
-
-                    val amount = remember { mutableStateOf(TextFieldValue()) }
-
-                    // Amount
-//                    TextField(
-//                        label = "Amount",
-//                        value = amount.value
-//                    )
                     
                     // Amount title
                     Text(
@@ -267,10 +278,9 @@ fun TransactionScreen(
                             .align(Alignment.Start)
                             .padding(
                                 start = MaterialTheme.spacing.medium,
-                                top = MaterialTheme.spacing.medium,
                                 end = MaterialTheme.spacing.medium
                             ),
-                        colors = ButtonDefaults.textButtonColors(DarkSecondary100),
+                        colors = ButtonDefaults.textButtonColors(MaterialTheme.colors.primary),
                         shape = RoundedCornerShape(6.dp),
                         contentPadding = PaddingValues(
                             horizontal = MaterialTheme.spacing.medium,
@@ -302,41 +312,12 @@ fun TransactionScreen(
                         )
                     }
 
-                    TextField(
-                        value = titleFieldValue.text,
-                        onValueChange = { field ->
-                            homeViewModel.setTransactionTitle(field)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.spacing.medium,
-                                top = MaterialTheme.spacing.small,
-                                end = MaterialTheme.spacing.medium,
-                                bottom = MaterialTheme.spacing.medium
-                            ),
-                        maxLines = 1,
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = if (transactionType == TransactionType.INCOME)
-                                    navController.context.getString(R.string.transaction_income_title)
-                                else navController.context.getString(R.string.transaction_expense_title),
-                                style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.W600)
-                            )
-                        },
-                        textStyle = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.W600),
-                        colors = TextFieldDefaults.textFieldColors(
-                            focusedIndicatorColor = MaterialTheme.colors.primary,
-                            cursorColor = MaterialTheme.colors.primary,
-                            backgroundColor = Color.LightGray
-                        )
-                    )
-
+                    // Account type
                     Text(
-                        text = if (transactionType == TransactionType.INCOME) {
-                            navController.context.getString(R.string.transaction_fund)
-                        } else navController.context.getString(R.string.transaction_pay_with),
+//                        text = if (transactionType == TransactionType.INCOME) {
+//                            "Fund"
+//                        } else "Pay with",
+                        text = "Account",
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
@@ -344,31 +325,211 @@ fun TransactionScreen(
                                 horizontal = MaterialTheme.spacing.medium,
                                 vertical = MaterialTheme.spacing.small
                             )
-                            .align(Alignment.Start)
-                    )
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium
-                            )
+                            .align(Alignment.Start),
                     )
 
-                    LazyRow(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                    // Dropdown account picker
+                    var expandedAccountState by remember { mutableStateOf(false) }
+                    var accountItems: Array<Account> = Account.values()
+                    var selectedAccount by remember { mutableStateOf(Account.CARD) }
+
+
+                    // Account picker
+                    TextButton(
+                        onClick = {
+//                            navController.navigate(Screen.AccountChooserScreen.route)
+                        },
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .fillMaxWidth()
+                            .background(Color.Transparent)
+                            .padding(
+                                horizontal = MaterialTheme.spacing.medium,
+                                vertical = MaterialTheme.spacing.small
+                            ),
+                        border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = MaterialTheme.spacing.medium,
+                            vertical = MaterialTheme.spacing.medium
+                        ),
+                    ) {
+//                        Text(
+//                            text = "Choose an account",
+//                            textAlign = TextAlign.Start,
+//                            color = MaterialTheme.colors.onSurface
+//                        )
+                        Box (
+                            modifier = Modifier
+                                .clickable {
+                                    expandedAccountState = !expandedAccountState
+                                }
+                                .fillMaxSize()
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = selectedAccount.iconRes
+                                    ),
+                                    contentDescription = selectedAccount.title,
+                                )
+
+                                Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+
+                                Text(
+                                    text = navController.context.getString(selectedAccount.content),
+                                    style = MaterialTheme.typography.subtitle1
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = expandedAccountState,
+                                onDismissRequest = { expandedAccountState = false },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                accountItems.forEachIndexed { index, account ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            homeViewModel.selectAccount(account)
+                                            expandedAccountState = false
+                                            selectedAccount = account
+                                        },
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(
+                                                    id = account.iconRes
+                                                ),
+                                                contentDescription = account.title,
+                                            )
+                                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+                                            Text(
+                                                text = navController.context.getString(account.content),
+                                                style = MaterialTheme.typography.subtitle2,
+                                                fontWeight = FontWeight.Bold,
+                                                letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Category type
+                    Text(
+//                        text = if (transactionType == TransactionType.INCOME) {
+//                            "Fund"
+//                        } else "Pay with",
+                        text = "Category",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onSurface,
                         modifier = Modifier
                             .padding(
                                 horizontal = MaterialTheme.spacing.medium,
                                 vertical = MaterialTheme.spacing.small
                             )
+                            .align(Alignment.Start),
+                    )
+
+                    var expandedCategoryState by remember { mutableStateOf(false) }
+                    var expenseItems: Array<Category> = Category.values()
+                    var selectedCategory by remember { mutableStateOf(Category.FOOD_DRINK) }
+
+                    // Category type picker
+                    TextButton(
+                        onClick = {
+//                            navController.navigate(Screen.CategoryChooserScreen.route)
+                        },
+                        modifier = Modifier
                             .align(Alignment.Start)
+                            .fillMaxWidth()
+                            .background(Color.Transparent)
+                            .padding(
+                                horizontal = MaterialTheme.spacing.medium,
+                                vertical = MaterialTheme.spacing.small
+                            ),
+                        border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+                        shape = RoundedCornerShape(6.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = MaterialTheme.spacing.medium,
+                            vertical = MaterialTheme.spacing.medium
+                        ),
                     ) {
-                        items(Account.values()) { account ->
-                            AccountTag(account = account, navController)
+                        Box (
+                            modifier = Modifier
+                                .clickable {
+                                    expandedCategoryState = !expandedCategoryState
+                                }
+                                .fillMaxSize()
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = selectedCategory.iconRes
+                                    ),
+                                    contentDescription = selectedCategory.title,
+                                )
+
+                                Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+
+                                Text(
+                                    text = navController.context.getString(selectedCategory.content),
+                                    style = MaterialTheme.typography.subtitle1
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = expandedCategoryState,
+                                onDismissRequest = { expandedCategoryState = false },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .requiredHeight(300.dp)
+                            ) {
+                                expenseItems.forEachIndexed { index, category ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            homeViewModel.selectCategory(category)
+                                            expandedCategoryState = false
+                                            selectedCategory = category
+                                        },
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(
+                                                    id = category.iconRes
+                                                ),
+                                                contentDescription = category.title,
+                                            )
+                                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+                                            Text(
+                                                text = navController.context.getString(category.content),
+                                                style = MaterialTheme.typography.subtitle2,
+                                                fontWeight = FontWeight.Bold,
+                                                letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
+                    // Note field
+                    NoteTextField(titleFieldValue, homeViewModel)
+
+                    // Set time interval
+                    SetRepeatable()
 
                     if (limitKey) {
                         if (limitInfoWarning is HomeViewModel.UIEvent.Alert) {
@@ -396,33 +557,157 @@ fun TransactionScreen(
                             }
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-
-                    Text(
-                        text = navController.context.getString(R.string.transaction_set_category),
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.onSurface,
-                        letterSpacing = TextUnit(0.2f, TextUnitType.Sp),
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium,
-                                vertical = MaterialTheme.spacing.small
-                            )
-                    )
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium
-                            )
-                    )
-
-                    Category(navController)
                 }
             }
         }
     }
+}
+
+@Composable
+fun AccountPicker() {
+
+}
+
+@Composable
+fun NoteTextField(
+    noteTextField: TextFieldValue,
+    homeViewModel: HomeViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        // Note
+        Text(
+            text = "Note",
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.onSurface,
+            modifier = Modifier
+                .padding(
+                    horizontal = MaterialTheme.spacing.medium,
+                    vertical = MaterialTheme.spacing.small
+                )
+                .align(Alignment.Start)
+        )
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = MaterialTheme.spacing.medium
+                ),
+//                .border(BorderStroke(1.dp, MaterialTheme.colors.primary)),
+            shape = RoundedCornerShape(6.dp),
+            value = noteTextField.text,
+            onValueChange = { field -> homeViewModel.setTransactionTitle(field) },
+            label = { Text("Add note") },
+        )
+    }
+}
+
+@Composable
+fun SetRepeatable() {
+    var checkedState by remember { mutableStateOf(false) }
+
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = MaterialTheme.spacing.medium
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Checkbox(
+            checked = checkedState,
+            onCheckedChange = { checkedState = !checkedState },
+            colors = CheckboxDefaults.colors(MaterialTheme.colors.primary)
+        )
+        
+        Text(text = "Set as auto-transaction")
+    }
+
+    // checkbox (not finished)
+    if (checkedState) {
+        Column {
+            var expandedAutoState by remember { mutableStateOf(false) }
+            var autoItems by remember {
+                mutableStateOf(
+                    listOf(
+                        "Daily",
+                        "Weekly",
+                        "Monthly",
+                        "Yearly "
+                    )
+                )
+            }
+            var selectedAuto by remember { mutableStateOf("Repeat timer") }
+            
+            TextButton(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    //                .align(Alignment.Start)
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+                    .padding(
+                        horizontal = MaterialTheme.spacing.medium,
+                        vertical = MaterialTheme.spacing.small
+                    ),
+                border = BorderStroke(1.dp, MaterialTheme.colors.primary),
+                shape = RoundedCornerShape(6.dp),
+                contentPadding = PaddingValues(
+                    horizontal = MaterialTheme.spacing.medium,
+                    vertical = MaterialTheme.spacing.medium
+                ),
+            ) {
+                Box (
+                    modifier = Modifier
+                        .clickable {
+                            expandedAutoState = !expandedAutoState
+                        }
+                        .fillMaxSize()
+                    ) {
+                    Row (
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        Text(
+                            text = selectedAuto,
+                            style = MaterialTheme.typography.subtitle1
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expandedAutoState,
+                        onDismissRequest = { expandedAutoState = false },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        autoItems.forEachIndexed { index, auto ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    expandedAutoState = false
+                                },
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = auto,
+                                        style = MaterialTheme.typography.subtitle2,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -29,6 +30,8 @@ import com.mobile.expenseapp.util.spacing
 
 @ExperimentalUnitApi
 @Composable
+//fun AccountTag(account: Account, homeViewModel: HomeViewModel = hiltViewModel(), navController: NavController) {
+//=======
 fun AccountTag(
     account: Account,
     navController: NavController,
@@ -70,4 +73,10 @@ fun AccountTag(
             letterSpacing = TextUnit(1.1f, TextUnitType.Sp)
         )
     }
+}
+@ExperimentalUnitApi
+@Preview(showBackground = true)
+@Composable
+fun AccountTagPreview() {
+//    AccountTag(account = Account.CARD)
 }

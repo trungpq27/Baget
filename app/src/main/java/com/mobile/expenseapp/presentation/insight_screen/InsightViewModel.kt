@@ -2,10 +2,12 @@ package com.mobile.expenseapp.presentation.insight_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobile.expenseapp.common.Constants
 import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get14DayTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get3DayTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get7DayTransaction
+import com.mobile.expenseapp.domain.usecase.read_database.GetAllTransactionUseCase
 import com.mobile.expenseapp.domain.usecase.read_database.GetLastMonthTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.GetStartOfMonthTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.GetTransactionByTypeUseCase
@@ -21,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsightViewModel @Inject constructor(
+    private val getAllTransactionUseCase: GetAllTransactionUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val get3DayTransaction: Get3DayTransaction,
     private val get7DayTransaction: Get7DayTransaction,
@@ -60,14 +63,14 @@ class InsightViewModel @Inject constructor(
     fun getFilteredTransaction(duration: Int = 5) {
         viewModelScope.launch(IO) {
             if (_tabButton.value == TransactionType.INCOME) {
-                filterTransaction(duration, TransactionType.INCOME.title)
+                filterTransaction(duration, Constants.INCOME)
             } else {
-                filterTransaction(duration, TransactionType.EXPENSE.title)
+                filterTransaction(duration, Constants.EXPENSE)
             }
         }
     }
 
-    private suspend fun filterTransaction(duration: Int, transactionType: String = TransactionType.INCOME.title) {
+    private suspend fun filterTransaction(duration: Int, transactionType: String = Constants.INCOME) {
         when (duration) {
             0 -> {
                 get3DayTransaction(transactionType).collectLatest { filteredResults ->

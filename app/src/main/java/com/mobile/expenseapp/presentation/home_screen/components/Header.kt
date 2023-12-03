@@ -46,6 +46,7 @@ import androidx.navigation.NavController
 import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.HomeViewModel
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
+import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.presentation.ui.theme.Amber500
 import com.mobile.expenseapp.presentation.ui.theme.GreenAlpha700
 import com.mobile.expenseapp.presentation.ui.theme.Red500
@@ -105,12 +106,13 @@ fun Header(
                             } else
                                 bottomSheetScaffoldState.bottomSheetState.collapse()
                         }
+//                          navController.navigate("${Screen.TransactionScreen.route}/0")
                     },
                     modifier = Modifier.constrainAs(addEntry) {
                         top.linkTo(parent.top, margin = small)
                         end.linkTo(parent.end, margin = medium)
                     },
-                    colors = ButtonDefaults.buttonColors(Amber500.copy(alpha = 0.9f)),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.primary),
                     shape = RoundedCornerShape(24.dp)
                 )
                 {

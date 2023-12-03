@@ -45,7 +45,7 @@ fun AccountItem(account: Account, currency: String, navController: NavController
         },
 //        backgroundColor = Color.DarkGray.copy(alpha = 0.1f),
         elevation = 0.dp,
-        backgroundColor = MaterialTheme.colors.secondary,
+        backgroundColor = MaterialTheme.colors.surface,
         shape = RoundedCornerShape(24.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -134,98 +134,6 @@ fun AccountItem(account: Account, currency: String, navController: NavController
                     )
                 )
             }
-
-//            Surface(
-////                color = color,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//            ) {
-//                Column(verticalArrangement = Arrangement.Center) {
-//                    Row(
-//                        horizontalArrangement = Arrangement.Center,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(vertical = MaterialTheme.spacing.small)
-//                    ) {
-//                        Text(
-//                            text = account.account,
-//                            style = MaterialTheme.typography.caption,
-//                            color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                        )
-//                    }
-//                    Row(
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = MaterialTheme.spacing.medium)
-//                    ) {
-//                        Text(text = buildAnnotatedString {
-//                            withStyle(
-//                                SpanStyle(
-//                                    fontWeight = FontWeight.Normal,
-//                                    fontSize = 10.sp,
-//                                    letterSpacing = 0.4.sp,
-//                                    color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                                )
-//                            ) {
-//                                append(currency)
-//                            }
-//                            withStyle(
-//                                SpanStyle(
-//                                    fontWeight = FontWeight.Thin,
-//                                    fontSize = 18.sp,
-//                                    letterSpacing = 0.25.sp,
-//                                            color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                                )
-//                            ) {
-//                                append(account.income.toString().amountFormat())
-//                            }
-//                        })
-//
-//                        Text(text = buildAnnotatedString {
-//                            withStyle(
-//                                SpanStyle(
-//                                    fontWeight = FontWeight.Thin,
-//                                    fontSize = 10.sp,
-//                                    letterSpacing = 0.4.sp,
-//                                    color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                                )
-//                            ) {
-//                                append(currency)
-//                            }
-//                            withStyle(
-//                                SpanStyle(
-//                                    fontWeight = FontWeight.Thin,
-//                                    fontSize = 18.sp,
-//                                    letterSpacing = 0.25.sp,
-//                                    color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                                )
-//                            ) {
-//                                append(account.expense.toString().amountFormat())
-//                            }
-//                        })
-//                    }
-//
-//                    Row(
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = MaterialTheme.spacing.medium)
-//                    ) {
-//                        Text(
-//                            text = "INCOME",
-//                            style = MaterialTheme.typography.overline,
-//                            color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                        )
-//
-//                        Text(
-//                            text = "EXPENSE",
-//                            style = MaterialTheme.typography.overline,
-//                            color = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
-//                        )
-//                    }
-//                }
-//            }
         }
     }
 }

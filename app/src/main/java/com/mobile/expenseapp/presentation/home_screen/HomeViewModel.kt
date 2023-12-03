@@ -81,7 +81,7 @@ class HomeViewModel @Inject constructor(
     var tabButton = MutableStateFlow(TabButton.TODAY)
         private set
 
-    var transactionType = MutableStateFlow(TransactionType.EXPENSE)
+    var transactionType = MutableStateFlow(TransactionType.INCOME)
         private set
 
     var category = MutableStateFlow(Category.FOOD_DRINK)
