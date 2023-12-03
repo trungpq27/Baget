@@ -162,7 +162,7 @@ class TransactionDaoTest {
         transactionDao.insertTransaction(newTrx[0])
         transactionDao.insertTransaction(newTrx[1])
 
-        transactionDao.eraseTransaction()
+        transactionDao.eraseTransactions()
         transactionDao.getAllTransaction().test {
             val trx = awaitItem()
             assertThat(trx.size).isEqualTo(0)

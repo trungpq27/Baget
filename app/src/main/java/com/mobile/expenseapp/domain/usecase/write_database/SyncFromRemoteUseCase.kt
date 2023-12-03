@@ -6,8 +6,6 @@ import javax.inject.Inject
 
 class SyncFromRemoteUseCase @Inject constructor(private val repo: TransactionRepository) {
     suspend operator fun invoke(data: LocalData) {
-        repo.insertTransactions(data.transactions)
-        repo.insertAccounts(data.accounts)
-        repo.insertSchedules(data.schedules)
+        repo.syncDatabase(data)
     }
 }

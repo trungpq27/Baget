@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
+import com.mobile.expenseapp.presentation.navigation.Screen
 import com.mobile.expenseapp.presentation.setting_screen.SettingViewModel
 import com.mobile.expenseapp.presentation.ui.theme.Red500
 import com.mobile.expenseapp.util.spacing
@@ -77,9 +78,14 @@ fun EraseContent(
         TextButton(
             onClick = {
                 scope.launch {
-                    settingViewModel.eraseTransaction()
+                    settingViewModel.logout()
                     modalBottomSheetState.hide()
                     Toast.makeText(context, navController.context.getText(R.string.done), Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.SignInScreen.route){
+                        popUpTo(Screen.HomeScreen.route){
+                            inclusive = true
+                        }
+                    }
                 }
             },
             modifier = Modifier

@@ -65,8 +65,8 @@
     <string name="settings_language">Language</string>
     <string name="settings_currency">Currency</string>
     <string name="settings_dark_mode">Dark Mode</string>
-    <string name="settings_reset_data">Reset Data</string>
-    <string name="settings_reset_warning">You are about to erase all transactions on this app. This cannot be reversed</string>
+    <string name="settings_reset_data">Logout</string>
+    <string name="settings_reset_warning">You are about to logout. Are you sure about this?</string>
     <string name="settings_limit_reminder">Limit Reminder</string>
     <string name="settings_expense_limit">Expense Limit</string>
     <string name="settings_expense_amount">Amount</string>

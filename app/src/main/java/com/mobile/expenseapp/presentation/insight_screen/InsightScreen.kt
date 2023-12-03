@@ -54,6 +54,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
 
     val filteredTransactions by insightViewModel.filteredTransaction.collectAsState()
     val currencyCode by insightViewModel.selectedCurrencyCode.collectAsState()
+    val tabButton by insightViewModel.tabButton.collectAsState()
 
     val total = filteredTransactions.sumOf { it.amount }
 
@@ -132,7 +133,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                     limitDuration.forEachIndexed { index, label ->
                         DropdownMenuItem(onClick = {
                             selectedDuration = label
-                            insightViewModel.getFilteredTransaction(index)
+                            insightViewModel.selectTabButton(tabButton, index)
                             expandedState = false
                         }) {
                             Text(

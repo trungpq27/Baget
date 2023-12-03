@@ -232,7 +232,6 @@ fun ContinueButton(
                 else {
                     navController.popBackStack()
                     welcomeViewModel.saveOnBoardingState(completed = true)
-                    welcomeViewModel.createAccounts()
                     navController.navigate(Screen.HomeScreen.route)
                 }
             },

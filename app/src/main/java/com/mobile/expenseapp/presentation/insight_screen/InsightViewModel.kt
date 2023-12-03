@@ -42,7 +42,7 @@ class InsightViewModel @Inject constructor(
     var selectedCurrencyCode = MutableStateFlow(String())
         private set
 
-    fun selectTabButton(tab: TransactionType) {
+    fun selectTabButton(tab: TransactionType, duration: Int =5) {
         _tabButton.value = tab
         getFilteredTransaction()
     }

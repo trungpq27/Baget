@@ -4,8 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.LocalData
 import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.presentation.home_screen.TransactionType
@@ -14,6 +16,20 @@ import java.util.Date
 
 @Dao
 interface TransactionDao {
+    @Transaction
+    suspend fun syncDatabase(data: LocalData){
+        eraseDatabase()
+        insertTransactions(data.transactions)
+        insertSchedules(data.schedules)
+        insertAccounts(data.accounts)
+    }
+
+    @Transaction
+    suspend fun eraseDatabase(){
+        eraseAccounts()
+        eraseSchedules()
+        eraseTransactions()
+    }
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSchedules(transaction: List<ScheduleDto>)
 
@@ -41,6 +57,9 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccounts(accounts: List<AccountDto>)
 
+    @Query("DELETE FROM account_table")
+    fun eraseAccounts()
+
     @Query("SELECT * FROM transaction_table WHERE entry_date = :entryDate")
     fun getDailyTransaction(entryDate: String): Flow<List<TransactionDto>>
 
@@ -57,7 +76,7 @@ interface TransactionDao {
     fun getAllTransaction(): Flow<List<TransactionDto>>
 
     @Query("DELETE FROM transaction_table")
-    fun eraseTransaction()
+    fun eraseTransactions()
 
     @Query("SELECT * FROM transaction_table WHERE entry_date = date('now', 'localtime') AND transaction_type = :transactionType")
     fun getCurrentDayExpTransaction(transactionType: String = TransactionType.EXPENSE.title): Flow<List<TransactionDto>>

@@ -3,6 +3,8 @@ package com.mobile.expenseapp.domain.repository
 import kotlinx.coroutines.flow.Flow
 
 interface DatastoreRepository {
+    suspend fun writeIsLoggedIn(loggedIn: Boolean)
+    suspend fun readIsLoggedIn(): Flow<Boolean>
     suspend fun writeLoginToken(token: String)
     suspend fun readLoginToken(): Flow<String?>
     suspend fun writeOnboardingKeyToDataStore(completed: Boolean)

@@ -3,9 +3,14 @@ package com.mobile.expenseapp.presentation.auth_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobile.expenseapp.data.local.entity.AccountDto
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetLoginTokenUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.EraseDatabaseUseCase
+import com.mobile.expenseapp.domain.usecase.write_database.InsertAccountsUseCase
 import com.mobile.expenseapp.domain.usecase.write_database.SyncFromRemoteUseCase
+import com.mobile.expenseapp.domain.usecase.write_datastore.EditIsLoggedInUseCase
 import com.mobile.expenseapp.domain.usecase.write_datastore.EditLoginTokenUseCase
+import com.mobile.expenseapp.presentation.home_screen.Account
 import com.mobile.expenseapp.service.APIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -18,15 +23,19 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val editLoginTokenUseCase: EditLoginTokenUseCase,
     private val getLoginTokenUseCase: GetLoginTokenUseCase,
-    private val syncFromRemoteUseCase: SyncFromRemoteUseCase
+    private val syncFromRemoteUseCase: SyncFromRemoteUseCase,
+    private val eraseDatabaseUseCase: EraseDatabaseUseCase,
+    private val editIsLoggedInUseCase: EditIsLoggedInUseCase,
+    private val insertAccountsUseCase: InsertAccountsUseCase
 ) : ViewModel() {
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> get() = _loginState
 
-    val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
+    private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> get() = _registerState
     fun register(username: String, password: String) {
         viewModelScope.launch(IO) {
+            _registerState.value = RegisterState.Idle
             val result = APIRepository.register(username, password)
             if (result) {
                 _registerState.value = RegisterState.Success
@@ -42,6 +51,7 @@ class AuthViewModel @Inject constructor(
             val result = APIRepository.login(username, password)
             result.fold(onSuccess = { token ->
                 editLoginTokenUseCase(token)
+                editIsLoggedInUseCase(true)
                 _loginState.value = LoginState.Success
             }, onFailure = { _ ->
                 _loginState.value = LoginState.Failure
@@ -49,7 +59,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun syncToRemoteWhenLogin() {
+    fun syncFromRemoteWhenLogin() {
         viewModelScope.launch(IO) {
             getLoginTokenUseCase().collect {
                 if (it != null) {
@@ -63,6 +73,18 @@ class AuthViewModel @Inject constructor(
             }
         }
         _loginState.value = LoginState.Idle
+    }
+
+    fun createAccounts() {
+        viewModelScope.launch(IO) {
+            insertAccountsUseCase.invoke(
+                listOf(
+                    AccountDto(1, Account.CASH.title, 0.0, 0.0, 0.0),
+                    AccountDto(2, Account.BANK.title, 0.0, 0.0, 0.0),
+                    AccountDto(3, Account.CARD.title, 0.0, 0.0, 0.0)
+                )
+            )
+        }
     }
 }
 
