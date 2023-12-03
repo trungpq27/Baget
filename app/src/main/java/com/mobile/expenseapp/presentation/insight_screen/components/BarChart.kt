@@ -43,8 +43,7 @@ fun BarChart(
         roundType: BarType,
         barWidth: Dp,
         barColor: Color,
-        barArrangement: Arrangement.Horizontal,
-        insightViewModel: InsightViewModel = hiltViewModel()
+        barArrangement: Arrangement.Horizontal
 ) {
     val barData by remember {
         mutableStateOf(barData_+0)

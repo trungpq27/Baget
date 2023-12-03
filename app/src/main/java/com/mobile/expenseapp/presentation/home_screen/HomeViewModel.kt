@@ -282,7 +282,7 @@ class HomeViewModel @Inject constructor(
             )
             insertDailyTransactionUseCase(newTransaction)
             val checkAuto = addAuto.value
-            if (checkAuto == true) {
+            if (checkAuto) {
                 val schedule = ScheduleDto(newTransaction.date,scheduleTime.value.toLong(), TimeUnit.DAYS.toString(), newTransaction.date )
                 insertNewScheduleUseCase(schedule)
             }

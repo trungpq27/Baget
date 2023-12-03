@@ -39,12 +39,18 @@ class InsightViewModel @Inject constructor(
     private var _filteredTransaction = MutableStateFlow(emptyList<Transaction>())
     val filteredTransaction: StateFlow<List<Transaction>> = _filteredTransaction
 
+    private var _lastMonthTransaction = MutableStateFlow(emptyList<Transaction>())
+    val lastMonthTransaction: StateFlow<List<Transaction>> = _lastMonthTransaction
+
+    private var _thisMonthTransaction = MutableStateFlow(emptyList<Transaction>())
+    val thisMonthTransaction: StateFlow<List<Transaction>> = _thisMonthTransaction
+
     var selectedCurrencyCode = MutableStateFlow(String())
         private set
 
     fun selectTabButton(tab: TransactionType, duration: Int =5) {
         _tabButton.value = tab
-        getFilteredTransaction()
+        getFilteredTransaction(duration)
     }
 
     init {
@@ -59,6 +65,34 @@ class InsightViewModel @Inject constructor(
             }
         }
     }
+    fun getLastMonthTransaction() {
+        viewModelScope.launch(IO) {
+            if (_tabButton.value == TransactionType.INCOME) {
+                getLastMonthTransaction(Constants.INCOME).collectLatest { filteredResults ->
+                    _lastMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                }
+            } else {
+                getLastMonthTransaction(Constants.EXPENSE).collectLatest { filteredResults ->
+                    _lastMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                }
+            }
+        }
+    }
+
+    fun getThisMonthTransaction() {
+        viewModelScope.launch(IO) {
+            if (_tabButton.value == TransactionType.INCOME) {
+                getStartOfMonthTransaction(Constants.INCOME).collectLatest { filteredResults ->
+                    _thisMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                }
+            } else {
+                getStartOfMonthTransaction(Constants.EXPENSE).collectLatest { filteredResults ->
+                    _thisMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                }
+            }
+        }
+    }
+
 
     fun getFilteredTransaction(duration: Int = 5) {
         viewModelScope.launch(IO) {
