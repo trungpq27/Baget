@@ -60,9 +60,8 @@ fun SignInScreen(
             navController.popBackStack()
             welcomeViewModel.saveCurrencyLocale()
 //            welcomeViewModel.saveOnBoardingState(completed = true)
-            authViewModel.clearOnFreshLogin()
 
-            authViewModel.syncToRemoteWhenLogin()
+            authViewModel.syncFromRemoteWhenLogin()
             navController.navigate(Screen.HomeScreen.route)
         }
 

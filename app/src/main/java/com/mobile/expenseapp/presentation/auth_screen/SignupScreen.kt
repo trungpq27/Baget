@@ -19,6 +19,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,15 +50,14 @@ fun SignUpScreen(
 
     val registerState by authViewModel.registerState.collectAsState()
 
-    when (registerState) {
-        is RegisterState.Success -> {
-            navController.navigate(Screen.SignInScreen.route){
-                popUpTo(Screen.SignInScreen.route){
-                    inclusive = true
-                }
+    LaunchedEffect(registerState) {
+        when (registerState) {
+            is RegisterState.Success -> {
+                authViewModel.createAccounts()
+                navController.navigate(Screen.SignInScreen.route)
             }
+            else -> {}
         }
-        else -> {}
     }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -85,7 +85,7 @@ fun SignUpScreen(
                 value = username.value,
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = {username.value = it}
+                onValueChange = { username.value = it }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -97,7 +97,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = {password.value = it}
+                onValueChange = { password.value = it }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -109,7 +109,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = {password_repeat.value = it}
+                onValueChange = { password_repeat.value = it }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -120,8 +120,11 @@ fun SignUpScreen(
             ) {
                 Button(
                     onClick = {
-                        if(password_repeat.value.text == password.value.text){
+                        if (password_repeat.value.text == password.value.text) {
                             authViewModel.register(username.value.text, password.value.text)
+                            if (registerState is RegisterState.Success) {
+                                navController.navigate(Screen.SignInScreen.route)
+                            }
                         }
                     },
                     shape = RoundedCornerShape(50.dp),
@@ -179,7 +182,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = { },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {

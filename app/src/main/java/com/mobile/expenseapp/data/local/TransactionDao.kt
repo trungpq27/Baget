@@ -18,6 +18,7 @@ import java.util.Date
 interface TransactionDao {
     @Transaction
     suspend fun syncDatabase(data: LocalData){
+        eraseDatabase()
         insertTransactions(data.transactions)
         insertSchedules(data.schedules)
         insertAccounts(data.accounts)
