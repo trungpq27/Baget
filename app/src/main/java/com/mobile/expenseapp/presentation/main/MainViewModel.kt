@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetIsLoggedInUseCase
 import com.mobile.expenseapp.domain.usecase.read_datastore.GetOnBoardingKeyUseCase
 import com.mobile.expenseapp.presentation.navigation.Screen
+import com.mobile.expenseapp.service.APIRepository
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,8 +36,15 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch(IO) {
             getIsLoggedInUseCase().collect { isLoggedIn ->
-                if (isLoggedIn)
+                if(APIRepository.healthCheck()){
+                    if(isLoggedIn){
+                        startDestination.value = Screen.HomeScreen.route
+                    }else {
+                        startDestination.value = Screen.SignInScreen.route
+                    }
+                }else {
                     startDestination.value = Screen.HomeScreen.route
+                }
             }
         }
     }

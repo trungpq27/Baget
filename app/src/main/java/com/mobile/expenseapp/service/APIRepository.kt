@@ -75,8 +75,13 @@ object APIRepository {
     }
 
     suspend fun healthCheck(): Boolean {
-        val response: HttpResponse = client.get("$SERVER_URL/healthcheck")
-        return response.status == HttpStatusCode.OK
+        return try{
+            val response: HttpResponse = client.get("$SERVER_URL/healthcheck")
+            response.status == HttpStatusCode.OK
+        }catch(e: Exception){
+            Log.e("Server", e.message ?: "Server is not responding")
+            false
+        }
     }
 
     suspend fun syncGet(token: String): LocalData? {
