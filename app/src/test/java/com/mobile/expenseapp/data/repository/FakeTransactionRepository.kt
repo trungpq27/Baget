@@ -1,6 +1,7 @@
 package com.mobile.expenseapp.data.repository
 
 import com.mobile.expenseapp.data.local.entity.AccountDto
+import com.mobile.expenseapp.data.local.entity.LocalData
 import com.mobile.expenseapp.data.local.entity.ScheduleDto
 import com.mobile.expenseapp.data.local.entity.TransactionDto
 import com.mobile.expenseapp.domain.repository.TransactionRepository
@@ -39,6 +40,14 @@ class FakeTransactionRepository : TransactionRepository {
         AccountDto(3, Account.BANK.title, 5.0, 10.0, 5.0)
     )
 
+    override suspend fun syncDatabase(data: LocalData) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun eraseDatabase() {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun insertSchedules(schedules: List<ScheduleDto>) {
     }
 
@@ -60,6 +69,10 @@ class FakeTransactionRepository : TransactionRepository {
 
     override suspend fun insertAccounts(accounts: List<AccountDto>) {
         return
+    }
+
+    override fun eraseAccounts() {
+        TODO("Not yet implemented")
     }
 
     override suspend fun insertSchedule(schedule: ScheduleDto) {
@@ -111,6 +124,10 @@ class FakeTransactionRepository : TransactionRepository {
 
     override fun eraseSchedules() {
 
+    }
+
+    override suspend fun deleteSchedule(schedule: ScheduleDto) {
+        TODO("Not yet implemented")
     }
 
     override fun getCurrentDayExpTransaction(): Flow<List<TransactionDto>> {

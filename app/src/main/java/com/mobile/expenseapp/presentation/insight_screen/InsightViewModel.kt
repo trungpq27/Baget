@@ -7,7 +7,6 @@ import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get14DayTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get3DayTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.Get7DayTransaction
-import com.mobile.expenseapp.domain.usecase.read_database.GetAllTransactionUseCase
 import com.mobile.expenseapp.domain.usecase.read_database.GetLastMonthTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.GetStartOfMonthTransaction
 import com.mobile.expenseapp.domain.usecase.read_database.GetTransactionByTypeUseCase
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsightViewModel @Inject constructor(
-    private val getAllTransactionUseCase: GetAllTransactionUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val get3DayTransaction: Get3DayTransaction,
     private val get7DayTransaction: Get7DayTransaction,
@@ -39,21 +37,24 @@ class InsightViewModel @Inject constructor(
     private var _filteredTransaction = MutableStateFlow(emptyList<Transaction>())
     val filteredTransaction: StateFlow<List<Transaction>> = _filteredTransaction
 
-    private var _lastMonthTransaction = MutableStateFlow(emptyList<Transaction>())
-    val lastMonthTransaction: StateFlow<List<Transaction>> = _lastMonthTransaction
+    private var _totalLastMonthTransaction = MutableStateFlow(0.0)
+    val totalLastMonthTransaction: StateFlow<Double> = _totalLastMonthTransaction
 
-    private var _thisMonthTransaction = MutableStateFlow(emptyList<Transaction>())
-    val thisMonthTransaction: StateFlow<List<Transaction>> = _thisMonthTransaction
-
+    private var _totalThisMonthTransaction = MutableStateFlow(0.0)
+    val totalThisMonthTransaction: StateFlow<Double> = _totalThisMonthTransaction
     var selectedCurrencyCode = MutableStateFlow(String())
         private set
 
     fun selectTabButton(tab: TransactionType, duration: Int =5) {
         _tabButton.value = tab
         getFilteredTransaction(duration)
+        getTotalLastMonthTransaction()
+        getTotalThisMonthTransaction()
     }
 
     init {
+        getTotalLastMonthTransaction()
+        getTotalThisMonthTransaction()
         getFilteredTransaction()
         currencyFormat()
     }
@@ -65,29 +66,29 @@ class InsightViewModel @Inject constructor(
             }
         }
     }
-    fun getLastMonthTransaction() {
+    fun getTotalLastMonthTransaction() {
         viewModelScope.launch(IO) {
             if (_tabButton.value == TransactionType.INCOME) {
                 getLastMonthTransaction(Constants.INCOME).collectLatest { filteredResults ->
-                    _lastMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                    _totalLastMonthTransaction.value = filteredResults.sumOf { it.amount }
                 }
             } else {
                 getLastMonthTransaction(Constants.EXPENSE).collectLatest { filteredResults ->
-                    _lastMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                    _totalLastMonthTransaction.value = filteredResults.sumOf { it.amount }
                 }
             }
         }
     }
 
-    fun getThisMonthTransaction() {
+    fun getTotalThisMonthTransaction() {
         viewModelScope.launch(IO) {
             if (_tabButton.value == TransactionType.INCOME) {
                 getStartOfMonthTransaction(Constants.INCOME).collectLatest { filteredResults ->
-                    _thisMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                    _totalThisMonthTransaction.value = filteredResults.sumOf{ it.amount }
                 }
             } else {
                 getStartOfMonthTransaction(Constants.EXPENSE).collectLatest { filteredResults ->
-                    _thisMonthTransaction.value = filteredResults.map { it.toTransaction() }
+                    _totalThisMonthTransaction.value = filteredResults.sumOf{ it.amount }
                 }
             }
         }

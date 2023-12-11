@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobile.expenseapp.R
-import com.mobile.expenseapp.domain.model.Transaction
 import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.home_screen.components.ListPlaceholder
@@ -60,6 +59,9 @@ fun InsightScreen(
     val filteredTransactions by insightViewModel.filteredTransaction.collectAsState()
     val currencyCode by insightViewModel.selectedCurrencyCode.collectAsState()
     val tabButton by insightViewModel.tabButton.collectAsState()
+
+    val totalThisMonthTransaction by insightViewModel.totalThisMonthTransaction.collectAsState()
+    val totalLastMonthTransaction by insightViewModel.totalLastMonthTransaction.collectAsState()
 
     val total = filteredTransactions.sumOf { it.amount }
 
@@ -186,32 +188,12 @@ fun InsightScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
 //             BarChart
-            insightViewModel.getThisMonthTransaction()
-            val thisMonthTransaction by insightViewModel.thisMonthTransaction.collectAsState()
-            insightViewModel.getLastMonthTransaction()
-            val temp by insightViewModel.lastMonthTransaction.collectAsState()
-            val lastMonthTransaction = mutableListOf<Transaction>()
-            thisMonthTransaction.forEach {
-                if (!temp.contains(it))
-                    lastMonthTransaction.add(it)
-            }
-            var thisMonthTotal = 0.0
-            var lastMonthTotal = 0.0
-
-            thisMonthTransaction.forEach {
-                thisMonthTotal += it.amount
-            }
-            lastMonthTransaction.forEach {
-                lastMonthTotal += it.amount
-            }
-
-
-            val barData_ = listOf(lastMonthTotal.toInt(), thisMonthTotal.toInt())
+            val barData_ = listOf(totalLastMonthTransaction.toInt(), totalThisMonthTransaction.toInt())
             val graphBarData = mutableListOf<Float>()
-            barData_.forEachIndexed { index, value ->
+            barData_.forEach { value ->
                 graphBarData.add(
-                    index = index,
-                    element = value.toFloat() / barData_.maxOf { it }.toFloat()
+                    (value.toFloat() / barData_.maxOf { it }
+                        .toFloat()).let { if (it.isNaN()) 0.0f else it }
                 )
             }
             val xAxisScaleData = mutableListOf("Last month", "This month")
@@ -226,16 +208,16 @@ fun InsightScreen(
 
                     // bar chart
                     item {
-//                        BarChart(
-//                            graphBarData = graphBarData,
-//                            xAxisScaleData = xAxisScaleData,
-//                            barData_ = barData_,
-//                            height = 200.dp,
-//                            roundType = BarType.CIRCULAR_TYPE,
-//                            barWidth = 20.dp,
-//                            barColor = MaterialTheme.colors.primary,
-//                            barArrangement = Arrangement.Start
-//                        )
+                        BarChart(
+                            graphBarData = graphBarData,
+                            xAxisScaleData = xAxisScaleData,
+                            barData_ = barData_,
+                            height = 200.dp,
+                            roundType = BarType.CIRCULAR_TYPE,
+                            barWidth = 20.dp,
+                            barColor = MaterialTheme.colors.primary,
+                            barArrangement = Arrangement.Start
+                        )
                     }
 
                     // donut

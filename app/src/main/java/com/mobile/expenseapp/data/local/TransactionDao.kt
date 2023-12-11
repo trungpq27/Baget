@@ -91,19 +91,19 @@ interface TransactionDao {
     @Query("SELECT * FROM transaction_table WHERE entry_date BETWEEN date('now', '-1 month') AND date('now', 'localtime') AND transaction_type = :transactionType")
     fun getMonthlyExpTransaction(transactionType: String = TransactionType.EXPENSE.title): Flow<List<TransactionDto>>
 
-    @Query("SELECT * FROM transaction_table WHERE entry_date >= date('now', '-3 day') AND entry_date < date('now', 'localtime') AND transaction_type = :transactionType")
+    @Query("SELECT * FROM transaction_table WHERE entry_date BETWEEN date('now', '-3 day') AND date('now', 'localtime') AND transaction_type = :transactionType")
     fun get3DayTransaction(transactionType: String): Flow<List<TransactionDto>>
 
-    @Query("SELECT * FROM transaction_table WHERE entry_date >= date('now', '-7 day') AND entry_date < date('now', 'localtime') AND transaction_type = :transactionType")
+    @Query("SELECT * FROM transaction_table WHERE entry_date BETWEEN date('now', '-7 day') AND date('now', 'localtime') AND transaction_type = :transactionType")
     fun get7DayTransaction(transactionType: String): Flow<List<TransactionDto>>
 
-    @Query("SELECT * FROM transaction_table WHERE entry_date >= date('now', '-14 day') AND entry_date < date('now', 'localtime') AND transaction_type = :transactionType")
+    @Query("SELECT * FROM transaction_table WHERE entry_date BETWEEN date('now', '-14 day') AND date('now', 'localtime') AND transaction_type = :transactionType")
     fun get14DayTransaction(transactionType: String): Flow<List<TransactionDto>>
 
-    @Query("SELECT * FROM transaction_table WHERE entry_date >= date('now', 'start of month') AND entry_date < date('now', 'localtime') AND transaction_type = :transactionType")
+    @Query("SELECT * FROM transaction_table WHERE entry_date BETWEEN date('now', 'start of month') AND date('now', 'localtime') AND transaction_type = :transactionType")
     fun getStartOfMonthTransaction(transactionType: String): Flow<List<TransactionDto>>
 
-    @Query("SELECT * FROM transaction_table WHERE timestamp >= strftime('%s', 'now', '-1 month') AND timestamp < strftime('%s', 'now', 'start of month') AND transaction_type = :transactionType")
+    @Query("SELECT * FROM transaction_table WHERE entry_date BETWEEN date('now', '-1 month') AND date('now', 'start of month') AND transaction_type = :transactionType")
     fun getLastMonthTransaction(transactionType: String): Flow<List<TransactionDto>>
 
     @Query("SELECT * FROM transaction_table WHERE transaction_type = :transactionType")
