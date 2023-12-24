@@ -1,6 +1,7 @@
 package com.mobile.expenseapp.presentation.insight_screen.components
 
 import android.graphics.Paint
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -28,10 +29,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.mobile.expenseapp.domain.model.Transaction
-import com.mobile.expenseapp.presentation.insight_screen.InsightViewModel
 import com.mobile.expenseapp.util.spacing
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.round
 
 @Composable
@@ -45,15 +45,6 @@ fun BarChart(
         barColor: Color,
         barArrangement: Arrangement.Horizontal
 ) {
-    val barData by remember {
-        mutableStateOf(barData_+0)
-    }
-    val maxData = if (barData[0] > barData[1]) {
-        barData[0]
-    } else barData[1]
-    val minData = if (maxData == barData[0]) {
-        barData[1]
-    } else barData[0]
 
     // for getting screen width and height you can use LocalConfiguration
     val configuration = LocalConfiguration.current
@@ -95,7 +86,7 @@ fun BarChart(
     val lineHeightXAxis = 10.dp
     // height of horizontal line over x-axis scale
     val horizontalLineHeight = 5.dp
-
+    val yAxisScaleText = (max(barData_[0],barData_[1])) / 3f
     Box(
             modifier = Modifier
                     .fillMaxWidth()
@@ -103,46 +94,45 @@ fun BarChart(
             contentAlignment = Alignment.TopStart
     ) {
 
-        // y-axis scale and horizontal dotted lines on graph indicating y-axis scale
         Column(
-                modifier = Modifier
-                        .padding(top = xAxisScaleHeight, end = 3.dp)
-                        .height(height)
-                        .fillMaxWidth(),
-                horizontalAlignment = CenterHorizontally
+            modifier = Modifier
+                .padding(top = xAxisScaleHeight, end = 3.dp)
+                .height(height)
+                .fillMaxWidth(),
+            horizontalAlignment = CenterHorizontally
         ) {
-
-            Canvas(modifier = Modifier
+            Canvas(
+                modifier = Modifier
                     .padding(bottom = 10.dp)
-                    .fillMaxSize()) {
+                    .fillMaxSize()
+            ) {
 
                 // Y-Axis Scale Text
-                val yAxisScaleText = (maxData) / 3f
+
                 (0..3).forEach { i ->
+                    val text = round(min(barData_[0],barData_[1]) + yAxisScaleText * i).toString()
                     drawContext.canvas.nativeCanvas.apply {
                         drawText(
-                                round(minData + yAxisScaleText * i).toString(),
-                                30f,
-                                size.height - yAxisScaleSpacing - i * size.height / 3f,
-                                textPaint
+                            text,
+                            30f,
+                            size.height - yAxisScaleSpacing - i * size.height / 3f,
+                            textPaint
                         )
                     }
                     yCoordinates.add(size.height - yAxisScaleSpacing - i * size.height / 3f)
                 }
 
-                // horizontal dotted lines on graph indicating y-axis scale
-                (1..3).forEach {
+                // Horizontal dotted lines on the graph indicating y-axis scale
+                (1..3).forEach { i ->
                     drawLine(
-                            start = Offset(x = yAxisScaleSpacing +30f, y = yCoordinates[it]),
-                            end = Offset(x= size.width, y = yCoordinates[it]),
-                            color = Color.Gray,
-                            strokeWidth = 5f,
-                            pathEffect = pathEffect
+                        start = Offset(x = yAxisScaleSpacing + 30f, y = yCoordinates[i]),
+                        end = Offset(x = size.width, y = yCoordinates[i]),
+                        color = Color.Gray,
+                        strokeWidth = 5f,
+                        pathEffect = pathEffect
                     )
                 }
-
             }
-
         }
 
         // Graph with Bar Graph and X-Axis Scale

@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.presentation.insight_screen
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -102,7 +103,7 @@ fun InsightScreen(
             )
         )
     }
-    var selectedDuration by remember { mutableStateOf(limitDuration[0]) }
+    var selectedDuration by remember { mutableStateOf(limitDuration[5]) }
 
     Surface(
         color = MaterialTheme.colors.background,
@@ -190,12 +191,19 @@ fun InsightScreen(
 //             BarChart
             val barData_ = listOf(totalLastMonthTransaction.toInt(), totalThisMonthTransaction.toInt())
             val graphBarData = mutableListOf<Float>()
-            barData_.forEach { value ->
-                graphBarData.add(
-                    (value.toFloat() / barData_.maxOf { it }
-                        .toFloat()).let { if (it.isNaN()) 0.0f else it }
-                )
+            barData_.forEachIndexed { index, value ->
+                val maxValue = barData_.maxOfOrNull { it.toFloat() } ?: 1.0f // Avoid division by zero
+
+                val normalizedValue = (value.toFloat() / maxValue).let { if (it.isNaN()) 0.0f else it }
+                Log.d("bar", "Index: $index, Value: $normalizedValue")
+
+                val scaledValue = (value.toFloat() / 4).let { if (it.isNaN()) 0.0f else it }
+                Log.d("barval", "Index: $index, Value: $scaledValue")
+
+                graphBarData.add(normalizedValue)
             }
+
+
             val xAxisScaleData = mutableListOf("Last month", "This month")
 
             Column(
@@ -219,6 +227,7 @@ fun InsightScreen(
                             barArrangement = Arrangement.Start
                         )
                     }
+                    Log.d("bardata", barData_.toString())
 
                     // donut
                     item {
