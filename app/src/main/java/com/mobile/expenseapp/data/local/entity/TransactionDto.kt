@@ -25,4 +25,14 @@ data class TransactionDto(
     val title: String
 ) {
     fun toTransaction() = Transaction(date, dateOfEntry, amount, account, category, transactionType, title)
+    override fun toString(): String {
+        return """
+            
+            Amount: $amount,
+            Account: $account,
+            Category: $category,
+            Transaction Type: $transactionType,
+            Title: $title
+    """.trimIndent()
+    }
 }

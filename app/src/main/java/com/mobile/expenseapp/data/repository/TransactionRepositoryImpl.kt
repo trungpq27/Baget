@@ -23,6 +23,10 @@ class TransactionRepositoryImpl @Inject constructor(private val dao: Transaction
         dao.insertSchedules(schedules)
     }
 
+    override suspend fun deleteSchedule(schedule: ScheduleDto) {
+        dao.deleteSchedule(schedule)
+    }
+
     override suspend fun insertTransactions(dailyExpense: List<TransactionDto>) {
         dao.insertTransactions(transaction = dailyExpense)
     }

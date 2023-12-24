@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mobile.expenseapp.R
 import com.mobile.expenseapp.presentation.home_screen.components.Category
 import com.mobile.expenseapp.util.spacing
 
@@ -31,7 +32,7 @@ import com.mobile.expenseapp.util.spacing
 fun CategoryChooserScreen(
     navController: NavController
 ) {
-    Box (
+    Box(
         modifier = Modifier
             .background(MaterialTheme.colors.background)
             .fillMaxSize()
@@ -51,7 +52,7 @@ fun CategoryChooserScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Add Transaction",
+                    text = navController.context.getString(R.string.transaction_add_transaction),
                     modifier = Modifier.weight(2f),
                     style = MaterialTheme.typography.subtitle1,
                     color = MaterialTheme.colors.onSurface

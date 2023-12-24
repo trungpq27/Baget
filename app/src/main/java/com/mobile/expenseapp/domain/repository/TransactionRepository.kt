@@ -18,6 +18,8 @@ interface TransactionRepository {
     fun getAllSchedules(): Flow<List<ScheduleDto>>
 
     fun eraseSchedules()
+    suspend fun deleteSchedule(schedule: ScheduleDto)
+
 
     suspend fun insertTransaction(dailyExpense: TransactionDto)
 

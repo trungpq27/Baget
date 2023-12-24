@@ -1,5 +1,6 @@
 package com.mobile.expenseapp.presentation.insight_screen
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import com.mobile.expenseapp.presentation.home_screen.Category
 import com.mobile.expenseapp.presentation.home_screen.amountFormat
 import com.mobile.expenseapp.presentation.home_screen.components.ListPlaceholder
 import com.mobile.expenseapp.presentation.insight_screen.components.BarChart
+import com.mobile.expenseapp.presentation.insight_screen.components.BarType
 import com.mobile.expenseapp.presentation.insight_screen.components.DonutChart
 import com.mobile.expenseapp.presentation.insight_screen.components.InsightItem
 import com.mobile.expenseapp.presentation.insight_screen.components.InsightTabBar
@@ -50,11 +52,17 @@ import com.mobile.expenseapp.util.spacing
 @ExperimentalFoundationApi
 @ExperimentalUnitApi
 @Composable
-fun InsightScreen(navController: NavController, insightViewModel: InsightViewModel = hiltViewModel()) {
+fun InsightScreen(
+    navController: NavController,
+    insightViewModel: InsightViewModel = hiltViewModel()
+) {
 
     val filteredTransactions by insightViewModel.filteredTransaction.collectAsState()
     val currencyCode by insightViewModel.selectedCurrencyCode.collectAsState()
     val tabButton by insightViewModel.tabButton.collectAsState()
+
+    val totalThisMonthTransaction by insightViewModel.totalThisMonthTransaction.collectAsState()
+    val totalLastMonthTransaction by insightViewModel.totalLastMonthTransaction.collectAsState()
 
     val total = filteredTransactions.sumOf { it.amount }
 
@@ -86,12 +94,16 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
     val limitDuration by remember {
         mutableStateOf(
             listOf(
-                "Last 3 Days", "Last 7 Days", "Last 14 Days", "This Month",
-                "Last Month", "All"
+                navController.context.getString(R.string.last_3_days),
+                navController.context.getString(R.string.last_7_days),
+                navController.context.getString(R.string.last_14_days),
+                navController.context.getString(R.string.this_month),
+                navController.context.getString(R.string.last_month),
+                navController.context.getString(R.string.all)
             )
         )
     }
-    var selectedDuration by remember { mutableStateOf(limitDuration[0]) }
+    var selectedDuration by remember { mutableStateOf(limitDuration[5]) }
 
     Surface(
         color = MaterialTheme.colors.background,
@@ -140,7 +152,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                                 text = label,
                                 style = MaterialTheme.typography.subtitle2,
                                 color = if (selectedDuration == label)
-                                    MaterialTheme.colors.primary
+                                    MaterialTheme.colors.onSurface
                                 else
                                     Color.Gray
                             )
@@ -156,7 +168,7 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Total",
+                text = navController.context.getString(R.string.insight_total),
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
                 letterSpacing = TextUnit(1.1f, TextUnitType.Sp),
@@ -174,28 +186,73 @@ fun InsightScreen(navController: NavController, insightViewModel: InsightViewMod
                 textAlign = TextAlign.Start
             )
 
-            // BarChart
-//            LazyColumn {
-//                BarChart(data = filteredCategories, max_value = )
-//            }
+            Spacer(modifier = Modifier.height(32.dp))
 
-            LazyColumn {
-                item {
-                    if (filteredTransactions.isNotEmpty())
-                        DonutChart(filteredCategories, percentProgress)
-                }
+//             BarChart
+            val barData_ = listOf(totalLastMonthTransaction.toInt(), totalThisMonthTransaction.toInt())
+            val graphBarData = mutableListOf<Float>()
+            barData_.forEachIndexed { index, value ->
+                val maxValue = barData_.maxOfOrNull { it.toFloat() } ?: 1.0f // Avoid division by zero
 
-                itemsIndexed(filteredCategories) { index, category ->
-                    val amount = groupedData[category.title]?.sumOf { it.amount }
-                    InsightItem(cat = category, currencyCode, amount = amount!!, percentProgress[index])
-                }
+                val normalizedValue = (value.toFloat() / maxValue).let { if (it.isNaN()) 0.0f else it }
+                Log.d("bar", "Index: $index, Value: $normalizedValue")
+
+                val scaledValue = (value.toFloat() / 4).let { if (it.isNaN()) 0.0f else it }
+                Log.d("barval", "Index: $index, Value: $scaledValue")
+
+                graphBarData.add(normalizedValue)
             }
 
-            filteredTransactions.ifEmpty {
-                ListPlaceholder(navController)
+
+            val xAxisScaleData = mutableListOf("Last month", "This month")
+
+            Column(
+                modifier = Modifier
+                    .padding(MaterialTheme.spacing.medium)
+            ) {
+                LazyColumn(
+                    modifier = Modifier.padding(MaterialTheme.spacing.small)
+                ) {
+
+                    // bar chart
+                    item {
+                        BarChart(
+                            graphBarData = graphBarData,
+                            xAxisScaleData = xAxisScaleData,
+                            barData_ = barData_,
+                            height = 200.dp,
+                            roundType = BarType.CIRCULAR_TYPE,
+                            barWidth = 20.dp,
+                            barColor = MaterialTheme.colors.primary,
+                            barArrangement = Arrangement.Start
+                        )
+                    }
+                    Log.d("bardata", barData_.toString())
+
+                    // donut
+                    item {
+                        if (filteredTransactions.isNotEmpty())
+                            DonutChart(filteredCategories, percentProgress)
+                    }
+
+                    itemsIndexed(filteredCategories) { index, category ->
+                        val amount = groupedData[category.title]?.sumOf { it.amount }
+                        InsightItem(
+                            cat = category,
+                            currencyCode,
+                            amount = amount!!,
+                            percentProgress[index],
+                            navController
+                        )
+                    }
+                }
+
+                filteredTransactions.ifEmpty {
+                    ListPlaceholder(navController)
+                }
+
+
             }
-            
-            
         }
     }
 }

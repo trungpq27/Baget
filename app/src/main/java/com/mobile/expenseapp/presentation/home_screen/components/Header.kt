@@ -140,7 +140,7 @@ fun Header(
                 }
 
                 Text(
-                    text = "Balance",
+                    text = navController.context.getString(R.string.home_balance),
                     style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Normal),
                     color = MaterialTheme.colors.onSurface,
                     letterSpacing = TextUnit(1.5f, TextUnitType.Sp),
@@ -279,7 +279,7 @@ fun Header(
                                 .then(Modifier.size(30.dp))
                         )
                         Text(
-                            text = "Income",
+                            text = navController.context.getString(R.string.home_income),
                             style = MaterialTheme.typography.subtitle1,
                             color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(incomeLabel) {
@@ -359,7 +359,7 @@ fun Header(
                                 .then(Modifier.size(30.dp))
                         )
                         Text(
-                            text = "Expense",
+                            text = navController.context.getString(R.string.home_expenses),
                             style = MaterialTheme.typography.subtitle1,
                             color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.constrainAs(expenseLabel) {
